@@ -1,0 +1,286 @@
+{
+  "endpoint": "https://www.kaggle.com/mcp",
+  "count": 70,
+  "tools": [
+    {
+      "name": "authorize",
+      "description": "This tool can be used to authorize with Kaggle but it is only compatible with certain clients. See kaggle.com/docs/mcp for more information"
+    },
+    {
+      "name": "cancel_notebook_session",
+      "description": "Cancel a notebook session."
+    },
+    {
+      "name": "create_benchmark_task_from_prompt",
+      "description": "Create a new benchmark task from a prompt."
+    },
+    {
+      "name": "create_code_competition_submission",
+      "description": "Submit a kernel to a competition."
+    },
+    {
+      "name": "create_model",
+      "description": "Create a new model."
+    },
+    {
+      "name": "create_notebook_session",
+      "description": "Create a new notebook session."
+    },
+    {
+      "name": "download_competition_data_file",
+      "description": "Download a single data file for a competition."
+    },
+    {
+      "name": "download_competition_data_files",
+      "description": "Download all data files for a competition."
+    },
+    {
+      "name": "download_competition_leaderboard",
+      "description": "Download the leaderboard for a competition."
+    },
+    {
+      "name": "download_dataset",
+      "description": "Download a dataset."
+    },
+    {
+      "name": "download_hackathon_write_ups",
+      "description": "Exports a CSV with the data from all submitted writeups after the hackathon has closed."
+    },
+    {
+      "name": "download_model_variation_version",
+      "description": "Get a url where the files for a model variation version can be downloaded."
+    },
+    {
+      "name": "download_notebook_output",
+      "description": "Download the output of a notebook."
+    },
+    {
+      "name": "download_notebook_output_zip",
+      "description": "Download the zipped output of a notebook."
+    },
+    {
+      "name": "get_accelerator_quota",
+      "description": "Get the current user's weekly GPU and TPU quota usage."
+    },
+    {
+      "name": "get_benchmark_leaderboard",
+      "description": "Get the leaderboard for a benchmark."
+    },
+    {
+      "name": "get_competition",
+      "description": "Get competition metadata."
+    },
+    {
+      "name": "get_competition_data_files_summary",
+      "description": "Get a summary of the data files for a competition, including number and type of files as well as column metadata."
+    },
+    {
+      "name": "get_competition_leaderboard",
+      "description": "Get the leaderboard for a competition."
+    },
+    {
+      "name": "get_competition_submission",
+      "description": "Get metadata about a competition submission."
+    },
+    {
+      "name": "get_dataset_files_summary",
+      "description": "Get a summary of the data files in a dataset, including number and type of files as well as column metadata."
+    },
+    {
+      "name": "get_dataset_info",
+      "description": "Get information about a dataset."
+    },
+    {
+      "name": "get_dataset_metadata",
+      "description": "Get metadata about a dataset."
+    },
+    {
+      "name": "get_dataset_status",
+      "description": "Get the processing status of a dataset, indicating whether the dataset is still processing, completed, or failed."
+    },
+    {
+      "name": "get_episode_agent_logs",
+      "description": "Download agent logs for a simulation episode."
+    },
+    {
+      "name": "get_episode_replay",
+      "description": "Download the replay for a simulation episode."
+    },
+    {
+      "name": "get_forum",
+      "description": "Get details about a discussion forum, including its name, description, and topic count."
+    },
+    {
+      "name": "get_forum_topic",
+      "description": "Get a discussion topic by ID, optionally including its comments."
+    },
+    {
+      "name": "get_hackathon_overview",
+      "description": "Get all the overview page content for a hackathon competition."
+    },
+    {
+      "name": "get_hackathon_write_up",
+      "description": "Get a single hackathon write-up submission by ID for a competition."
+    },
+    {
+      "name": "get_model",
+      "description": "Get a metadata about a model."
+    },
+    {
+      "name": "get_model_variation",
+      "description": "Get metadata about a model variation."
+    },
+    {
+      "name": "get_notebook_info",
+      "description": "Get information about a notebook."
+    },
+    {
+      "name": "get_notebook_session_status",
+      "description": "Get the status of a notebook session, indicating whether it is running, completed, or failed.."
+    },
+    {
+      "name": "get_resolved_writeup_links",
+      "description": "Get resolved information for all links in a writeup, including download URLs, file summaries, and metadata for datasets, notebooks, YouTube videos, and external links."
+    },
+    {
+      "name": "get_user_profile",
+      "description": "Get a user's public profile."
+    },
+    {
+      "name": "get_writeup",
+      "description": "Get a writeup by ID."
+    },
+    {
+      "name": "get_writeup_by_slug",
+      "description": "Get a writeup by its slug."
+    },
+    {
+      "name": "get_writeup_by_topic",
+      "description": "Get a writeup by its linked forum topic ID. Use this when you found a writeup via forum discussions."
+    },
+    {
+      "name": "list_competition_data_files",
+      "description": "List the data files for a competition."
+    },
+    {
+      "name": "list_competition_data_tree_files",
+      "description": "List the data files by directory for a competition."
+    },
+    {
+      "name": "list_competition_pages",
+      "description": "List the content pages for a competition (overview, rules, evaluation, data description, etc.)."
+    },
+    {
+      "name": "list_competition_topics",
+      "description": "List discussion topics for a competition."
+    },
+    {
+      "name": "list_dataset_files",
+      "description": "List the files in a dataset."
+    },
+    {
+      "name": "list_dataset_tree_files",
+      "description": "List the files in a dataset by directory."
+    },
+    {
+      "name": "list_forum_topics",
+      "description": "List and search discussion topics. Omit forum_id to search across all forums."
+    },
+    {
+      "name": "list_forums",
+      "description": "List all top-level discussion forums on Kaggle."
+    },
+    {
+      "name": "list_hackathon_tracks",
+      "description": "List the tracks for a hackathon competition."
+    },
+    {
+      "name": "list_hackathon_write_ups",
+      "description": "List hackathon write-up submissions for a competition. Supports filtering by track and winner status."
+    },
+    {
+      "name": "list_model_variation_version_files",
+      "description": "List the files of a model variation version."
+    },
+    {
+      "name": "list_model_variation_versions",
+      "description": "List model variation versions."
+    },
+    {
+      "name": "list_model_variations",
+      "description": "List model variations."
+    },
+    {
+      "name": "list_models",
+      "description": "List models."
+    },
+    {
+      "name": "list_notebook_files",
+      "description": "List the files in a notebook."
+    },
+    {
+      "name": "list_notebook_session_output",
+      "description": "List the output files of a notebook session."
+    },
+    {
+      "name": "list_submission_episodes",
+      "description": "List episodes for a submission in a simulation competition."
+    },
+    {
+      "name": "list_team_public_submissions",
+      "description": "List the public-safe submissions for a team. For simulation competitions this is every active (leaderboard-eligible) submission; for regular competitions it is the single submission currently on the public leaderboard."
+    },
+    {
+      "name": "list_topic_messages",
+      "description": "List discussion messages within a competition topic."
+    },
+    {
+      "name": "save_notebook",
+      "description": "Save a notebook and run it from top to bottom."
+    },
+    {
+      "name": "search_competition_submissions",
+      "description": "Search for competition submissions."
+    },
+    {
+      "name": "search_competitions",
+      "description": "Search for competitions."
+    },
+    {
+      "name": "search_content",
+      "description": "Search across all Kaggle content types (competitions, datasets, notebooks, models, discussions, users, benchmarks)."
+    },
+    {
+      "name": "search_datasets",
+      "description": "Search for datasets."
+    },
+    {
+      "name": "search_notebooks",
+      "description": "Search for notebooks."
+    },
+    {
+      "name": "start_competition_submission_upload",
+      "description": "Get a link to upload a competition submission file."
+    },
+    {
+      "name": "submit_to_competition",
+      "description": "Submit a new competition submission."
+    },
+    {
+      "name": "update_dataset_metadata",
+      "description": "Update the metadata for a dataset."
+    },
+    {
+      "name": "update_model",
+      "description": "Update a model."
+    },
+    {
+      "name": "update_model_variation",
+      "description": "Update a model variation."
+    },
+    {
+      "name": "upload_dataset_file",
+      "description": "Upload a file to a dataset."
+    }
+  ]
+}

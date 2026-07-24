@@ -12,10 +12,9 @@ common/                 # 共享：Model Proxy 客户端
 001-model-proxy/        # 刷新凭证 + chat 调用
 002-tool-call/          # function calling 演示
 003-list-models/        # 列出 / 导出 AI Models 全表
-docs/                   # （可选）设计说明
+docs/                   # MCP / Skills / CLI 抓取文档（见 docs/README.md）
 kaggle_ai_models.*      # 模型清单（003 dump 同步到根目录）
 ```
-
 命名约定：`NNN-topic`（序号 + 主题）。`python main.py 001 …` 等短号在唯一时可解析到对应目录。
 
 ## 环境
@@ -75,12 +74,24 @@ kaggle config view
 kaggle quota
 ```
 
-## MCP（平台 API，不是 Model Proxy 聊天）
+## MCP 与 Skills 文档（已抓取）
 
-- 端点：`https://www.kaggle.com/mcp`
-- 约 70 工具：竞赛 / 数据集 / Notebook / 模型仓库等
-- 项目配置：`.grok/config.toml`
-- 文档：https://www.kaggle.com/docs/mcp
+本地整理：
+
+| 路径 | 内容 |
+|------|------|
+| [docs/mcp-and-skills.md](docs/mcp-and-skills.md) | MCP + Skills **总览** |
+| [docs/mcp-tools.md](docs/mcp-tools.md) | 官方 MCP **70 工具**清单 |
+| [docs/skills/](docs/skills/) | 官方 kaggle-skills 镜像 |
+| [docs/raw/](docs/raw/) | CLI / JSON 原文 |
+
+在线：
+
+- MCP：https://www.kaggle.com/docs/mcp · 端点 `https://www.kaggle.com/mcp`
+- Skills：https://github.com/Kaggle/kaggle-skills
+- 项目配置：`.grok/config.toml`（Bearer `KAGGLE_API_TOKEN`）
+
+**MCP ≠ Model Proxy**：MCP 操作竞赛/数据集/Notebook；Proxy 调大模型扣 $10/$100。
 
 ## 推荐参考的开源项目
 
