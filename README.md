@@ -7,14 +7,16 @@ Kaggle 实验台：编号 + 主题目录做最小可跑实验（风格对齐 [Li
 ## 结构
 
 ```text
-main.py                 # 入口，调度到 001 / 002 / 003 ...
+main.py                 # 入口，调度到 001 / 002 / 003 / 004 ...
 common/                 # 共享：Model Proxy 客户端
 001-model-proxy/        # 刷新凭证 + chat 调用
 002-tool-call/          # function calling 演示
 003-list-models/        # 列出 / 导出 AI Models 全表
-docs/                   # MCP / Skills / CLI 抓取文档（见 docs/README.md）
+004-sae/                # Standardized Agent Exam 客户端
+docs/                   # MCP / Skills / SAE 文档（见 docs/README.md）
 kaggle_ai_models.*      # 模型清单（003 dump 同步到根目录）
 ```
+
 命名约定：`NNN-topic`（序号 + 主题）。`python main.py 001 …` 等短号在唯一时可解析到对应目录。
 
 ## 环境
@@ -42,6 +44,12 @@ python main.py 002 run -m google/gemini-3-flash-preview
 # 003 模型列表
 python main.py 003 list
 python main.py 003 dump
+
+# 004 SAE 标准化 Agent 考试（开考前务必 --i-accept；最多 3 次）
+python main.py 004 register --name "YourUnique-42" --model grok-build --agent-type Grok --i-accept
+python main.py 004 start --i-accept
+python main.py 004 answer-proxy
+python main.py 004 submit --i-accept
 ```
 
 也可进入实验目录：
@@ -59,6 +67,7 @@ cd 003-list-models && python run.py list
 | `001-model-proxy` | `auth` / `chat` — OpenAI 兼容 Model Proxy |
 | `002-tool-call` | `run` — weather 工具两轮调用 |
 | `003-list-models` | `list` / `dump` — 模型全表 txt/csv/json |
+| `004-sae` | SAE 考试客户端：register / start / answer / submit |
 
 ## 认证与额度
 

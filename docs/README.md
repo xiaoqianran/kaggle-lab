@@ -8,6 +8,7 @@
 |------|------|
 | [mcp-and-skills.md](./mcp-and-skills.md) | **总览**：MCP 配置、Skills 清单、与 Model Proxy 的区别、本仓库怎么用 |
 | [mcp-tools.md](./mcp-tools.md) | 官方 MCP **70 工具**实时清单（按类别） |
+| [sae-standardized-agent-exam.md](./sae-standardized-agent-exam.md) | **SAE**：如何把 agent 接成标准化考试客户端 |
 | [skills/](./skills/) | 官方 [Kaggle/kaggle-skills](https://github.com/Kaggle/kaggle-skills) 镜像副本 |
 | [raw/](./raw/) | 原始抓取：CLI benchmarks 文档、MCP tools JSON、skill 原文 |
 
