@@ -1,0 +1,13 @@
+.venv/
+__pycache__/
+*.pyc
+data/
+.env
+.env.*
+!.env.example
+.kaggle/
+**/access_token
+**/kaggle.json
+*.zip
+.ipynb_checkpoints/
+vendor/

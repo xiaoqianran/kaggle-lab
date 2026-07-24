@@ -1,0 +1,48 @@
+# Kaggle AI Models 全量列表
+# 来源: kaggle b t models
+# 抓取时间: 2026-07-24
+# 用途: Daily $10 / Monthly $100 AI Models 额度（Model Proxy / Benchmarks）
+# 说明:
+#   - cli_slug: kaggle b t run -m <slug>
+#   - http_model: OpenAI 兼容 API 的 model 字段（vendor/name，部分已实测，其余为惯例推断）
+#   - status_note: live=曾实测可通; listed=仅列表有; often_503=旗舰/热门常 503
+# 筛选提示: 用表格软件按 vendor / family 过滤；或 grep
+#
+cli_slug,display_name,vendor,family,http_model_guess,status_note
+gemini-3-flash-preview,Gemini 3 Flash Preview,google,gemini,google/gemini-3-flash-preview,live_ok_tools_ok
+claude-haiku-4-5-20251001,Claude Haiku 4.5,anthropic,claude,anthropic/claude-haiku-4-5-20251001,listed
+claude-opus-4-1-20250805,Claude Opus 4.1,anthropic,claude,anthropic/claude-opus-4-1-20250805,listed
+claude-opus-4-5-20251101,Claude Opus 4.5,anthropic,claude,anthropic/claude-opus-4-5-20251101,listed
+claude-opus-4-6-default,Claude Opus 4.6,anthropic,claude,anthropic/claude-opus-4-6-default,listed
+claude-opus-4-7-default,Claude Opus 4.7,anthropic,claude,anthropic/claude-opus-4-7-default,listed
+claude-opus-4-8-default,Claude Opus 4.8,anthropic,claude,anthropic/claude-opus-4-8-default,often_503
+claude-sonnet-4-20250514,Claude Sonnet 4,anthropic,claude,anthropic/claude-sonnet-4-20250514,listed
+claude-sonnet-4-5-20250929,Claude Sonnet 4.5,anthropic,claude,anthropic/claude-sonnet-4-5-20250929,listed
+claude-sonnet-4-6-default,Claude Sonnet 4.6,anthropic,claude,anthropic/claude-sonnet-4-6-default,listed
+deepseek-v3.1,Deepseek V3.1,deepseek,deepseek,deepseek-ai/deepseek-v3.1,listed
+deepseek-r1-0528,DeepSeek-R1,deepseek,deepseek,deepseek-ai/deepseek-r1-0528,listed
+gemini-2.5-flash,Gemini 2.5 Flash,google,gemini,google/gemini-2.5-flash,listed
+gemini-2.5-pro,Gemini 2.5 Pro,google,gemini,google/gemini-2.5-pro,listed
+gemini-3.1-flash-lite-preview,Gemini 3.1 Flash-Lite Preview,google,gemini,google/gemini-3.1-flash-lite-preview,listed
+gemini-3.1-pro-preview,Gemini 3.1 Pro Preview,google,gemini,google/gemini-3.1-pro-preview,listed
+gemini-3.5-flash,Gemini 3.5 Flash,google,gemini,google/gemini-3.5-flash,listed
+gemini-3.5-flash-lite,Gemini 3.5 Flash-Lite,google,gemini,google/gemini-3.5-flash-lite,listed
+gemini-3.6-flash,Gemini 3.6 Flash,google,gemini,google/gemini-3.6-flash,listed
+gemma-4-26b-a4b-it,Gemma 4 26B A4B,google,gemma,google/gemma-4-26b-a4b-it,listed
+gemma-4-31b-it,Gemma 4 31B,google,gemma,google/gemma-4-31b-it,listed
+glm-5,GLM-5,other,glm,glm-5,listed
+gpt-5.4-2026-03-05,GPT-5.4,openai,gpt,openai/gpt-5.4-2026-03-05,listed
+gpt-5.4-mini-2026-03-17,GPT-5.4 mini,openai,gpt,openai/gpt-5.4-mini-2026-03-17,listed
+gpt-5.4-nano-2026-03-17,GPT-5.4 nano,openai,gpt,openai/gpt-5.4-nano-2026-03-17,live_ok_tools_ok
+gpt-5.5-2026-04-23,GPT-5.5,openai,gpt,openai/gpt-5.5-2026-04-23,listed
+gpt-5.6-luna,GPT-5.6 Luna,openai,gpt,openai/gpt-5.6-luna,listed
+gpt-5.6-sol,GPT-5.6 Sol,openai,gpt,openai/gpt-5.6-sol,often_503
+gpt-5.6-terra,GPT-5.6 Terra,openai,gpt,openai/gpt-5.6-terra,listed
+gpt-oss-120b,gpt-oss-120b,openai,gpt-oss,openai/gpt-oss-120b,listed
+gpt-oss-20b,gpt-oss-20b,openai,gpt-oss,openai/gpt-oss-20b,listed
+grok-4.20-0309-non-reasoning,Grok 4.20 (Non-Reasoning),xai,grok,xai/grok-4.20-0309-non-reasoning,listed
+grok-4.20-0309-reasoning,Grok 4.20 Reasoning,xai,grok,xai/grok-4.20-0309-reasoning,listed
+qwen3-235b-a22b-instruct-2507,Qwen 3 235B A22B Instruct,qwen,qwen,qwen/qwen3-235b-a22b-instruct-2507,listed
+qwen3-coder-480b-a35b-instruct,Qwen 3 Coder 480B,qwen,qwen,qwen/qwen3-coder-480b-a35b-instruct,listed
+qwen3-next-80b-a3b-instruct,Qwen 3 Next 80B Instruct,qwen,qwen,qwen/qwen3-next-80b-a3b-instruct,listed
+qwen3-next-80b-a3b-thinking,Qwen 3 Next 80B Thinking,qwen,qwen,qwen/qwen3-next-80b-a3b-thinking,listed
