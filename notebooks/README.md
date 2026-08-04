@@ -32,3 +32,16 @@
 | `grok-007-release-merge-card.ipynb` | https://www.kaggle.com/code/seachenbgdy/grok-007-release-merge-card |
 
 在 Kaggle 上打开对应 notebook 可选 T4 GPU 直接跑；本地需自备 CUDA + 依赖（torch / transformers / peft 等）。
+
+
+## 深入层（008+）
+
+对应「T4×2 社区深入实践」学习路径：
+
+| 文件 | 深入层 | 学什么 |
+|---|---|---|
+| `grok-008-qlora-scale-bench.ipynb` | B 效率工程 | 4bit NF4 QLoRA、peak VRAM、步耗时、3B/7B 边界 |
+| `grok-009-gsm8k-eval-baseline.ipynb` | D 硬评测 | GSM8K 冻结子集 + base EM |
+| `grok-010-gsm8k-qlora-sft.ipynb` | 闭环 | 同尺 QLoRA SFT：base vs sft EM |
+
+后续可写：`011` 单卡 vs 双卡吞吐；`012` GRPO/可验证 reward。
