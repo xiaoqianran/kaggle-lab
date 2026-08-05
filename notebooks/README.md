@@ -57,3 +57,7 @@
 | `img3d-03-gaussian-splatting-lite.ipynb` | Lite 3DGS teaching loop |
 
 Also: `grok-011-crop-disease-cls.ipynb`, `grok-012-minicpmv-crop-vqa.ipynb`.
+
+## results-preview
+
+Interactive HTML gallery of Kaggle img3d-00…03 outputs lives at [`v01-wangran521/results-preview/`](v01-wangran521/results-preview/) — open `index.html`.
