@@ -45,3 +45,15 @@
 | `grok-010-gsm8k-qlora-sft.ipynb` | 闭环 | 同尺 QLoRA SFT：base vs sft EM |
 
 后续可写：`011` 单卡 vs 双卡吞吐；`012` GRPO/可验证 reward。
+
+
+## img3d pipeline (Kaggle)
+
+| File | Purpose |
+|------|---------|
+| `img3d-00-generate-images-modern.ipynb` | Modern T2I inputs for 3D |
+| `img3d-01-single-image-triposr.ipynb` | Single image → mesh (TripoSR) |
+| `img3d-02-multiview-dust3r-scene.ipynb` | Multiview → point cloud (DUSt3R) |
+| `img3d-03-gaussian-splatting-lite.ipynb` | Lite 3DGS teaching loop |
+
+Also: `grok-011-crop-disease-cls.ipynb`, `grok-012-minicpmv-crop-vqa.ipynb`.
