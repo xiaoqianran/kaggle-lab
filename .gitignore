@@ -14,3 +14,6 @@ logs/
 vendor/
 **/artifacts/
 *.run.json
+
+# kaggle-benchmarks local export (generated; source is task.py)
+*.task.json
