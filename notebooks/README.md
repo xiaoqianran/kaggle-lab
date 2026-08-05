@@ -61,3 +61,13 @@ Also: `grok-011-crop-disease-cls.ipynb`, `grok-012-minicpmv-crop-vqa.ipynb`.
 ## results-preview
 
 Interactive HTML gallery of Kaggle img3d-00…03 outputs lives at [`v01-wangran521/results-preview/`](v01-wangran521/results-preview/) — open `index.html`.
+
+
+## World models (Kaggle T4)
+
+| Notebook | What |
+|----------|------|
+| `wm-01-diamond-atari.ipynb` | DIAMOND diffusion WM pretrained dream GIF |
+| `wm-02-iris.ipynb` | IRIS transformer WM checkpoint + rollout |
+| `wm-03-classic-world-models.ipynb` | Ha-style VAE+LSTM toy world model |
+| `wm-04-rssm-dreamer-lite.ipynb` | Dreamer-style RSSM toy dream |
