@@ -1,0 +1,8 @@
+game=Breakout
+ckpt=/root/.cache/huggingface/hub/models--eloialonso--iris/snapshots/c0539e99adf924d44be0f19b12de00639daa5550/pretrained_models/Breakout.pt
+num_actions=4
+dream_steps=80
+frames=82
+reward_mean=0.0250
+reward_sum=2.0000
+gif_bytes=174308
