@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>img3d Kaggle 结果预览 · wangran521</title>
+<title>Kaggle Lab Gallery · Catppuccin</title>
 <script type="importmap">
 {
   "imports": {
@@ -13,219 +13,481 @@
 }
 </script>
 <style>
+  /* Catppuccin Mocha */
   :root {
-    --bg: #0b1020;
-    --panel: #121a2f;
-    --card: #18233d;
-    --line: #2a3a5c;
-    --text: #e8eefc;
-    --muted: #93a0bf;
-    --accent: #6ea8ff;
-    --good: #3dd68c;
-    --warn: #f5c542;
-    --r: 16px;
+    --rosewater: #f5e0dc;
+    --flamingo: #f2cdcd;
+    --pink: #f5c2e7;
+    --mauve: #cba6f7;
+    --red: #f38ba8;
+    --maroon: #eba0ac;
+    --peach: #fab387;
+    --yellow: #f9e2af;
+    --green: #a6e3a1;
+    --teal: #94e2d5;
+    --sky: #89dceb;
+    --sapphire: #74c7ec;
+    --blue: #89b4fa;
+    --lavender: #b4befe;
+    --text: #cdd6f4;
+    --subtext1: #bac2de;
+    --subtext0: #a6adc8;
+    --overlay2: #9399b2;
+    --overlay1: #7f849c;
+    --overlay0: #6c7086;
+    --surface2: #585b70;
+    --surface1: #45475a;
+    --surface0: #313244;
+    --base: #1e1e2e;
+    --mantle: #181825;
+    --crust: #11111b;
+    --r: 14px;
+    --font: "JetBrains Mono", "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+    --sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   }
   * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
   body {
     margin: 0;
-    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-    background:
-      radial-gradient(1200px 600px at 10% -10%, #1a2b55 0%, transparent 55%),
-      radial-gradient(900px 500px at 100% 0%, #1d3a3a 0%, transparent 50%),
-      var(--bg);
+    font-family: var(--sans);
     color: var(--text);
+    background:
+      radial-gradient(900px 420px at 8% -8%, color-mix(in oklab, var(--mauve) 22%, transparent), transparent 55%),
+      radial-gradient(700px 380px at 100% 0%, color-mix(in oklab, var(--blue) 18%, transparent), transparent 50%),
+      radial-gradient(600px 300px at 50% 100%, color-mix(in oklab, var(--teal) 10%, transparent), transparent 55%),
+      var(--base);
     min-height: 100vh;
   }
+  a { color: var(--blue); text-decoration: none; }
+  a:hover { color: var(--lavender); }
+
   header {
-    position: sticky; top: 0; z-index: 20;
-    backdrop-filter: blur(12px);
-    background: rgba(11,16,32,.78);
-    border-bottom: 1px solid var(--line);
-    padding: 14px 20px;
-    display: flex; gap: 16px; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 40;
+    backdrop-filter: blur(14px) saturate(1.2);
+    background: color-mix(in oklab, var(--mantle) 82%, transparent);
+    border-bottom: 1px solid var(--surface0);
+    padding: 12px 18px;
+    display: flex; gap: 14px; align-items: center; justify-content: space-between;
     flex-wrap: wrap;
   }
-  header h1 { margin: 0; font-size: 1.05rem; letter-spacing: .02em; }
-  header p { margin: 2px 0 0; color: var(--muted); font-size: .85rem; }
-  nav { display: flex; gap: 8px; flex-wrap: wrap; }
-  nav a {
-    text-decoration: none; color: var(--text);
-    border: 1px solid var(--line); background: var(--panel);
-    padding: 8px 12px; border-radius: 999px; font-size: .82rem;
+  .brand { display: flex; gap: 12px; align-items: center; }
+  .logo {
+    width: 38px; height: 38px; border-radius: 12px;
+    background: linear-gradient(135deg, var(--mauve), var(--blue), var(--teal));
+    box-shadow: 0 0 0 1px var(--surface1), 0 8px 24px color-mix(in oklab, var(--mauve) 30%, transparent);
   }
-  nav a:hover { border-color: var(--accent); color: #fff; }
-  main { max-width: 1180px; margin: 0 auto; padding: 22px 16px 60px; display: grid; gap: 22px; }
-  section {
-    background: linear-gradient(180deg, rgba(255,255,255,.03), transparent 40%), var(--panel);
-    border: 1px solid var(--line);
+  .brand h1 {
+    margin: 0; font-size: 1rem; font-weight: 700; letter-spacing: .02em;
+    background: linear-gradient(90deg, var(--text), var(--lavender));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .brand p { margin: 2px 0 0; color: var(--subtext0); font-size: .78rem; font-family: var(--font); }
+  .pills { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pills a {
+    font-family: var(--font); font-size: .72rem;
+    color: var(--subtext1); border: 1px solid var(--surface1);
+    background: var(--mantle); padding: 6px 10px; border-radius: 999px;
+  }
+  .pills a:hover { border-color: var(--mauve); color: var(--text); background: var(--surface0); }
+
+  main { max-width: 1140px; margin: 0 auto; padding: 22px 14px 72px; display: grid; gap: 18px; }
+
+  .hero {
+    border: 1px solid var(--surface0); border-radius: calc(var(--r) + 6px);
+    background: linear-gradient(180deg, color-mix(in oklab, var(--surface0) 55%, transparent), var(--mantle));
+    padding: 20px 18px;
+  }
+  .hero h2 { margin: 0 0 8px; font-size: 1.35rem; }
+  .hero p { margin: 0; color: var(--subtext0); line-height: 1.55; max-width: 70ch; }
+  .tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+  .tag {
+    font-family: var(--font); font-size: .7rem;
+    padding: 4px 9px; border-radius: 999px;
+    border: 1px solid var(--surface1); color: var(--subtext1); background: var(--crust);
+  }
+  .tag.ok { color: var(--green); border-color: color-mix(in oklab, var(--green) 40%, var(--surface1)); }
+  .tag.wm { color: var(--mauve); border-color: color-mix(in oklab, var(--mauve) 40%, var(--surface1)); }
+  .tag.img { color: var(--sky); border-color: color-mix(in oklab, var(--sky) 40%, var(--surface1)); }
+
+  .section-label {
+    display: flex; align-items: baseline; justify-content: space-between; gap: 10px;
+    margin: 8px 2px 0; padding: 0 2px;
+  }
+  .section-label h2 {
+    margin: 0; font-size: 1.05rem; color: var(--lavender);
+    font-family: var(--font); font-weight: 600;
+  }
+  .section-label span { color: var(--overlay1); font-size: .78rem; }
+
+  section.card {
+    border: 1px solid var(--surface0);
     border-radius: calc(var(--r) + 4px);
+    background: var(--mantle);
     overflow: hidden;
+    box-shadow: 0 10px 30px color-mix(in oklab, var(--crust) 55%, transparent);
   }
-  .sec-head {
-    padding: 16px 18px 10px;
+  .card-head {
+    padding: 14px 16px 10px;
     display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; flex-wrap: wrap;
+    border-bottom: 1px solid var(--surface0);
+    background: linear-gradient(180deg, color-mix(in oklab, var(--surface0) 40%, transparent), transparent);
   }
-  .sec-head h2 { margin: 0; font-size: 1.15rem; }
-  .sec-head .meta { color: var(--muted); font-size: .86rem; margin-top: 4px; }
+  .card-head h3 { margin: 0; font-size: 1.02rem; }
+  .card-head .meta { margin-top: 4px; color: var(--subtext0); font-size: .82rem; line-height: 1.4; }
   .badge {
-    font-size: .75rem; padding: 4px 10px; border-radius: 999px;
-    border: 1px solid color-mix(in oklab, var(--good) 50%, var(--line));
-    color: var(--good); background: color-mix(in oklab, var(--good) 12%, transparent);
-    white-space: nowrap;
+    font-family: var(--font); font-size: .68rem; letter-spacing: .04em;
+    padding: 4px 9px; border-radius: 999px; white-space: nowrap;
+    color: var(--green);
+    border: 1px solid color-mix(in oklab, var(--green) 45%, var(--surface1));
+    background: color-mix(in oklab, var(--green) 12%, var(--crust));
   }
-  .body { padding: 0 18px 18px; display: grid; gap: 14px; }
-  .grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
-  .grid.hero { grid-template-columns: 1.2fr 1fr; }
-  @media (max-width: 800px) { .grid.hero { grid-template-columns: 1fr; } }
+  .body { padding: 14px 16px 16px; display: grid; gap: 12px; }
+  .note {
+    color: var(--subtext0); font-size: .84rem; line-height: 1.5;
+    border-left: 3px solid var(--mauve);
+    padding: 8px 12px;
+    background: color-mix(in oklab, var(--mauve) 8%, var(--crust));
+    border-radius: 0 10px 10px 0;
+  }
+  .note.sky { border-left-color: var(--sky); background: color-mix(in oklab, var(--sky) 8%, var(--crust)); }
+  .note.teal { border-left-color: var(--teal); background: color-mix(in oklab, var(--teal) 8%, var(--crust)); }
+
+  .grid { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+  .grid.hero-grid { grid-template-columns: 1.15fr 1fr; }
+  @media (max-width: 860px) { .grid.hero-grid { grid-template-columns: 1fr; } }
+  .grid.six { grid-template-columns: repeat(3, 1fr); }
+  @media (max-width: 640px) { .grid.six { grid-template-columns: repeat(2, 1fr); } }
+
   figure {
-    margin: 0; background: var(--card); border: 1px solid var(--line);
-    border-radius: var(--r); overflow: hidden;
+    margin: 0; background: var(--crust);
+    border: 1px solid var(--surface0); border-radius: var(--r); overflow: hidden;
   }
-  figure img {
-    width: 100%; display: block; aspect-ratio: 1; object-fit: cover; background: #0a0f1c;
+  figure img, figure video {
+    width: 100%; display: block; aspect-ratio: 1; object-fit: cover; background: var(--base);
+  }
+  figure img.contain, figure .media-contain {
+    aspect-ratio: 16/10; object-fit: contain; padding: 6px; background: var(--base);
   }
   figure figcaption {
-    padding: 8px 10px; font-size: .78rem; color: var(--muted);
-    border-top: 1px solid var(--line);
+    padding: 7px 9px; font-size: .74rem; color: var(--overlay2);
+    border-top: 1px solid var(--surface0); font-family: var(--font);
   }
+  .row { display: grid; gap: 12px; grid-template-columns: 1fr 1.35fr; }
+  @media (max-width: 900px) { .row { grid-template-columns: 1fr; } }
+
   .viewer {
-    height: 380px; border-radius: var(--r); border: 1px solid var(--line);
-    background: #070b16; position: relative; overflow: hidden;
+    height: 360px; border-radius: var(--r);
+    border: 1px solid var(--surface0); background: var(--crust);
+    position: relative; overflow: hidden;
   }
   .viewer canvas { width: 100% !important; height: 100% !important; display: block; }
   .viewer .hint {
     position: absolute; left: 10px; bottom: 10px; z-index: 2;
-    font-size: .75rem; color: var(--muted);
-    background: rgba(0,0,0,.45); padding: 4px 8px; border-radius: 8px;
+    font-size: .72rem; color: var(--subtext0); font-family: var(--font);
+    background: color-mix(in oklab, var(--mantle) 85%, transparent);
+    border: 1px solid var(--surface0);
+    padding: 4px 8px; border-radius: 8px;
   }
-  .row { display: grid; gap: 12px; grid-template-columns: 1fr 1.4fr; }
-  @media (max-width: 900px) { .row { grid-template-columns: 1fr; } }
-  .note {
-    color: var(--muted); font-size: .86rem; line-height: 1.5;
-    border-left: 3px solid var(--accent); padding: 8px 12px;
-    background: rgba(110,168,255,.06); border-radius: 0 10px 10px 0;
+
+  .dream-stage {
+    display: grid; gap: 10px;
+    grid-template-columns: 1.2fr .8fr;
   }
-  footer { text-align: center; color: var(--muted); font-size: .8rem; padding: 8px 16px 28px; }
+  @media (max-width: 800px) { .dream-stage { grid-template-columns: 1fr; } }
+  .dream-stage .big {
+    border: 1px solid var(--surface0); border-radius: var(--r);
+    background: var(--crust); overflow: hidden;
+  }
+  .dream-stage .big img {
+    width: 100%; display: block; aspect-ratio: 1; object-fit: contain;
+    background: #11111b; image-rendering: auto;
+  }
+  .stats {
+    display: grid; gap: 8px; grid-template-columns: 1fr 1fr;
+  }
+  .stat {
+    border: 1px solid var(--surface0); border-radius: 12px;
+    background: var(--crust); padding: 10px 12px;
+  }
+  .stat b { display: block; color: var(--overlay1); font-size: .68rem; font-family: var(--font); font-weight: 500; }
+  .stat span { color: var(--text); font-size: .95rem; font-weight: 600; }
+
+  footer {
+    text-align: center; color: var(--overlay1); font-size: .78rem;
+    padding: 8px 16px 36px; font-family: var(--font);
+  }
+  footer .cat { color: var(--mauve); }
 </style>
 </head>
 <body>
 <header>
-  <div>
-    <h1>img3d Pipeline · Kaggle 跑通结果预览</h1>
-    <p>账号 wangran521 · 00 生图 → 01 Mesh → 02 点云 → 03 3DGS</p>
+  <div class="brand">
+    <div class="logo" aria-hidden="true"></div>
+    <div>
+      <h1>Kaggle Lab · Results Gallery</h1>
+      <p>wangran521 · Catppuccin Mocha · img3d + world models</p>
+    </div>
   </div>
-  <nav>
-    <a href="#s00">00 生图</a>
+  <nav class="pills">
+    <a href="#img3d">img3d</a>
+    <a href="#s00">00</a>
     <a href="#s01">01 Mesh</a>
-    <a href="#s02">02 点云</a>
-    <a href="#s03">03 3DGS</a>
+    <a href="#s02">02 PLY</a>
+    <a href="#s03">03 GS</a>
+    <a href="#wm">World Models</a>
+    <a href="#wm01">DIAMOND</a>
+    <a href="#wm02">IRIS</a>
+    <a href="#wm03">Classic</a>
+    <a href="#wm04">RSSM</a>
   </nav>
 </header>
 
 <main>
-  <section id="s00">
-    <div class="sec-head">
+  <div class="hero">
+    <h2>一条流水线，两种世界</h2>
+    <p>
+      左侧导航可跳转：上面是 <strong>图像→3D</strong>（生成图 / TripoSR / DUSt3R / 3DGS），
+      下面是 <strong>世界模型</strong>（DIAMOND · IRIS · Classic · RSSM）在 Kaggle T4 上跑通后的产物预览。
+    </p>
+    <div class="tags">
+      <span class="tag ok">ALL RUNS COMPLETE</span>
+      <span class="tag img">img3d 00–03</span>
+      <span class="tag wm">wm 01–04</span>
+      <span class="tag">Catppuccin Mocha</span>
+    </div>
+  </div>
+
+  <!-- ===================== IMG3D ===================== -->
+  <div class="section-label" id="img3d">
+    <h2>// image → 3d</h2>
+    <span>generate · mesh · point cloud · gaussian</span>
+  </div>
+
+  <section class="card" id="s00">
+    <div class="card-head">
       <div>
-        <h2>00 先进文生图</h2>
-        <div class="meta">模型：SDXL-Turbo（FLUX/SD3.5 需 HF Token）· 单图 hero + 6 视角</div>
+        <h3>00 文生图 · 多视角</h3>
+        <div class="meta">SDXL-Turbo · hero + 6 views · 喂给后续 3D</div>
       </div>
       <span class="badge">COMPLETE</span>
     </div>
     <div class="body">
-      <div class="note">产物：hero_000.png 与 front / side / back / three-quarter / top 多视角，可喂给 01/02。</div>
-      <div class="grid hero">
+      <div class="note sky">产物：主物体 hero_000 与 front / side / back / three-quarter / top。</div>
+      <div class="grid hero-grid">
         <figure>
           <img src="00/hero_000.png" alt="hero" />
-          <figcaption>hero_000 · 主物体</figcaption>
+          <figcaption>hero_000</figcaption>
         </figure>
-        <div class="grid" style="grid-template-columns: repeat(3, 1fr);">
+        <div class="grid six">
           <figure><img src="00/00_front.png" alt="front" /><figcaption>front</figcaption></figure>
-          <figure><img src="00/01_side_left.png" alt="left" /><figcaption>side left</figcaption></figure>
-          <figure><img src="00/02_side_right.png" alt="right" /><figcaption>side right</figcaption></figure>
+          <figure><img src="00/01_side_left.png" alt="left" /><figcaption>side L</figcaption></figure>
+          <figure><img src="00/02_side_right.png" alt="right" /><figcaption>side R</figcaption></figure>
           <figure><img src="00/03_back.png" alt="back" /><figcaption>back</figcaption></figure>
-          <figure><img src="00/04_three_quarter.png" alt="3q" /><figcaption>three-quarter</figcaption></figure>
+          <figure><img src="00/04_three_quarter.png" alt="3q" /><figcaption>3/4</figcaption></figure>
           <figure><img src="00/05_top.png" alt="top" /><figcaption>top</figcaption></figure>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="s01">
-    <div class="sec-head">
+  <section class="card" id="s01">
+    <div class="card-head">
       <div>
-        <h2>01 单图 → Mesh（TripoSR）</h2>
-        <div class="meta">输入图 → mesh.obj + 散点预览 · 可拖拽 3D</div>
+        <h3>01 单图 → Mesh · TripoSR</h3>
+        <div class="meta">input → mesh.obj · 可拖拽 3D</div>
       </div>
       <span class="badge">COMPLETE</span>
     </div>
     <div class="body">
       <div class="row">
-        <div class="grid" style="grid-template-columns: 1fr 1fr;">
+        <div class="grid" style="grid-template-columns:1fr 1fr">
           <figure><img src="01/input.png" alt="input" /><figcaption>input</figcaption></figure>
-          <figure><img src="01/preview.png" alt="preview" /><figcaption>matplotlib 预览</figcaption></figure>
+          <figure><img src="01/preview.png" alt="preview" /><figcaption>preview</figcaption></figure>
         </div>
-        <div>
-          <div id="view-mesh" class="viewer"><div class="hint">拖拽旋转 · 滚轮缩放 · mesh.obj</div></div>
-        </div>
+        <div id="view-mesh" class="viewer"><div class="hint">drag · scroll · mesh.obj</div></div>
       </div>
     </div>
   </section>
 
-  <section id="s02">
-    <div class="sec-head">
+  <section class="card" id="s02">
+    <div class="card-head">
       <div>
-        <h2>02 多视角 → 点云（DUSt3R）</h2>
-        <div class="meta">对齐后 scene_pointcloud.ply（预览采样 40k 点）</div>
+        <h3>02 多视角 → 点云 · DUSt3R</h3>
+        <div class="meta">scene_pointcloud · 预览采样 40k</div>
       </div>
       <span class="badge">COMPLETE</span>
     </div>
     <div class="body">
-      <div class="note">本次 run 输入为合成色块视角（未挂 00 输出做 kernel source），点云几何是真实 DUSt3R 优化结果；换真实多视角图会更有结构。</div>
-      <div class="grid" style="grid-template-columns: repeat(5, 1fr);">
-        <figure><img src="02/view_00.png" alt="v0" /><figcaption>view 00</figcaption></figure>
-        <figure><img src="02/view_01.png" alt="v1" /><figcaption>view 01</figcaption></figure>
-        <figure><img src="02/view_02.png" alt="v2" /><figcaption>view 02</figcaption></figure>
-        <figure><img src="02/view_03.png" alt="v3" /><figcaption>view 03</figcaption></figure>
-        <figure><img src="02/preview.png" alt="prev" /><figcaption>3D 投影预览</figcaption></figure>
+      <div class="note">本轮输入为合成视角（未挂 00 作 source）；几何为真实 DUSt3R 对齐结果。</div>
+      <div class="grid" style="grid-template-columns:repeat(5,1fr)">
+        <figure><img src="02/view_00.png" alt="v0" /><figcaption>v00</figcaption></figure>
+        <figure><img src="02/view_01.png" alt="v1" /><figcaption>v01</figcaption></figure>
+        <figure><img src="02/view_02.png" alt="v2" /><figcaption>v02</figcaption></figure>
+        <figure><img src="02/view_03.png" alt="v3" /><figcaption>v03</figcaption></figure>
+        <figure><img src="02/preview.png" alt="p" /><figcaption>proj</figcaption></figure>
       </div>
-      <div id="view-ply" class="viewer"><div class="hint">拖拽旋转 · 彩色点云 PLY</div></div>
+      <div id="view-ply" class="viewer"><div class="hint">color point cloud</div></div>
     </div>
   </section>
 
-  <section id="s03">
-    <div class="sec-head">
+  <section class="card" id="s03">
+    <div class="card-head">
       <div>
-        <h2>03 简化 3DGS</h2>
-        <div class="meta">可反传 index_add 软溅射 · loss / compare / gaussians PLY</div>
+        <h3>03 简化 3DGS</h3>
+        <div class="meta">index_add 软溅射 · loss / compare / gaussians</div>
       </div>
       <span class="badge">COMPLETE</span>
     </div>
     <div class="body">
       <div class="row">
-        <div class="grid" style="grid-template-columns: 1fr 1fr;">
-          <figure><img src="03/loss.png" alt="loss" style="aspect-ratio: 4/3; object-fit: contain; padding: 8px;" /><figcaption>训练 L1 loss</figcaption></figure>
-          <figure><img src="03/compare.png" alt="cmp" style="aspect-ratio: 4/3; object-fit: contain; padding: 8px;" /><figcaption>GT vs Pred</figcaption></figure>
-          <figure><img src="03/0000.png" alt="f0" /><figcaption>train frame 0</figcaption></figure>
-          <figure><img src="03/0001.png" alt="f1" /><figcaption>train frame 1</figcaption></figure>
+        <div class="grid" style="grid-template-columns:1fr 1fr">
+          <figure><img class="contain" src="03/loss.png" alt="loss" /><figcaption>L1 loss</figcaption></figure>
+          <figure><img class="contain" src="03/compare.png" alt="cmp" /><figcaption>GT vs Pred</figcaption></figure>
+          <figure><img src="03/0000.png" alt="f0" /><figcaption>frame 0</figcaption></figure>
+          <figure><img src="03/0001.png" alt="f1" /><figcaption>frame 1</figcaption></figure>
         </div>
-        <div id="view-gs" class="viewer"><div class="hint">3DGS 导出高斯中心点云</div></div>
+        <div id="view-gs" class="viewer"><div class="hint">gaussian centers</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== WORLD MODELS ===================== -->
+  <div class="section-label" id="wm">
+    <h2>// world models</h2>
+    <span>dream rollouts on Kaggle T4</span>
+  </div>
+
+  <section class="card" id="wm01">
+    <div class="card-head">
+      <div>
+        <h3>WM-01 DIAMOND · Diffusion World Model</h3>
+        <div class="meta">预训练 Breakout · 真实采集 200 步热启动 · 想象 60 步</div>
+      </div>
+      <span class="badge">COMPLETE</span>
+    </div>
+    <div class="body">
+      <div class="note teal">真正的扩散世界模型 open-loop dream，不是环境录像。</div>
+      <div class="dream-stage">
+        <div class="big"><img src="wm01/diamond_Breakout_dream.gif" alt="diamond dream" /></div>
+        <div>
+          <div class="stats">
+            <div class="stat"><b>GAME</b><span>Breakout</span></div>
+            <div class="stat"><b>DREAM STEPS</b><span>60</span></div>
+            <div class="stat"><b>FRAMES</b><span>61</span></div>
+            <div class="stat"><b>COLLECT</b><span>200 real</span></div>
+          </div>
+          <figure style="margin-top:10px">
+            <img class="contain" src="wm01/diamond_Breakout_strip.png" alt="strip" style="aspect-ratio:16/3" />
+            <figcaption>timeline strip</figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" id="wm02">
+    <div class="card-head">
+      <div>
+        <h3>WM-02 IRIS · Transformer World Model</h3>
+        <div class="meta">预训练 Breakout · ALE 修复后 · 80 步梦境</div>
+      </div>
+      <span class="badge">COMPLETE</span>
+    </div>
+    <div class="body">
+      <div class="note">ALE 注册 + 绕过 hydra 后，从真实第一帧启动 tokenizer→Transformer 想象。</div>
+      <div class="dream-stage">
+        <div class="big"><img src="wm02/iris_Breakout_dream.gif" alt="iris dream" /></div>
+        <div>
+          <div class="stats">
+            <div class="stat"><b>GAME</b><span>Breakout</span></div>
+            <div class="stat"><b>DREAM STEPS</b><span>80</span></div>
+            <div class="stat"><b>FRAMES</b><span>82</span></div>
+            <div class="stat"><b>REWARD Σ</b><span>~2.0</span></div>
+          </div>
+          <figure style="margin-top:10px">
+            <img class="contain" src="wm02/iris_Breakout_strip.png" alt="strip" style="aspect-ratio:16/3" />
+            <figcaption>timeline strip</figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" id="wm03">
+    <div class="card-head">
+      <div>
+        <h3>WM-03 Classic World Models</h3>
+        <div class="meta">VAE + LSTM · 弹球玩具 · real vs dream</div>
+      </div>
+      <span class="badge">COMPLETE</span>
+    </div>
+    <div class="body">
+      <div class="note sky">VAE loss 0.073→0.010 · M loss 0.316→0.192 · 教学向完整闭环。</div>
+      <div class="grid" style="grid-template-columns:1fr 1fr 1.2fr">
+        <figure>
+          <img class="contain" src="wm03/classic_real.gif" alt="real" />
+          <figcaption>real env</figcaption>
+        </figure>
+        <figure>
+          <img class="contain" src="wm03/classic_dream.gif" alt="dream" />
+          <figcaption>dream (M·V)</figcaption>
+        </figure>
+        <figure>
+          <img class="contain" src="wm03/classic_real_vs_dream.png" alt="cmp" style="aspect-ratio:16/6" />
+          <figcaption>real vs dream strip</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" id="wm04">
+    <div class="card-head">
+      <div>
+        <h3>WM-04 RSSM · Dreamer-lite</h3>
+        <div class="meta">GRU h + 随机 z · prior 开环做梦</div>
+      </div>
+      <span class="badge">COMPLETE</span>
+    </div>
+    <div class="body">
+      <div class="note teal">loss 0.19→0.026 · KL 0.058→0.001 · Dreamer 骨架可训验证。</div>
+      <div class="grid" style="grid-template-columns:1fr 1fr 1.2fr">
+        <figure>
+          <img class="contain" src="wm04/rssm_real.gif" alt="real" />
+          <figcaption>real</figcaption>
+        </figure>
+        <figure>
+          <img class="contain" src="wm04/rssm_dream.gif" alt="dream" />
+          <figcaption>prior dream</figcaption>
+        </figure>
+        <figure>
+          <img class="contain" src="wm04/rssm_real_vs_dream.png" alt="cmp" style="aspect-ratio:16/6" />
+          <figcaption>real vs dream</figcaption>
+        </figure>
       </div>
     </div>
   </section>
 </main>
 
-<footer>本地预览 · 数据来自 Kaggle kernels wangran521/img3d-00…03 · 仅展示本轮跑通产物</footer>
+<footer>
+  <span class="cat">Catppuccin Mocha</span> · Kaggle outputs · wangran521 · img3d + world models
+</footer>
 
 <script type="module">
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 
+const BG = 0x11111b; // crust
+const GRID_A = 0x45475a;
+const GRID_B = 0x313244;
+const MESH = 0xb4befe; // lavender
+
 function makeViewer(el, setup) {
+  if (!el) return;
   const w = el.clientWidth || 640;
-  const h = el.clientHeight || 380;
+  const h = el.clientHeight || 360;
   const scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x070b16);
+  scene.background = new THREE.Color(BG);
   const camera = new THREE.PerspectiveCamera(45, w / h, 0.01, 1000);
   camera.position.set(1.8, 1.2, 2.2);
   const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -234,18 +496,17 @@ function makeViewer(el, setup) {
   el.appendChild(renderer.domElement);
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
-  const light = new THREE.DirectionalLight(0xffffff, 1.2);
+  const light = new THREE.DirectionalLight(0xcdd6f4, 1.15);
   light.position.set(3, 4, 2);
   scene.add(light);
-  scene.add(new THREE.AmbientLight(0x8aa0c8, 0.55));
-  scene.add(new THREE.GridHelper(4, 12, 0x2a3a5c, 0x1a2438));
+  scene.add(new THREE.AmbientLight(0x89b4fa, 0.35));
+  scene.add(new THREE.GridHelper(4, 12, GRID_A, GRID_B));
   setup({ scene, camera, controls });
-  function tick() {
+  (function tick() {
     requestAnimationFrame(tick);
     controls.update();
     renderer.render(scene, camera);
-  }
-  tick();
+  })();
   window.addEventListener('resize', () => {
     const ww = el.clientWidth, hh = el.clientHeight;
     camera.aspect = ww / hh; camera.updateProjectionMatrix();
@@ -262,13 +523,12 @@ function centerObj(root) {
   root.scale.setScalar(1.6 / maxDim);
 }
 
-// 01 mesh
 makeViewer(document.getElementById('view-mesh'), ({ scene, camera, controls }) => {
   new OBJLoader().load('01/mesh.obj', (obj) => {
     obj.traverse((c) => {
       if (c.isMesh) {
         c.material = new THREE.MeshStandardMaterial({
-          color: 0xc4d4ff, metalness: 0.15, roughness: 0.55, flatShading: true
+          color: MESH, metalness: 0.18, roughness: 0.48, flatShading: true
         });
       }
     });
@@ -289,10 +549,8 @@ async function loadAsciiPly(url, maxPoints = 60000) {
     if (l.includes('red')) hasColor = true;
     if (l.trim() === 'end_header') { i++; break; }
   }
-  const positions = [];
-  const colors = [];
+  const positions = [], colors = [];
   const step = Math.max(1, Math.floor(n / maxPoints));
-  let count = 0;
   for (let k = 0; k < n && i + k < lines.length; k += step) {
     const parts = lines[i + k].trim().split(/\s+/);
     if (parts.length < 3) continue;
@@ -300,9 +558,9 @@ async function loadAsciiPly(url, maxPoints = 60000) {
     if (hasColor && parts.length >= 6) {
       colors.push(+parts[3] / 255, +parts[4] / 255, +parts[5] / 255);
     } else {
-      colors.push(0.45, 0.7, 1.0);
+      // catppuccin-ish fallback gradient
+      colors.push(0.54, 0.71, 0.98);
     }
-    count++;
   }
   const geo = new THREE.BufferGeometry();
   geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
@@ -314,7 +572,6 @@ async function loadAsciiPly(url, maxPoints = 60000) {
 function addPoints(scene, camera, controls, geo, size = 0.012) {
   const mat = new THREE.PointsMaterial({ size, vertexColors: true, sizeAttenuation: true });
   const pts = new THREE.Points(geo, mat);
-  // center/scale
   geo.computeBoundingBox();
   const box = geo.boundingBox;
   const center = box.getCenter(new THREE.Vector3());
@@ -331,18 +588,14 @@ makeViewer(document.getElementById('view-ply'), async ({ scene, camera, controls
   try {
     const geo = await loadAsciiPly('02/scene_pointcloud_preview.ply', 40000);
     addPoints(scene, camera, controls, geo, 0.018);
-  } catch (e) {
-    console.error(e);
-  }
+  } catch (e) { console.error(e); }
 });
 
 makeViewer(document.getElementById('view-gs'), async ({ scene, camera, controls }) => {
   try {
     const geo = await loadAsciiPly('03/gaussians_as_pointcloud.ply', 20000);
     addPoints(scene, camera, controls, geo, 0.03);
-  } catch (e) {
-    console.error(e);
-  }
+  } catch (e) { console.error(e); }
 });
 </script>
 </body>
