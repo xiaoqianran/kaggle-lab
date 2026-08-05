@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>img3d Kaggle 结果预览 · wangran521</title>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+  }
+}
+</script>
+<style>
+  :root {
+    --bg: #0b1020;
+    --panel: #121a2f;
+    --card: #18233d;
+    --line: #2a3a5c;
+    --text: #e8eefc;
+    --muted: #93a0bf;
+    --accent: #6ea8ff;
+    --good: #3dd68c;
+    --warn: #f5c542;
+    --r: 16px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    background:
+      radial-gradient(1200px 600px at 10% -10%, #1a2b55 0%, transparent 55%),
+      radial-gradient(900px 500px at 100% 0%, #1d3a3a 0%, transparent 50%),
+      var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+  header {
+    position: sticky; top: 0; z-index: 20;
+    backdrop-filter: blur(12px);
+    background: rgba(11,16,32,.78);
+    border-bottom: 1px solid var(--line);
+    padding: 14px 20px;
+    display: flex; gap: 16px; align-items: center; justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  header h1 { margin: 0; font-size: 1.05rem; letter-spacing: .02em; }
+  header p { margin: 2px 0 0; color: var(--muted); font-size: .85rem; }
+  nav { display: flex; gap: 8px; flex-wrap: wrap; }
+  nav a {
+    text-decoration: none; color: var(--text);
+    border: 1px solid var(--line); background: var(--panel);
+    padding: 8px 12px; border-radius: 999px; font-size: .82rem;
+  }
+  nav a:hover { border-color: var(--accent); color: #fff; }
+  main { max-width: 1180px; margin: 0 auto; padding: 22px 16px 60px; display: grid; gap: 22px; }
+  section {
+    background: linear-gradient(180deg, rgba(255,255,255,.03), transparent 40%), var(--panel);
+    border: 1px solid var(--line);
+    border-radius: calc(var(--r) + 4px);
+    overflow: hidden;
+  }
+  .sec-head {
+    padding: 16px 18px 10px;
+    display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; flex-wrap: wrap;
+  }
+  .sec-head h2 { margin: 0; font-size: 1.15rem; }
+  .sec-head .meta { color: var(--muted); font-size: .86rem; margin-top: 4px; }
+  .badge {
+    font-size: .75rem; padding: 4px 10px; border-radius: 999px;
+    border: 1px solid color-mix(in oklab, var(--good) 50%, var(--line));
+    color: var(--good); background: color-mix(in oklab, var(--good) 12%, transparent);
+    white-space: nowrap;
+  }
+  .body { padding: 0 18px 18px; display: grid; gap: 14px; }
+  .grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+  .grid.hero { grid-template-columns: 1.2fr 1fr; }
+  @media (max-width: 800px) { .grid.hero { grid-template-columns: 1fr; } }
+  figure {
+    margin: 0; background: var(--card); border: 1px solid var(--line);
+    border-radius: var(--r); overflow: hidden;
+  }
+  figure img {
+    width: 100%; display: block; aspect-ratio: 1; object-fit: cover; background: #0a0f1c;
+  }
+  figure figcaption {
+    padding: 8px 10px; font-size: .78rem; color: var(--muted);
+    border-top: 1px solid var(--line);
+  }
+  .viewer {
+    height: 380px; border-radius: var(--r); border: 1px solid var(--line);
+    background: #070b16; position: relative; overflow: hidden;
+  }
+  .viewer canvas { width: 100% !important; height: 100% !important; display: block; }
+  .viewer .hint {
+    position: absolute; left: 10px; bottom: 10px; z-index: 2;
+    font-size: .75rem; color: var(--muted);
+    background: rgba(0,0,0,.45); padding: 4px 8px; border-radius: 8px;
+  }
+  .row { display: grid; gap: 12px; grid-template-columns: 1fr 1.4fr; }
+  @media (max-width: 900px) { .row { grid-template-columns: 1fr; } }
+  .note {
+    color: var(--muted); font-size: .86rem; line-height: 1.5;
+    border-left: 3px solid var(--accent); padding: 8px 12px;
+    background: rgba(110,168,255,.06); border-radius: 0 10px 10px 0;
+  }
+  footer { text-align: center; color: var(--muted); font-size: .8rem; padding: 8px 16px 28px; }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>img3d Pipeline · Kaggle 跑通结果预览</h1>
+    <p>账号 wangran521 · 00 生图 → 01 Mesh → 02 点云 → 03 3DGS</p>
+  </div>
+  <nav>
+    <a href="#s00">00 生图</a>
+    <a href="#s01">01 Mesh</a>
+    <a href="#s02">02 点云</a>
+    <a href="#s03">03 3DGS</a>
+  </nav>
+</header>
+
+<main>
+  <section id="s00">
+    <div class="sec-head">
+      <div>
+        <h2>00 先进文生图</h2>
+        <div class="meta">模型：SDXL-Turbo（FLUX/SD3.5 需 HF Token）· 单图 hero + 6 视角</div>
+      </div>
+      <span class="badge">COMPLETE</span>
+    </div>
+    <div class="body">
+      <div class="note">产物：hero_000.png 与 front / side / back / three-quarter / top 多视角，可喂给 01/02。</div>
+      <div class="grid hero">
+        <figure>
+          <img src="00/hero_000.png" alt="hero" />
+          <figcaption>hero_000 · 主物体</figcaption>
+        </figure>
+        <div class="grid" style="grid-template-columns: repeat(3, 1fr);">
+          <figure><img src="00/00_front.png" alt="front" /><figcaption>front</figcaption></figure>
+          <figure><img src="00/01_side_left.png" alt="left" /><figcaption>side left</figcaption></figure>
+          <figure><img src="00/02_side_right.png" alt="right" /><figcaption>side right</figcaption></figure>
+          <figure><img src="00/03_back.png" alt="back" /><figcaption>back</figcaption></figure>
+          <figure><img src="00/04_three_quarter.png" alt="3q" /><figcaption>three-quarter</figcaption></figure>
+          <figure><img src="00/05_top.png" alt="top" /><figcaption>top</figcaption></figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="s01">
+    <div class="sec-head">
+      <div>
+        <h2>01 单图 → Mesh（TripoSR）</h2>
+        <div class="meta">输入图 → mesh.obj + 散点预览 · 可拖拽 3D</div>
+      </div>
+      <span class="badge">COMPLETE</span>
+    </div>
+    <div class="body">
+      <div class="row">
+        <div class="grid" style="grid-template-columns: 1fr 1fr;">
+          <figure><img src="01/input.png" alt="input" /><figcaption>input</figcaption></figure>
+          <figure><img src="01/preview.png" alt="preview" /><figcaption>matplotlib 预览</figcaption></figure>
+        </div>
+        <div>
+          <div id="view-mesh" class="viewer"><div class="hint">拖拽旋转 · 滚轮缩放 · mesh.obj</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="s02">
+    <div class="sec-head">
+      <div>
+        <h2>02 多视角 → 点云（DUSt3R）</h2>
+        <div class="meta">对齐后 scene_pointcloud.ply（预览采样 40k 点）</div>
+      </div>
+      <span class="badge">COMPLETE</span>
+    </div>
+    <div class="body">
+      <div class="note">本次 run 输入为合成色块视角（未挂 00 输出做 kernel source），点云几何是真实 DUSt3R 优化结果；换真实多视角图会更有结构。</div>
+      <div class="grid" style="grid-template-columns: repeat(5, 1fr);">
+        <figure><img src="02/view_00.png" alt="v0" /><figcaption>view 00</figcaption></figure>
+        <figure><img src="02/view_01.png" alt="v1" /><figcaption>view 01</figcaption></figure>
+        <figure><img src="02/view_02.png" alt="v2" /><figcaption>view 02</figcaption></figure>
+        <figure><img src="02/view_03.png" alt="v3" /><figcaption>view 03</figcaption></figure>
+        <figure><img src="02/preview.png" alt="prev" /><figcaption>3D 投影预览</figcaption></figure>
+      </div>
+      <div id="view-ply" class="viewer"><div class="hint">拖拽旋转 · 彩色点云 PLY</div></div>
+    </div>
+  </section>
+
+  <section id="s03">
+    <div class="sec-head">
+      <div>
+        <h2>03 简化 3DGS</h2>
+        <div class="meta">可反传 index_add 软溅射 · loss / compare / gaussians PLY</div>
+      </div>
+      <span class="badge">COMPLETE</span>
+    </div>
+    <div class="body">
+      <div class="row">
+        <div class="grid" style="grid-template-columns: 1fr 1fr;">
+          <figure><img src="03/loss.png" alt="loss" style="aspect-ratio: 4/3; object-fit: contain; padding: 8px;" /><figcaption>训练 L1 loss</figcaption></figure>
+          <figure><img src="03/compare.png" alt="cmp" style="aspect-ratio: 4/3; object-fit: contain; padding: 8px;" /><figcaption>GT vs Pred</figcaption></figure>
+          <figure><img src="03/0000.png" alt="f0" /><figcaption>train frame 0</figcaption></figure>
+          <figure><img src="03/0001.png" alt="f1" /><figcaption>train frame 1</figcaption></figure>
+        </div>
+        <div id="view-gs" class="viewer"><div class="hint">3DGS 导出高斯中心点云</div></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>本地预览 · 数据来自 Kaggle kernels wangran521/img3d-00…03 · 仅展示本轮跑通产物</footer>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
+
+function makeViewer(el, setup) {
+  const w = el.clientWidth || 640;
+  const h = el.clientHeight || 380;
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x070b16);
+  const camera = new THREE.PerspectiveCamera(45, w / h, 0.01, 1000);
+  camera.position.set(1.8, 1.2, 2.2);
+  const renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.setSize(w, h, false);
+  el.appendChild(renderer.domElement);
+  const controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+  const light = new THREE.DirectionalLight(0xffffff, 1.2);
+  light.position.set(3, 4, 2);
+  scene.add(light);
+  scene.add(new THREE.AmbientLight(0x8aa0c8, 0.55));
+  scene.add(new THREE.GridHelper(4, 12, 0x2a3a5c, 0x1a2438));
+  setup({ scene, camera, controls });
+  function tick() {
+    requestAnimationFrame(tick);
+    controls.update();
+    renderer.render(scene, camera);
+  }
+  tick();
+  window.addEventListener('resize', () => {
+    const ww = el.clientWidth, hh = el.clientHeight;
+    camera.aspect = ww / hh; camera.updateProjectionMatrix();
+    renderer.setSize(ww, hh, false);
+  });
+}
+
+function centerObj(root) {
+  const box = new THREE.Box3().setFromObject(root);
+  const size = box.getSize(new THREE.Vector3());
+  const center = box.getCenter(new THREE.Vector3());
+  root.position.sub(center);
+  const maxDim = Math.max(size.x, size.y, size.z) || 1;
+  root.scale.setScalar(1.6 / maxDim);
+}
+
+// 01 mesh
+makeViewer(document.getElementById('view-mesh'), ({ scene, camera, controls }) => {
+  new OBJLoader().load('01/mesh.obj', (obj) => {
+    obj.traverse((c) => {
+      if (c.isMesh) {
+        c.material = new THREE.MeshStandardMaterial({
+          color: 0xc4d4ff, metalness: 0.15, roughness: 0.55, flatShading: true
+        });
+      }
+    });
+    centerObj(obj);
+    scene.add(obj);
+    camera.position.set(0, 0.4, 2.2);
+    controls.target.set(0, 0, 0);
+  });
+});
+
+async function loadAsciiPly(url, maxPoints = 60000) {
+  const text = await (await fetch(url)).text();
+  const lines = text.split(/\r?\n/);
+  let i = 0, n = 0, hasColor = false;
+  for (; i < lines.length; i++) {
+    const l = lines[i];
+    if (l.startsWith('element vertex')) n = parseInt(l.split(/\s+/).pop(), 10);
+    if (l.includes('red')) hasColor = true;
+    if (l.trim() === 'end_header') { i++; break; }
+  }
+  const positions = [];
+  const colors = [];
+  const step = Math.max(1, Math.floor(n / maxPoints));
+  let count = 0;
+  for (let k = 0; k < n && i + k < lines.length; k += step) {
+    const parts = lines[i + k].trim().split(/\s+/);
+    if (parts.length < 3) continue;
+    positions.push(+parts[0], +parts[1], +parts[2]);
+    if (hasColor && parts.length >= 6) {
+      colors.push(+parts[3] / 255, +parts[4] / 255, +parts[5] / 255);
+    } else {
+      colors.push(0.45, 0.7, 1.0);
+    }
+    count++;
+  }
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+  geo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+  geo.computeBoundingSphere();
+  return geo;
+}
+
+function addPoints(scene, camera, controls, geo, size = 0.012) {
+  const mat = new THREE.PointsMaterial({ size, vertexColors: true, sizeAttenuation: true });
+  const pts = new THREE.Points(geo, mat);
+  // center/scale
+  geo.computeBoundingBox();
+  const box = geo.boundingBox;
+  const center = box.getCenter(new THREE.Vector3());
+  const sizeV = box.getSize(new THREE.Vector3());
+  pts.position.sub(center);
+  const maxDim = Math.max(sizeV.x, sizeV.y, sizeV.z) || 1;
+  pts.scale.setScalar(1.8 / maxDim);
+  scene.add(pts);
+  camera.position.set(0, 0.5, 2.4);
+  controls.target.set(0, 0, 0);
+}
+
+makeViewer(document.getElementById('view-ply'), async ({ scene, camera, controls }) => {
+  try {
+    const geo = await loadAsciiPly('02/scene_pointcloud_preview.ply', 40000);
+    addPoints(scene, camera, controls, geo, 0.018);
+  } catch (e) {
+    console.error(e);
+  }
+});
+
+makeViewer(document.getElementById('view-gs'), async ({ scene, camera, controls }) => {
+  try {
+    const geo = await loadAsciiPly('03/gaussians_as_pointcloud.ply', 20000);
+    addPoints(scene, camera, controls, geo, 0.03);
+  } catch (e) {
+    console.error(e);
+  }
+});
+</script>
+</body>
+</html>
