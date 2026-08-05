@@ -1,0 +1,6 @@
+/kaggle/working/gen_images/multiview/set_001/00_front.png
+/kaggle/working/gen_images/multiview/set_001/01_side_left.png
+/kaggle/working/gen_images/multiview/set_001/02_side_right.png
+/kaggle/working/gen_images/multiview/set_001/03_back.png
+/kaggle/working/gen_images/multiview/set_001/04_three_quarter.png
+/kaggle/working/gen_images/multiview/set_001/05_top.png
