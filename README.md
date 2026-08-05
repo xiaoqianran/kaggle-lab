@@ -2,139 +2,138 @@
 
 Kaggle 实验台：编号 + 主题目录做最小可跑实验（风格对齐 [LightningAI-Lab](https://github.com/xiaoqianran/LightningAI-Lab) / cuda-lab）。
 
-账号：**seachenbgdy**（`KAGGLE_API_TOKEN` / `~/.kaggle/access_token`）。
+账号 API：`KAGGLE_API_TOKEN` / `~/.kaggle/access_token`（`KGAT_…`）。
+
+---
+
+## SAE 禁考（必读）
+
+> **SAE** = *Standardized Agent Exam* = Kaggle 给 AI Agent 的标准化考试（16 题 / 30 分钟 / 每身份最多 3 次）。  
+> **不是** 竞赛，**不是** GPU notebook，**不是** Model Proxy。
+
+| 策略 | 说明 |
+|------|------|
+| **默认** | **不开考、不注册、不交卷** |
+| **用户原话** | 「千万别考」 |
+| **Agent 约束** | 禁止 `004 register` / `004 start` / `004 submit` |
+| **允许** | 读文档、改代码、**`009 dry-run`**（假卷，不占次数） |
+
+完整说明：**[docs/SAE.md](docs/SAE.md)**  
+相关：`004-sae/`（正式客户端，默认勿跑 start）、`009-sae-better/`（只跑 dry-run）。
+
+---
 
 ## 结构
 
 ```text
-main.py                 # 入口，调度到 001 / 002 / 003 / 004 ...
-common/                 # 共享：Model Proxy 客户端
-001-model-proxy/        # 刷新凭证 + chat 调用
+main.py                 # 入口，调度到 001 / 002 / …
+common/                 # 共享：Model Proxy、usage 账本
+001-model-proxy/        # 刷新凭证 + chat
 002-tool-call/          # function calling 演示
-003-list-models/        # 列出 / 导出 AI Models 全表
-004-sae/                # Standardized Agent Exam 客户端
-docs/                   # MCP / Skills / SAE 文档（见 docs/README.md）
-kaggle_ai_models.*      # 模型清单（003 dump 同步到根目录）
+003-list-models/        # 列出 / 导出 AI Models
+004-sae/                # SAE 客户端 ⚠️ 默认禁止 start/submit
+005-benchmark-task/     # Benchmarks：task.py + push/run/download
+006-judge-llm/          # 多模型作答 + 规则/Judge 排行榜
+007-mcp-harness/        # 官方 MCP 薄客户端
+008-agent-loop/         # 多轮 ReAct（本地 tools + 可选 MCP）
+009-sae-better/         # SAE 增强答题 → 只用 dry-run
+010-quota-dashboard/    # GPU/TPU + 本地 AI $ 账本
+docs/
+  SAE.md                # SAE 是什么 + 禁考清单
+  sae-standardized-agent-exam.md
+  mcp-and-skills.md …
+notebooks/              # Mini-Instruct T4 学习 notebook
+kaggle_ai_models.*      # 模型清单（003 dump）
 ```
 
-命名约定：`NNN-topic`（序号 + 主题）。`python main.py 001 …` 等短号在唯一时可解析到对应目录。
+命名约定：`NNN-topic`。`python main.py 001 …` 等短号在唯一时可解析到对应目录。
 
 ## 环境
 
 ```bash
-source .venv/bin/activate          # 仓库根虚拟环境
+source .venv/bin/activate          # 仓库根虚拟环境（Python ≥3.11）
 export KAGGLE_API_TOKEN="$(cat ~/.kaggle/access_token)"
-# 依赖：kaggle>=2.2.3、openai、kaggle-benchmarks（可选）
+# 依赖：kaggle>=2.2.3、openai、kaggle-benchmarks（005）
 ```
 
-## 用法
+## 用法速查
 
 ```bash
-# 001 Model Proxy：拿临时 key + 对话（扣 Daily $10 / Monthly $100）
-python main.py 001 auth
-python main.py 001 chat "用一句话介绍 Kaggle"
-python main.py 001 chat -m openai/gpt-5.4-nano-2026-03-17 "1+1=?"
-# 或全名
-python main.py 001-model-proxy chat --refresh "hello"
-
-# 002 工具调用
+# 001–003 基础
+python main.py 001 auth && python main.py 001 chat "hi"
 python main.py 002 run
-python main.py 002 run -m google/gemini-3-flash-preview
-
-# 003 模型列表
 python main.py 003 list
-python main.py 003 dump
 
-# 004 SAE 标准化 Agent 考试（开考前务必 --i-accept；最多 3 次）
-python main.py 004 register --name "YourUnique-42" --model grok-build --agent-type Grok --i-accept
-python main.py 004 start --i-accept
-python main.py 004 answer-proxy
-python main.py 004 submit --i-accept
-```
+# 004 SAE — 默认不要 register/start/submit（见 docs/SAE.md）
 
-也可进入实验目录：
+# 005 Benchmarks
+python main.py 005 validate
+python main.py 005 push && python main.py 005 run -m gemini-3.5-flash
 
-```bash
-cd 001-model-proxy && python run.py chat "hello"
-cd 002-tool-call && python run.py run
-cd 003-list-models && python run.py list
+# 006 多模型 + Judge
+python main.py 006 run
+python main.py 006 show
+
+# 007 MCP
+python main.py 007 tools
+python main.py 007 competitions --q llm --n 5
+
+# 008 Agent loop
+python main.py 008 run "东京天气？再算 17*3"
+python main.py 008 run --with-mcp "找一个热门 LLM 竞赛"
+
+# 009 SAE — 仅 dry-run（假卷，不占考试次数）
+python main.py 009 dry-run
+python main.py 009 dry-run --ensemble
+
+# 010 额度
+python main.py 010 show
 ```
 
 ## 实验一览
 
-| 目录 | 作用 |
-|------|------|
-| `001-model-proxy` | `auth` / `chat` — OpenAI 兼容 Model Proxy |
-| `002-tool-call` | `run` — weather 工具两轮调用 |
-| `003-list-models` | `list` / `dump` — 模型全表 txt/csv/json |
-| `004-sae` | SAE 考试客户端：register / start / answer / submit |
+| 目录 | 作用 | 主要额度 | 备注 |
+|------|------|----------|------|
+| `001-model-proxy` | auth / chat | AI $ | |
+| `002-tool-call` | weather tool 两轮 | AI $ | |
+| `003-list-models` | list / dump 模型表 | 无 | |
+| `004-sae` | SAE 正式客户端 | SAE 次数 | **默认禁 start** |
+| `005-benchmark-task` | task → push → run → download | AI $ | |
+| `006-judge-llm` | 多模型 + 规则/Judge 排行榜 | AI $ | |
+| `007-mcp-harness` | MCP tools/list + call | 平台 API | |
+| `008-agent-loop` | 多轮 tools / MCP | AI $ | |
+| `009-sae-better` | SAE 清洗 + ensemble | AI $ | **只用 dry-run** |
+| `010-quota-dashboard` | GPU/TPU + 本地 usage | 无 | |
 
 ## 认证与额度
 
 | 项 | 说明 |
 |----|------|
-| 账号 API | `~/.kaggle/access_token` 或 `KAGGLE_API_TOKEN`（KGAT_…） |
-| Model Proxy | `kaggle b auth` → `.env.model-proxy`（约 1h 过期，勿提交） |
-| AI Models 额度 | Daily **$10** / Monthly **$100** |
-| GPU/TPU 额度 | 另一套（Notebook 训练），`kaggle quota` |
+| 账号 API | `~/.kaggle/access_token` 或 `KAGGLE_API_TOKEN` |
+| Model Proxy | `kaggle b auth` → `.env.model-proxy`（约 1h 过期） |
+| AI Models | Daily **$10** / Monthly **$100** |
+| GPU/TPU | `kaggle quota` / `python main.py 010 gpu` |
+| 本地 AI 账本 | `logs/usage.jsonl` |
+| SAE 身份 | `~/.kaggle-agent-*`（**与账号 token 不同**；默认不创建） |
 
-```bash
-kaggle config view
-kaggle quota
-```
-
-## MCP 与 Skills 文档（已抓取）
-
-本地整理：
+## MCP 与 Skills
 
 | 路径 | 内容 |
 |------|------|
-| [docs/mcp-and-skills.md](docs/mcp-and-skills.md) | MCP + Skills **总览** |
-| [docs/mcp-tools.md](docs/mcp-tools.md) | 官方 MCP **70 工具**清单 |
+| [docs/mcp-and-skills.md](docs/mcp-and-skills.md) | MCP + Skills 总览 |
+| [docs/mcp-tools.md](docs/mcp-tools.md) | 官方 MCP 工具清单 |
+| [docs/SAE.md](docs/SAE.md) | **SAE 说明 + 禁考** |
 | [docs/skills/](docs/skills/) | 官方 kaggle-skills 镜像 |
-| [docs/raw/](docs/raw/) | CLI / JSON 原文 |
+| `.grok/config.toml` | MCP Bearer 配置 |
 
-在线：
-
-- MCP：https://www.kaggle.com/docs/mcp · 端点 `https://www.kaggle.com/mcp`
-- Skills：https://github.com/Kaggle/kaggle-skills
-- 项目配置：`.grok/config.toml`（Bearer `KAGGLE_API_TOKEN`）
-
-**MCP ≠ Model Proxy**：MCP 操作竞赛/数据集/Notebook；Proxy 调大模型扣 $10/$100。
-
-## 推荐参考的开源项目
-
-### 直接使用 Model Proxy 的官方仓库
-
-| 项目 | 链接 | 做什么 |
-|------|------|--------|
-| **kaggle-benchmarks** | https://github.com/Kaggle/kaggle-benchmarks | SDK：评测任务、tool calling、Judge LLM |
-| **write-kaggle-benchmarks** | https://github.com/Kaggle/kaggle-skills/tree/main/write-kaggle-benchmarks | Agent skill：auth → 写 task → push/run |
-| **kaggle-skills** | https://github.com/Kaggle/kaggle-skills | 官方 agent skills 全集 |
-| **kaggle-benchmarks-reference** | https://github.com/Kaggle/kaggle-benchmarks-reference | OSWorld 等 Agent 基准参考实现 |
-| **harbor-starter** | https://github.com/Kaggle/kaggle-benchmark-harbor-starter-template | Harbor Agentic Benchmark 模板 |
-| **kaggle-cli** | https://github.com/Kaggle/kaggle-cli | CLI：`kaggle b auth/tasks/...` |
-
-```bash
-# 可选克隆到 vendor/（已 gitignore）
-git clone https://github.com/Kaggle/kaggle-benchmarks.git vendor/kaggle-benchmarks
-git clone https://github.com/Kaggle/kaggle-skills.git vendor/kaggle-skills
-```
-
-### 相关但路径不同
-
-| 项目 | 说明 |
-|------|------|
-| [shepsci/kaggle-skill](https://github.com/shepsci/kaggle-skill) | 竞赛/数据集 + 官方 Kaggle MCP |
-| [openai/mle-bench](https://github.com/openai/mle-bench) | 竞赛评 AI 工程师，不走 Model Proxy |
-| [khiwniti/kaggle-llm-api](https://github.com/khiwniti/kaggle-llm-api) | Notebook 起 Ollama/vLLM（GPU 额度） |
+**MCP ≠ Model Proxy ≠ SAE**：平台操作 / 调大模型 / Agent 考试，三套东西。
 
 ## 约定
 
-- 每个实验自包含：`run.py` + `README.md`
-- 共享逻辑放 `common/`
-- 密钥：`.env` / `.env.model-proxy` / `access_token` 不入库
-- 数据默认不入库（`data/`）
+- 每个实验：`run.py` + `README.md`
+- 共享逻辑：`common/`
+- 密钥 / artifacts / logs / vendor 不入库
+- **不自动开 SAE 考**
 
 ## 仓库
 

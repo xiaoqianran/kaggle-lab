@@ -61,19 +61,21 @@ def make_client(refresh: bool = False) -> OpenAI:
     )
 
 
-def print_usage(usage, stream=None) -> None:
+def print_usage(usage, stream=None, *, experiment: str | None = None, model: str | None = None) -> None:
     stream = stream or sys.stderr
     if usage is None:
         return
     cost = getattr(usage, "cost", None) or {}
+    cost_usd = None
     if isinstance(cost, dict):
         total_nano = (cost.get("input_tokens_cost_nanodollars") or 0) + (
             cost.get("output_tokens_cost_nanodollars") or 0
         )
+        cost_usd = total_nano / 1e9
         print(
             f"[usage] prompt={usage.prompt_tokens} "
             f"completion={usage.completion_tokens} "
-            f"cost≈${total_nano / 1e9:.8f}",
+            f"cost≈${cost_usd:.8f}",
             file=stream,
         )
     else:
@@ -82,6 +84,13 @@ def print_usage(usage, stream=None) -> None:
             f"completion={usage.completion_tokens}",
             file=stream,
         )
+    if experiment and model:
+        try:
+            from common.usage import log_from_openai_usage
+
+            log_from_openai_usage(usage, experiment=experiment, model=model)
+        except Exception as exc:  # never break the call path
+            print(f"[usage-log] skip: {exc}", file=stream)
 
 
 def chat(
@@ -90,6 +99,7 @@ def chat(
     model: str = DEFAULT_MODEL,
     max_tokens: int = 256,
     refresh: bool = False,
+    experiment: str = "chat",
 ) -> str:
     client = make_client(refresh=refresh)
     try:
@@ -109,5 +119,5 @@ def chat(
             )
         else:
             raise
-    print_usage(resp.usage)
+    print_usage(resp.usage, experiment=experiment, model=model)
     return resp.choices[0].message.content or ""

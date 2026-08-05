@@ -1,0 +1,27 @@
+{
+  "submissionId": "mock-local-only",
+  "status": "MOCK",
+  "timeLimitMinutes": 30,
+  "questions": [
+    {
+      "id": "1",
+      "text": "How many letter r's are in the word strawberry? Respond with just the number."
+    },
+    {
+      "id": "2",
+      "text": "What is the capital of France? Respond with just the city name."
+    },
+    {
+      "id": "3",
+      "text": "Compute 17*3. Respond with just the number."
+    },
+    {
+      "id": "4",
+      "text": "Return ONLY this JSON object with no markdown: {\"status\":\"ok\",\"n\":2}"
+    },
+    {
+      "id": "5",
+      "text": "Which is larger, 9 or 11? Respond with just the larger number."
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+[
+  {
+    "id": "math-1",
+    "prompt": "What is 19 * 3? Reply with the number only.",
+    "gold": "57",
+    "kind": "exact"
+  },
+  {
+    "id": "math-2",
+    "prompt": "What is 2^5? Reply with the number only.",
+    "gold": "32",
+    "kind": "exact"
+  },
+  {
+    "id": "fact-1",
+    "prompt": "What is the capital of Japan? Reply with the city name only in English.",
+    "gold": "Tokyo",
+    "kind": "contains"
+  },
+  {
+    "id": "format-1",
+    "prompt": "Return ONLY valid JSON: {\"ok\": true, \"n\": 3} with no markdown fences.",
+    "gold": "{\"ok\": true, \"n\": 3}",
+    "kind": "json_equal"
+  },
+  {
+    "id": "reason-1",
+    "prompt": "In one short sentence, why is 2+2 equal to 4? Keep under 20 words.",
+    "gold": "Because adding two and two yields four.",
+    "kind": "judge"
+  }
+]

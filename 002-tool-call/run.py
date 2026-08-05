@@ -20,6 +20,8 @@ if str(ROOT) not in sys.path:
 
 from common.proxy import DEFAULT_MODEL, make_client, print_usage  # noqa: E402
 
+EXP = "002-tool-call"
+
 TOOLS = [
     {
         "type": "function",
@@ -69,7 +71,7 @@ def cmd_run(args: argparse.Namespace) -> int:
     )
     m1 = r1.choices[0].message
     print(f"round1 finish_reason={r1.choices[0].finish_reason}")
-    print_usage(r1.usage)
+    print_usage(r1.usage, experiment=EXP, model=model)
 
     if not m1.tool_calls:
         print("模型未发起 tool_calls，直接回复:")
@@ -117,7 +119,7 @@ def cmd_run(args: argparse.Namespace) -> int:
         max_tokens=args.max_tokens,
     )
     print(f"round2 finish_reason={r2.choices[0].finish_reason}")
-    print_usage(r2.usage)
+    print_usage(r2.usage, experiment=EXP, model=model)
     print(r2.choices[0].message.content or "")
     return 0
 
