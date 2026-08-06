@@ -1,0 +1,12 @@
+name = "kaggle-lab-015-gateway"
+main = "worker.js"
+compatibility_date = "2026-01-01"
+
+# Optional: restrict browser origin (comma-separated). Default * in worker if unset.
+# [vars]
+# ALLOW_ORIGIN = "https://xiaoqianran.github.io"
+# GATEWAY_SECRET is better as a secret if used.
+
+# Put secrets via CLI (do NOT commit):
+#   npx wrangler secret put KAGGLE_API_TOKEN
+#   npx wrangler secret put GATEWAY_SECRET   # optional

@@ -116,3 +116,17 @@ python 015-dual-agent-chat/gateway.py
 | 产物 json/md | artifacts/ | 浏览器内 |
 
 源码：`015-dual-agent-chat/web/`
+
+### C. Cloudflare Worker（Pages 真 Live，推荐）
+
+详见 **[cloudflare/README.md](./cloudflare/README.md)**。
+
+```bash
+cd 015-dual-agent-chat/cloudflare
+npx wrangler login
+npx wrangler secret put KAGGLE_API_TOKEN   # 粘贴 KGAT_…
+npx wrangler deploy
+```
+
+Pages 里 Live → API Base = `https://<worker>.workers.dev/api/openai`，Key 留空。
+

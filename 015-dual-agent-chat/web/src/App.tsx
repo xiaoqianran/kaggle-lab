@@ -91,16 +91,14 @@ export default function App() {
       setError("先写一个话题");
       return;
     }
-    if (settings.mode === "live" && !settings.apiKey.trim()) {
-      setError("Live 模式需要 Model Proxy API Key（kaggle b auth 后粘贴）");
-      setShowCreds(true);
-      return;
-    }
     if (settings.mode === "live" && !settings.apiBase.trim()) {
-      setError("Live 模式需要 API Base（网关 /api/openai 或 …/models/openapi）");
+      setError(
+        "Live 需要 API Base：Cloudflare Worker 的 https://xxx.workers.dev/api/openai，或本机 http://127.0.0.1:8765/api/openai",
+      );
       setShowCreds(true);
       return;
     }
+    // apiKey 可留空：CF Worker / 本机 gateway 用服务端 Secret 自动刷 token
 
     abortRef.current = false;
     pauseRef.current = false;
@@ -242,7 +240,13 @@ export default function App() {
 
           {(showCreds || settings.mode === "live") && (
             <div className="field">
-              <label>凭证（仅存本机 localStorage）</label>
+              <label>凭证（仅存本机浏览器 localStorage，勿提交仓库）</label>
+              <p className="hint" style={{ marginBottom: 8 }}>
+                Pages Live 推荐填 CF Worker：
+                <code>https://你的worker.workers.dev/api/openai</code>
+                ；Key 可留空。本机网关：
+                <code>http://127.0.0.1:8765/api/openai</code>
+              </p>
               <input
                 placeholder="API Base：https://…/openapi 或 https://你的网关/api/openai"
                 disabled={isBusy}

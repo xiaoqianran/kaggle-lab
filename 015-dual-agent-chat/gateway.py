@@ -90,7 +90,8 @@ class Handler(SimpleHTTPRequestHandler):
             self._json(503, {"error": str(e)})
             return
         if auth.lower().startswith("bearer ") and len(auth) > 20:
-            key = auth.split(" ", 1)[1].strip()
+            maybe = auth.split(" ", 1)[1].strip()
+            key = env_key if (not maybe or maybe == "use-server") else maybe
         else:
             key = env_key
         sub = self.path[len("/api/openai") :]  # e.g. /chat/completions

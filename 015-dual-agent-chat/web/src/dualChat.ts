@@ -74,7 +74,7 @@ export async function generateTurn(
   other: AgentProfile,
   history: ChatMessage[],
 ): Promise<{ text: string; source: "kaggle" | "demo" }> {
-  if (cfg.mode === "demo" || !cfg.apiKey.trim()) {
+  if (cfg.mode === "demo") {
     await sleep(280 + Math.random() * 320);
     return {
       text: simulateTurn({
@@ -91,16 +91,26 @@ export async function generateTurn(
     };
   }
 
+  if (!cfg.apiBase.trim()) {
+    throw new Error("Live 模式缺少 API Base（CF Worker 或本机 gateway 的 /api/openai）");
+  }
+
   const base = cfg.apiBase.replace(/\/$/, "");
   const url = `${base}/chat/completions`;
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+  };
+  // Key optional: CF Worker / gateway.py can inject server-side proxy token
+  if (cfg.apiKey.trim()) {
+    headers.Authorization = `Bearer ${cfg.apiKey.trim()}`;
+  } else {
+    headers.Authorization = "Bearer use-server";
+  }
   let res: Response;
   try {
     res = await fetch(url, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${cfg.apiKey.trim()}`,
-      },
+      headers,
       body: JSON.stringify({
         model: cfg.model,
         messages: buildMessages(topic, agent, other, history),
