@@ -93,19 +93,30 @@ export async function generateTurn(
 
   const base = cfg.apiBase.replace(/\/$/, "");
   const url = `${base}/chat/completions`;
-  const res = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${cfg.apiKey.trim()}`,
-    },
-    body: JSON.stringify({
-      model: cfg.model,
-      messages: buildMessages(topic, agent, other, history),
-      max_tokens: cfg.maxTokens,
-      temperature: 0.9,
-    }),
-  });
+  let res: Response;
+  try {
+    res = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${cfg.apiKey.trim()}`,
+      },
+      body: JSON.stringify({
+        model: cfg.model,
+        messages: buildMessages(topic, agent, other, history),
+        max_tokens: cfg.maxTokens,
+        temperature: 0.9,
+      }),
+    });
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    throw new Error(
+      `网络/CORS 失败（${msg}）。GitHub Pages 不能直连 Kaggle Proxy：` +
+        `请用本地网关 python 015-dual-agent-chat/gateway.py，` +
+        `API Base 填 http://127.0.0.1:8765/api/openai（仅本机）或你的公网网关。` +
+        `纯演示请切换 Demo 模式。`,
+    );
+  }
 
   if (!res.ok) {
     const err = await res.text().catch(() => "");
