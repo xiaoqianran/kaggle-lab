@@ -21,6 +21,7 @@ Kaggle 实验台：编号 + 主题目录做最小可跑实验。
 012-camel-roleplay        双智能体 RolePlaying
 013-camel-kaggle-crew     CAMEL + 真 Kaggle 信号简报
 014-camel-workforce-bench 检索→辩论→写 task→(可选)005 push   ★
+015-dual-agent-chat       双智对谈（自由辩论，Model Proxy）
 ```
 
 ## 环境
@@ -49,6 +50,10 @@ python main.py 014 publish --push --run-remote --i-accept
 
 # 额度
 python main.py 010 show
+
+# 双智对谈（自由多轮 A↔B）
+python main.py 015 models
+python main.py 015 run --preset debate --rounds 3
 ```
 
 ## 实验一览
@@ -62,6 +67,7 @@ python main.py 010 show
 | 010 | 额度 | ❌ |
 | 011–013 | CAMEL 系列 | ✅ |
 | **014** | **多角色写 Benchmark 并可选 push** | ✅ |
+| **015** | **双智对谈（自动 A↔B）** | ✅ |
 
 ## 约定
 

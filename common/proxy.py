@@ -11,7 +11,7 @@ from openai import OpenAI
 
 ROOT = Path(__file__).resolve().parent.parent
 ENV_FILE = ROOT / ".env.model-proxy"
-DEFAULT_MODEL = "google/gemini-3-flash-preview"
+DEFAULT_MODEL = "google/gemini-3.5-flash-lite"
 
 
 def ensure_kaggle_token() -> None:
@@ -121,3 +121,33 @@ def chat(
             raise
     print_usage(resp.usage, experiment=experiment, model=model)
     return resp.choices[0].message.content or ""
+
+
+def chat_messages(
+    messages: list[dict[str, str]],
+    *,
+    model: str = DEFAULT_MODEL,
+    max_tokens: int = 640,
+    temperature: float = 0.9,
+    refresh: bool = False,
+    experiment: str = "chat",
+) -> str:
+    """Multi-turn chat via Model Proxy (OpenAI-compatible)."""
+    client = make_client(refresh=refresh)
+    kwargs = {
+        "model": model,
+        "messages": messages,
+        "max_tokens": max_tokens,
+        "temperature": temperature,
+    }
+    try:
+        resp = client.chat.completions.create(**kwargs)
+    except Exception as exc:
+        if "401" in str(exc) or "403" in str(exc) or "auth" in str(exc).lower():
+            print("凭证可能过期，正在刷新…", file=sys.stderr)
+            client = make_client(refresh=True)
+            resp = client.chat.completions.create(**kwargs)
+        else:
+            raise
+    print_usage(resp.usage, experiment=experiment, model=model)
+    return (resp.choices[0].message.content or "").strip()
