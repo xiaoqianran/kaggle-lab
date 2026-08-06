@@ -17,3 +17,6 @@ vendor/
 
 # kaggle-benchmarks local export (generated; source is task.py)
 *.task.json
+
+**/node_modules/
+015-dual-agent-chat/web/dist/

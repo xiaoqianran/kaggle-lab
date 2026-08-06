@@ -54,6 +54,11 @@ python main.py 010 show
 # 双智对谈（自由多轮 A↔B）
 python main.py 015 models
 python main.py 015 run --preset debate --rounds 3
+
+# Web UI（Pages 演示 / 本地网关 Live）
+# https://xiaoqianran.github.io/kaggle-lab/
+cd 015-dual-agent-chat/web && npm i && npm run build && cd ../..
+python 015-dual-agent-chat/gateway.py
 ```
 
 ## 实验一览

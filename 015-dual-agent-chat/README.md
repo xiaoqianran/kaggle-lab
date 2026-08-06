@@ -74,3 +74,45 @@ python main.py 015 presets
 - 根目录 `.venv` + `kaggle` CLI + `openai`
 - `KAGGLE_API_TOKEN` / `~/.kaggle/access_token`
 - Model Proxy：`python main.py 001 auth` → `.env.model-proxy`
+
+## Web UI（GitHub Pages + 本地网关）
+
+浏览器**不能**直连 Kaggle Model Proxy（CORS）。网页版两种用法：
+
+### A. GitHub Pages（静态）
+
+部署后：`https://xiaoqianran.github.io/kaggle-lab/`
+
+- **演示模式**：无需 key，本地模板对谈  
+- **Live 模式**：粘贴 `MODEL_PROXY_API_KEY`，并把 **API Base** 指到可 CORS 的网关  
+  （例如你本机/VPS 跑的 `gateway.py` 的 `https://xxx/api/openai`）
+
+Actions：`.github/workflows/deploy-pages.yml`（push `015-dual-agent-chat/web/**` 或手动 workflow_dispatch）
+
+### B. 本地一键（推荐 Live）
+
+```bash
+# 构建前端
+cd 015-dual-agent-chat/web && npm i && npm run build && cd ../..
+
+# 凭证
+export KAGGLE_API_TOKEN="$(cat ~/.kaggle/access_token)"
+kaggle b auth -y --env-file .env.model-proxy
+
+# 静态 + 反代
+python 015-dual-agent-chat/gateway.py
+# 打开 http://127.0.0.1:8765/
+# 模式选 Live；API Base 默认/填 http://127.0.0.1:8765/api/openai
+# Key 可留空（网关用 .env.model-proxy）
+```
+
+### 前端与 CLI 对齐
+
+| 能力 | CLI `015 run` | Web |
+|------|---------------|-----|
+| 预设 / 模型三选一 | ✅ | ✅ |
+| A↔B 自动轮 | ✅ | ✅ |
+| Model Proxy | ✅ | ✅（经网关） |
+| 产物 json/md | artifacts/ | 浏览器内 |
+
+源码：`015-dual-agent-chat/web/`
