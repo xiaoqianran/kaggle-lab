@@ -1,0 +1,14 @@
+{
+  "step": "S16",
+  "title": "transfer protocols",
+  "observable": {
+    "linear_probe_fewshot": 0.7066666666666667,
+    "scratch_fewshot": 0.41333333333333333,
+    "full_finetune_fewshot": 0.7333333333333333
+  },
+  "metric": 0.7066666666666667,
+  "takeaway": "With few labels, reusing pretrained features (probe/FT) beats training from scratch.",
+  "metric_kind": "top1",
+  "delta_vs_prev_metric": 0.08166666666666667,
+  "elapsed_sec": 14.69542932510376
+}

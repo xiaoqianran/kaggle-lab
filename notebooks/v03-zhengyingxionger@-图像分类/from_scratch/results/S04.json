@@ -1,0 +1,22 @@
+{
+  "step": "S04",
+  "title": "hand convolution + feature maps",
+  "input": "one test image label=Ankle boot",
+  "observable": {
+    "input_shape": [
+      1,
+      1,
+      28,
+      28
+    ],
+    "edge_map_mean": 0.5187590718269348,
+    "edge_map_max": 4.086045265197754,
+    "conv_params_1to8_k3": 72,
+    "naive_dense_same_spatial_params": 4917248,
+    "param_ratio_dense_over_conv": 68295.11111111111
+  },
+  "metric": 0.5187590718269348,
+  "metric_kind": "feature_energy",
+  "takeaway": "Conv reuses local filters: orders-of-magnitude fewer params than dense spatial maps; edges emerge from simple kernels.",
+  "elapsed_sec": 0.00406193733215332
+}

@@ -73,3 +73,9 @@ results/*.json        # 实验日志
 - [ ] vendor clone：timm / ConvNeXt / DeiT 做 SOURCE_MAP 精读  
 - [ ] Kaggle 真实赛（Cassava / RSNA Knee）提交闭环  
 - [ ] `cls-rNN-*` 新假设（focal / mixup×weighting）
+
+## From Scratch 阶梯
+
+- 地图：`from_scratch/MAP.md`
+- 运行：`python from_scratch/run_ladder.py`
+- 状态：S00–S16 已在 CPU/FashionMNIST 跑通，见 `from_scratch/results/`

@@ -1,0 +1,26 @@
+{
+  "step": "S08",
+  "title": "residual vs plain deep",
+  "observable": {
+    "residual": {
+      "top1": 0.73,
+      "macro_f1": 0.7038054660699613,
+      "ece": 0.04427544266353794,
+      "n": 800.0,
+      "top5": 0.9925
+    },
+    "plain_deep": {
+      "top1": 0.4825,
+      "macro_f1": 0.44211559135146156,
+      "ece": 0.11955421546335775,
+      "n": 800.0,
+      "top5": 0.96625
+    }
+  },
+  "metric": 0.73,
+  "delta_internal": 0.2475,
+  "takeaway": "Residual path keeps deep nets optimizable \u2014 key 2015 breakthrough.",
+  "metric_kind": "top1",
+  "delta_vs_prev_metric": 0.1316666666666666,
+  "elapsed_sec": 71.13628149032593
+}

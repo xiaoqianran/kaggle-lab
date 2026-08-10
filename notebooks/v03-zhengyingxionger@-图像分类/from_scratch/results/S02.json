@@ -1,0 +1,33 @@
+{
+  "step": "S02",
+  "title": "linear softmax from scratch",
+  "input": "standardized flat pixels",
+  "observable": {
+    "loss_start": 1.2295967740855556,
+    "loss_end": 0.27180902794698414,
+    "metrics": {
+      "top1": 0.80625,
+      "macro_f1": 0.8069469312164692,
+      "ece": 0.06647961092251946,
+      "n": 800.0,
+      "top5": 0.99125
+    },
+    "template_abs_energy_per_class": [
+      0.0394442963695842,
+      0.027367918413852353,
+      0.04434456370972752,
+      0.03768679568598045,
+      0.04174565171626374,
+      0.039383487109126994,
+      0.05561321040724926,
+      0.0355089401750518,
+      0.036270013437651454,
+      0.035243746153249746
+    ]
+  },
+  "metric": 0.80625,
+  "takeaway": "Learning finds class templates (rows of W); still no spatial prior.",
+  "metric_kind": "top1",
+  "delta_vs_prev_metric": 0.09625000000000006,
+  "elapsed_sec": 0.4447762966156006
+}

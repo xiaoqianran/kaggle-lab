@@ -1,0 +1,150 @@
+{
+  "ladder": [
+    {
+      "step": "S00",
+      "title": "pixels as tensors",
+      "metric": null,
+      "metric_kind": "none",
+      "delta_vs_prev_top1": null,
+      "takeaway": "Model input is a numeric tensor + discrete label; always check shape/scale first.",
+      "elapsed_sec": 0.07855033874511719
+    },
+    {
+      "step": "S01",
+      "title": "kNN baseline (no learning)",
+      "metric": 0.71,
+      "metric_kind": "top1",
+      "delta_vs_prev_top1": null,
+      "takeaway": "Data has structure: kNN >> chance without any training.",
+      "elapsed_sec": 0.14166831970214844
+    },
+    {
+      "step": "S02",
+      "title": "linear softmax from scratch",
+      "metric": 0.80625,
+      "metric_kind": "top1",
+      "delta_vs_prev_top1": 0.09625000000000006,
+      "takeaway": "Learning finds class templates (rows of W); still no spatial prior.",
+      "elapsed_sec": 0.4447762966156006
+    },
+    {
+      "step": "S03",
+      "title": "MLP on flat pixels",
+      "metric": 0.82,
+      "metric_kind": "top1",
+      "delta_vs_prev_top1": 0.013749999999999929,
+      "takeaway": "Nonlinearity helps some; still treats pixels as bag of values \u2192 need convolution.",
+      "elapsed_sec": 0.9426844120025635
+    },
+    {
+      "step": "S04",
+      "title": "hand convolution + feature maps",
+      "metric": 0.5187590718269348,
+      "metric_kind": "feature_energy",
+      "delta_vs_prev_top1": null,
+      "takeaway": "Conv reuses local filters: orders-of-magnitude fewer params than dense spatial maps; edges emerge from simple kernels.",
+      "elapsed_sec": 0.00406193733215332
+    },
+    {
+      "step": "S05",
+      "title": "shallow CNN (LeNet spirit)",
+      "metric": 0.6625,
+      "metric_kind": "top1",
+      "delta_vs_prev_top1": -0.15749999999999997,
+      "takeaway": "End-to-end CNN uses spatial structure; should beat flat MLP under similar budget.",
+      "elapsed_sec": 7.674738168716431
+    },
+    {
+      "step": "S06",
+      "title": "BatchNorm ablation",
+      "metric": 0.5983333333333334,
+      "metric_kind": "top1",
+      "delta_vs_prev_top1": -0.0641666666666666,
+      "takeaway": "BN changes trainability/lr robustness; compare curves not only final top1.",
+      "elapsed_sec": 12.244470834732056
+    },
+    {
+      "step": "S08",
+      "title": "residual vs plain deep",
+      "metric": 0.73,
+      "metric_kind": "top1",
+      "delta_vs_prev_top1": 0.1316666666666666,
+      "takeaway": "Residual path keeps deep nets optimizable \u2014 key 2015 breakthrough.",
+      "elapsed_sec": 71.13628149032593
+    },
+    {
+      "step": "S09",
+      "title": "depthwise separable conv",
+      "metric": 0.49166666666666664,
+      "metric_kind": "top1",
+      "delta_vs_prev_top1": -0.23833333333333334,
+      "takeaway": "Factorizing conv buys efficiency; report params/latency with accuracy.",
+      "elapsed_sec": 4.042546987533569
+    },
+    {
+      "step": "S10",
+      "title": "training recipe ablation",
+      "metric": 0.6266666666666667,
+      "metric_kind": "top1",
+      "delta_vs_prev_top1": 0.13500000000000006,
+      "takeaway": "Same model, different recipe \u2192 different top1/ECE; modern gains are often recipe.",
+      "elapsed_sec": 27.349623441696167
+    },
+    {
+      "step": "S11",
+      "title": "Squeeze-and-Excitation",
+      "metric": 0.6283333333333333,
+      "metric_kind": "top1",
+      "delta_vs_prev_top1": 0.0016666666666665941,
+      "takeaway": "Channel attention is a cheap pre-ViT way to reweight features.",
+      "elapsed_sec": 13.483397483825684
+    },
+    {
+      "step": "S12",
+      "title": "minimal Vision Transformer",
+      "metric": 0.46,
+      "metric_kind": "top1",
+      "delta_vs_prev_top1": -0.16833333333333328,
+      "takeaway": "Global attention works but is data-hungry without strong recipe/pretrain.",
+      "elapsed_sec": 10.373764038085938
+    },
+    {
+      "step": "S13",
+      "title": "Mini ConvNeXt",
+      "metric": 0.5033333333333333,
+      "metric_kind": "top1",
+      "delta_vs_prev_top1": 0.04333333333333328,
+      "takeaway": "Modernized CNNs compete with ViTs; architecture is not settled on attention-only.",
+      "elapsed_sec": 64.49355292320251
+    },
+    {
+      "step": "S14",
+      "title": "SimCLR-style contrastive SSL",
+      "metric": 0.616,
+      "metric_kind": "top1",
+      "delta_vs_prev_top1": 0.11266666666666669,
+      "takeaway": "Labels optional: contrastive pretrain + linear probe measures representation quality.",
+      "elapsed_sec": 11.270785093307495
+    },
+    {
+      "step": "S15",
+      "title": "prototype cosine (CLIP intuition)",
+      "metric": 0.625,
+      "metric_kind": "top1",
+      "delta_vs_prev_top1": 0.009000000000000008,
+      "takeaway": "Cosine-to-prototype is the interface of open-vocab models; usually trails closed heads.",
+      "elapsed_sec": 7.325013875961304
+    },
+    {
+      "step": "S16",
+      "title": "transfer protocols",
+      "metric": 0.7066666666666667,
+      "metric_kind": "top1",
+      "delta_vs_prev_top1": 0.08166666666666667,
+      "takeaway": "With few labels, reusing pretrained features (probe/FT) beats training from scratch.",
+      "elapsed_sec": 14.69542932510376
+    }
+  ],
+  "dataset": "FashionMNIST-32RGB",
+  "map": "from_scratch/MAP.md"
+}

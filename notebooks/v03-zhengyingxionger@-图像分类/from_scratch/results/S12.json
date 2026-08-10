@@ -1,0 +1,16 @@
+{
+  "step": "S12",
+  "title": "minimal Vision Transformer",
+  "observable": {
+    "top1": 0.46,
+    "macro_f1": 0.4083647876592115,
+    "ece": 0.11686491694529522,
+    "n": 600.0,
+    "top5": 0.9333333333333333
+  },
+  "metric": 0.46,
+  "takeaway": "Global attention works but is data-hungry without strong recipe/pretrain.",
+  "metric_kind": "top1",
+  "delta_vs_prev_metric": -0.16833333333333328,
+  "elapsed_sec": 10.373764038085938
+}

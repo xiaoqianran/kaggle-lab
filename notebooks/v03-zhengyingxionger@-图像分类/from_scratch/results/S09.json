@@ -1,0 +1,20 @@
+{
+  "step": "S09",
+  "title": "depthwise separable conv",
+  "observable": {
+    "metrics": {
+      "top1": 0.49166666666666664,
+      "macro_f1": 0.45945499376956545,
+      "ece": 0.17527807495957065,
+      "n": 600.0,
+      "top5": 0.9666666666666667
+    },
+    "params_dw": 13930,
+    "params_minicnn": 94986
+  },
+  "metric": 0.49166666666666664,
+  "takeaway": "Factorizing conv buys efficiency; report params/latency with accuracy.",
+  "metric_kind": "top1",
+  "delta_vs_prev_metric": -0.23833333333333334,
+  "elapsed_sec": 4.042546987533569
+}

@@ -1,0 +1,35 @@
+{
+  "step": "S00",
+  "title": "pixels as tensors",
+  "input": "FashionMNIST PIL image",
+  "observable": {
+    "sample_shape_hw": [
+      28,
+      28
+    ],
+    "sample_min_max": [
+      0.0,
+      255.0
+    ],
+    "sample_mean": 97.25382995605469,
+    "label": 9,
+    "label_name": "Ankle boot",
+    "class_hist_n2000": {
+      "T-shirt/top": 193,
+      "Trouser": 198,
+      "Pullover": 215,
+      "Dress": 199,
+      "Coat": 193,
+      "Sandal": 218,
+      "Shirt": 194,
+      "Sneaker": 191,
+      "Bag": 191,
+      "Ankle boot": 208
+    },
+    "rgb32_note": "downstream steps resize to 32 and repeat to 3ch"
+  },
+  "metric": null,
+  "metric_kind": "none",
+  "takeaway": "Model input is a numeric tensor + discrete label; always check shape/scale first.",
+  "elapsed_sec": 0.07855033874511719
+}

@@ -1,0 +1,17 @@
+{
+  "step": "S14",
+  "title": "SimCLR-style contrastive SSL",
+  "observable": {
+    "ssl_loss": [
+      4.394243682861328,
+      4.038634046554566,
+      3.939661680221558
+    ],
+    "linear_probe_top1": 0.616
+  },
+  "metric": 0.616,
+  "takeaway": "Labels optional: contrastive pretrain + linear probe measures representation quality.",
+  "metric_kind": "top1",
+  "delta_vs_prev_metric": 0.11266666666666669,
+  "elapsed_sec": 11.270785093307495
+}

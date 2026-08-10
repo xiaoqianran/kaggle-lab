@@ -1,0 +1,26 @@
+{
+  "step": "S06",
+  "title": "BatchNorm ablation",
+  "observable": {
+    "with_bn": {
+      "top1": 0.5983333333333334,
+      "macro_f1": 0.5732672698472399,
+      "ece": 0.07087386907013381,
+      "n": 600.0,
+      "top5": 0.9666666666666667
+    },
+    "no_bn": {
+      "top1": 0.385,
+      "macro_f1": 0.3122310400322157,
+      "ece": 0.11685930892189181,
+      "n": 600.0,
+      "top5": 0.855
+    }
+  },
+  "metric": 0.5983333333333334,
+  "delta_internal": 0.21333333333333337,
+  "takeaway": "BN changes trainability/lr robustness; compare curves not only final top1.",
+  "metric_kind": "top1",
+  "delta_vs_prev_metric": -0.0641666666666666,
+  "elapsed_sec": 12.244470834732056
+}

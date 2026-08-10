@@ -69,3 +69,11 @@ Kaggle 账号侧用户：`zhengyingxiong`。Notebook 命名：`cls-NN-*.ipynb`�
 - **P0–P7：全部 PASS**（详见 [PROGRESS.md](./PROGRESS.md) / [results/phase_summary.json](./results/phase_summary.json)）
 - 一键复现：`python run_phase.py all`（需 `kaggle-lab/.venv` + torch）
 - 单元测试：`python -m pytest tests/ -q`
+
+## From Scratch 实验阶梯
+
+完整地图：**[from_scratch/MAP.md](./from_scratch/MAP.md)**  
+一键运行：`python from_scratch/run_ladder.py`  
+结果表：`from_scratch/results/LADDER_RESULTS.md`
+
+路径：`S00 像素 → S01 kNN → S02 线性 → S03 MLP → S04 卷积 → S05 CNN → S06 BN → S08 ResNet → S09 DW → S10 配方 → S11 SE → S12 ViT → S13 ConvNeXt → S14 SSL → S15 原型/CLIP直觉 → S16 迁移`

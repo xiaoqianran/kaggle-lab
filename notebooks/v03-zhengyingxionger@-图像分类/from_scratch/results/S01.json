@@ -1,0 +1,15 @@
+{
+  "step": "S01",
+  "title": "kNN baseline (no learning)",
+  "input": "flattened pixels -> 64d random projection",
+  "observable": {
+    "top1": 0.71,
+    "chance": 0.1,
+    "k": 3
+  },
+  "metric": 0.71,
+  "delta_vs_prev": 0.61,
+  "takeaway": "Data has structure: kNN >> chance without any training.",
+  "metric_kind": "top1",
+  "elapsed_sec": 0.14166831970214844
+}

@@ -1,0 +1,57 @@
+{
+  "step": "S10",
+  "title": "training recipe ablation",
+  "observable": {
+    "table": [
+      {
+        "name": "base",
+        "strong_aug": false,
+        "ls": 0.0,
+        "mixup": 0.0,
+        "top1": 0.62,
+        "macro_f1": 0.6123940828528622,
+        "ece": 0.136431418996321,
+        "n": 600.0,
+        "top5": 0.9866666666666667
+      },
+      {
+        "name": "aug",
+        "strong_aug": true,
+        "ls": 0.0,
+        "mixup": 0.0,
+        "top1": 0.62,
+        "macro_f1": 0.6148558085700412,
+        "ece": 0.1584239031738683,
+        "n": 600.0,
+        "top5": 0.985
+      },
+      {
+        "name": "aug_ls",
+        "strong_aug": true,
+        "ls": 0.1,
+        "mixup": 0.0,
+        "top1": 0.6266666666666667,
+        "macro_f1": 0.621316978755302,
+        "ece": 0.20673848229837513,
+        "n": 600.0,
+        "top5": 0.9816666666666667
+      },
+      {
+        "name": "aug_mix",
+        "strong_aug": true,
+        "ls": 0.0,
+        "mixup": 0.2,
+        "top1": 0.5883333333333334,
+        "macro_f1": 0.5621528758176418,
+        "ece": 0.13090138561819903,
+        "n": 600.0,
+        "top5": 0.9716666666666667
+      }
+    ],
+    "best": "aug_ls"
+  },
+  "metric": 0.6266666666666667,
+  "takeaway": "Same model, different recipe \u2192 different top1/ECE; modern gains are often recipe.",
+  "metric_kind": "top1",
+  "elapsed_sec": 27.349623441696167
+}

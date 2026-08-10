@@ -1,0 +1,26 @@
+{
+  "step": "S11",
+  "title": "Squeeze-and-Excitation",
+  "observable": {
+    "se": {
+      "top1": 0.6283333333333333,
+      "macro_f1": 0.6089094305566427,
+      "ece": 0.15092529815594974,
+      "n": 600.0,
+      "top5": 0.98
+    },
+    "base": {
+      "top1": 0.665,
+      "macro_f1": 0.6412271612548169,
+      "ece": 0.18876581793494204,
+      "n": 600.0,
+      "top5": 0.98
+    }
+  },
+  "metric": 0.6283333333333333,
+  "delta_internal": -0.036666666666666736,
+  "takeaway": "Channel attention is a cheap pre-ViT way to reweight features.",
+  "metric_kind": "top1",
+  "delta_vs_prev_metric": 0.0016666666666665941,
+  "elapsed_sec": 13.483397483825684
+}

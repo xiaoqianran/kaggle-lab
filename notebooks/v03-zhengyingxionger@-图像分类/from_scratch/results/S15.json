@@ -1,0 +1,13 @@
+{
+  "step": "S15",
+  "title": "prototype cosine (CLIP intuition)",
+  "observable": {
+    "prototype_top1": 0.625,
+    "closed_head_top1": 0.535
+  },
+  "metric": 0.625,
+  "takeaway": "Cosine-to-prototype is the interface of open-vocab models; usually trails closed heads.",
+  "metric_kind": "top1",
+  "delta_vs_prev_metric": 0.009000000000000008,
+  "elapsed_sec": 7.325013875961304
+}

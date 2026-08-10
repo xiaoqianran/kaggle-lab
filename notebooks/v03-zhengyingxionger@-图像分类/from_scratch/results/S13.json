@@ -1,0 +1,15 @@
+{
+  "step": "S13",
+  "title": "Mini ConvNeXt",
+  "observable": {
+    "top1": 0.5033333333333333,
+    "macro_f1": 0.44792939842671214,
+    "ece": 0.18400698266007035,
+    "n": 600.0,
+    "top5": 0.9116666666666666
+  },
+  "metric": 0.5033333333333333,
+  "takeaway": "Modernized CNNs compete with ViTs; architecture is not settled on attention-only.",
+  "metric_kind": "top1",
+  "elapsed_sec": 64.49355292320251
+}

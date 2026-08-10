@@ -1,0 +1,16 @@
+{
+  "step": "S05",
+  "title": "shallow CNN (LeNet spirit)",
+  "observable": {
+    "top1": 0.6625,
+    "macro_f1": 0.6535533531901639,
+    "ece": 0.14791999425718064,
+    "n": 800.0,
+    "top5": 0.98125
+  },
+  "metric": 0.6625,
+  "takeaway": "End-to-end CNN uses spatial structure; should beat flat MLP under similar budget.",
+  "metric_kind": "top1",
+  "delta_vs_prev_metric": -0.15749999999999997,
+  "elapsed_sec": 7.674738168716431
+}
