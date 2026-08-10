@@ -1,0 +1,22 @@
+# local caches / heavy artifacts (never commit)
+data/
+vendor/
+!vendor/.gitkeep
+results/**
+!results/.gitkeep
+!results/**/.gitkeep
+*.pt
+*.pth
+*.ckpt
+*.onnx
+*.h5
+*.npz
+*.zip
+*.tar
+*.tar.gz
+.ipynb_checkpoints/
+__pycache__/
+*.pyc
+.env
+.env.*
+!.env.example

@@ -1,0 +1,229 @@
+{
+  "track": "v04-xiaoshuhuaer@-目标检测",
+  "topic": "object detection",
+  "kaggle_user": "xiaosuhuaer",
+  "folder_alias": "xiaoshuhuaer@",
+  "surveyed_at": "2026-08-10",
+  "roadmap": "LEARNING_ROADMAP.md",
+  "phases": [
+    {"id": "P0", "dir": "00-map", "name": "metrics-iou-map"},
+    {"id": "P1", "dir": "01-foundations", "name": "boxes-anchors-assign"},
+    {"id": "P2", "dir": "02-two-stage", "name": "faster-rcnn"},
+    {"id": "P3", "dir": "03-one-stage", "name": "yolo-retinanet-fcos"},
+    {"id": "P4", "dir": "04-modern-detr", "name": "detr-dino"},
+    {"id": "P5", "dir": "05-training-recipe", "name": "ultralytics-mmdet-recipe"},
+    {"id": "P6", "dir": "06-frontier", "name": "kaggle-domain-open-vocab"},
+    {"id": "P7", "dir": "07-research-lab", "name": "research-hypothesis"}
+  ],
+  "canonical_courses": [
+    {
+      "name": "Stanford CS231n Detection lectures",
+      "url": "https://cs231n.stanford.edu/",
+      "notes": "https://cs231n.github.io/",
+      "role": "primary-foundations"
+    },
+    {
+      "name": "Deep Learning for Computer Vision (detection modules)",
+      "url": "https://www.youtube.com/playlist?list=PL3FW7Lu3i5JvHM8ljYj-zLfQRF3EO8sYv",
+      "role": "optional-video"
+    }
+  ],
+  "canonical_papers": [
+    {"id": "rcnn", "title": "Rich feature hierarchies for accurate object detection (R-CNN)", "year": 2014},
+    {"id": "fast-rcnn", "title": "Fast R-CNN", "year": 2015},
+    {"id": "faster-rcnn", "title": "Faster R-CNN: Towards Real-Time Object Detection with Region Proposal Networks", "year": 2015},
+    {"id": "ssd", "title": "SSD: Single Shot MultiBox Detector", "year": 2016},
+    {"id": "yolov1", "title": "You Only Look Once: Unified, Real-Time Object Detection", "year": 2016},
+    {"id": "retinanet", "title": "Focal Loss for Dense Object Detection", "year": 2017},
+    {"id": "fcos", "title": "FCOS: Fully Convolutional One-Stage Object Detection", "year": 2019},
+    {"id": "detr", "title": "End-to-End Object Detection with Transformers", "year": 2020},
+    {"id": "deformable-detr", "title": "Deformable DETR", "year": 2021},
+    {"id": "dino", "title": "DINO: DETR with Improved DeNoising Anchor Boxes", "year": 2022},
+    {"id": "yolov8-tech", "title": "Ultralytics YOLOv8 (docs + design notes)", "year": 2023},
+    {"id": "owl-vit", "title": "Simple Open-Vocabulary Object Detection with Vision Transformers", "year": 2022}
+  ],
+  "canonical_code": [
+    {
+      "name": "ultralytics",
+      "url": "https://github.com/ultralytics/ultralytics",
+      "must_read": ["ultralytics/nn/tasks.py", "ultralytics/utils/metrics.py", "ultralytics/engine/trainer.py"]
+    },
+    {
+      "name": "MMDetection",
+      "url": "https://github.com/open-mmlab/mmdetection",
+      "must_read": ["mmdet/models/detectors/", "mmdet/models/dense_heads/"]
+    },
+    {
+      "name": "torchvision detection",
+      "url": "https://github.com/pytorch/vision/tree/main/torchvision/models/detection"
+    },
+    {
+      "name": "detectron2",
+      "url": "https://github.com/facebookresearch/detectron2"
+    },
+    {
+      "name": "DETR",
+      "url": "https://github.com/facebookresearch/detr"
+    }
+  ],
+  "competitions": [
+    {
+      "ref": "rsna-knee-abnormality-detection",
+      "title": "RSNA Knee Abnormality Detection",
+      "url": "https://www.kaggle.com/competitions/rsna-knee-abnormality-detection",
+      "category": "Research",
+      "reward": "77,000 Usd",
+      "deadline": "2026-10-22",
+      "status": "active",
+      "team_count": 1007,
+      "use": "P6 medical localization / real domain"
+    },
+    {
+      "ref": "biohub-cell-tracking-during-development",
+      "title": "Biohub - Cell Tracking During Development",
+      "url": "https://www.kaggle.com/competitions/biohub-cell-tracking-during-development",
+      "category": "Research",
+      "reward": "60,000 Usd",
+      "deadline": "2026-09-29",
+      "status": "active",
+      "team_count": 2207,
+      "use": "P6 detection+tracking optional"
+    },
+    {
+      "ref": "hyperspectral-object-detection-challenge-2026",
+      "title": "Hyperspectral Object Detection Challenge 2026",
+      "url": "https://www.kaggle.com/competitions/hyperspectral-object-detection-challenge-2026",
+      "category": "Community",
+      "reward": "738 Usd",
+      "deadline": "2026-09-24",
+      "status": "active",
+      "team_count": 27,
+      "use": "P6 multi-spectral OD"
+    },
+    {
+      "ref": "3-lc-multi-vehicle-detection-challenge",
+      "title": "3LC Multi-Vehicle Detection Challenge",
+      "url": "https://www.kaggle.com/competitions/3-lc-multi-vehicle-detection-challenge",
+      "category": "Community",
+      "reward": "2,000 Usd",
+      "deadline": "2026-06-09",
+      "status": "active",
+      "team_count": 97,
+      "use": "P5-P6 vehicle OD practice"
+    },
+    {
+      "ref": "cs-444-sp-26-mp-4-a-yolo-object-detection",
+      "title": "CS444 YOLO Object Detection (course)",
+      "url": "https://www.kaggle.com/competitions/cs-444-sp-26-mp-4-a-yolo-object-detection",
+      "category": "Community",
+      "reward": "Kudos",
+      "deadline": "2026-04-26",
+      "status": "active",
+      "team_count": 207,
+      "use": "P3 course-style YOLO implement"
+    },
+    {
+      "ref": "cs-444-sp-26-mp-4-a-detr-object-detection",
+      "title": "CS444 DETR Object Detection (course)",
+      "url": "https://www.kaggle.com/competitions/cs-444-sp-26-mp-4-a-detr-object-detection",
+      "category": "Community",
+      "reward": "Kudos",
+      "deadline": "2026-04-26",
+      "status": "active",
+      "team_count": 206,
+      "use": "P4 course-style DETR implement"
+    },
+    {
+      "ref": "global-wheat-detection",
+      "title": "Global Wheat Detection",
+      "url": "https://www.kaggle.com/competitions/global-wheat-detection",
+      "status": "ended",
+      "team_count": 2245,
+      "use": "dense small-object textbook"
+    },
+    {
+      "ref": "tensorflow-great-barrier-reef",
+      "title": "TensorFlow - Help Protect the Great Barrier Reef",
+      "url": "https://www.kaggle.com/competitions/tensorflow-great-barrier-reef",
+      "status": "ended",
+      "team_count": 2025,
+      "use": "video-frame OD + YOLOv5 writeups"
+    },
+    {
+      "ref": "vinbigdata-chest-xray-abnormalities-detection",
+      "title": "VinBigData Chest X-ray Abnormalities Detection",
+      "url": "https://www.kaggle.com/competitions/vinbigdata-chest-xray-abnormalities-detection",
+      "status": "ended",
+      "team_count": 1275,
+      "use": "medical multi-class boxes"
+    },
+    {
+      "ref": "airbus-ship-detection",
+      "title": "Airbus Ship Detection Challenge",
+      "url": "https://www.kaggle.com/competitions/airbus-ship-detection",
+      "status": "ended",
+      "team_count": 878,
+      "use": "ship detection / segmentation contrast"
+    },
+    {
+      "ref": "open-images-object-detection-rvc-2020",
+      "title": "Open Images Object Detection RVC 2020",
+      "url": "https://www.kaggle.com/competitions/open-images-object-detection-rvc-2020",
+      "status": "ended",
+      "team_count": 89,
+      "use": "large-vocabulary OD"
+    },
+    {
+      "ref": "3d-object-detection-for-autonomous-vehicles",
+      "title": "Lyft 3D Object Detection for Autonomous Vehicles",
+      "url": "https://www.kaggle.com/competitions/3d-object-detection-for-autonomous-vehicles",
+      "status": "ended",
+      "team_count": 546,
+      "use": "3D OD contrast only"
+    }
+  ],
+  "datasets": [
+    {"ref": "zaraks/pascal-voc-2007", "title": "PASCAL VOC 2007", "use": "P1-P2 small protocol"},
+    {"ref": "vijayabhaskar96/pascal-voc-2007-and-2012", "title": "PASCAL VOC 2007 and 2012", "use": "classic OD train"},
+    {"ref": "malaychand/coco-25-class-object-detection-yolo-datasets", "title": "COCO 25-Class YOLO", "use": "P3 YOLO format lite"},
+    {"ref": "sabahesaraki/2017-2017", "title": "COCO Dataset 2017", "use": "full COCO when bandwidth allows"},
+    {"ref": "jeffaudi/coco-2014-dataset-for-yolov3", "title": "COCO 2014 for YOLOv3", "use": "legacy YOLO packs"},
+    {"ref": "snehilsanyal/construction-site-safety-image-dataset-roboflow", "title": "Construction Site Safety", "use": "P5 finetune demo"},
+    {"ref": "pkdarabi/vehicle-detection-image-dataset", "title": "Vehicle Detection Image Dataset", "use": "vehicle OD practice"},
+    {"ref": "pestipeti/global-wheat-detection-public", "title": "Global Wheat Detection Public", "use": "dense heads"},
+    {"ref": "thedatasith/sku110k-annotations", "title": "SKU110K Dataset", "use": "dense retail optional"},
+    {"ref": "solesensei/solesensei_bdd100k", "title": "BDD100K", "use": "driving multi-task optional"},
+    {"ref": "a7madmostafa/bdd100k-yolo", "title": "BDD100K YOLO format", "use": "driving YOLO pack"}
+  ],
+  "models": [
+    {"ref": "ultralytics/yolo11", "title": "Ultralytics YOLO11"},
+    {"ref": "ultralytics/yolov8", "title": "Ultralytics YOLOv8"},
+    {"ref": "ultralytics/yolov5", "title": "Ultralytics YOLOv5"},
+    {"ref": "keras/yolov8", "title": "Keras YOLOv8"},
+    {"ref": "kaggle/yolo-v5", "title": "Kaggle YOLOv5"},
+    {"ref": "tensorflow/efficientdet", "title": "EfficientDet"},
+    {"ref": "tensorflow/ssd-mobilenet-v2", "title": "SSD MobileNet V2"},
+    {"ref": "tensorflow/faster-rcnn-resnet-v1", "title": "Faster R-CNN ResNet"},
+    {"ref": "google/owl-vit", "title": "OWL-ViT open-vocab"},
+    {"ref": "google/paligemma-2", "title": "PaliGemma 2 (grounding optional)"}
+  ],
+  "notebooks_reference": [
+    {"ref": "aruchomu/yolo-v3-object-detection-in-tensorflow", "votes": 6096},
+    {"ref": "pkdarabi/traffic-signs-detection-using-yolov8", "votes": 2750},
+    {"ref": "glennjocherultralytics/ultralytics-yolov8-notebook", "votes": 2146},
+    {"ref": "awsaf49/great-barrier-reef-yolov5-train", "votes": 1875},
+    {"ref": "balraj98/yolo-v5-car-object-detection", "votes": 1826},
+    {"ref": "glennjocherultralytics/ultralytics-yolo11-notebook", "votes": 763},
+    {"ref": "arunmohan003/yolo-v3-pytorch-tutorial-from-scratch", "votes": 674}
+  ],
+  "planned_notebooks": [
+    "det-00-iou-map-protocol.ipynb",
+    "det-01-boxes-anchors-nms.ipynb",
+    "det-02-faster-rcnn-source-map.ipynb",
+    "det-03-yolo-train-mini.ipynb",
+    "det-04-detr-lite.ipynb",
+    "det-05-ultralytics-recipe-ablation.ipynb",
+    "det-06-kaggle-wheat-or-reef-baseline.ipynb",
+    "det-07-research-hypothesis.ipynb"
+  ]
+}
