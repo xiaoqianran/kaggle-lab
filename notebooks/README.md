@@ -57,7 +57,6 @@
 | `img3d-03-gaussian-splatting-lite.ipynb` | Lite 3DGS teaching loop |
 
 Also: `grok-011-crop-disease-cls.ipynb`, `grok-012-minicpmv-crop-vqa.ipynb`.
-
 ## results-preview
 
 Interactive HTML gallery of Kaggle img3d-00…03 outputs lives at [`v01-wangran521/results-preview/`](v01-wangran521/results-preview/) — open `index.html`.
@@ -71,3 +70,11 @@ Interactive HTML gallery of Kaggle img3d-00…03 outputs lives at [`v01-wangran5
 | `wm-02-iris.ipynb` | IRIS transformer WM checkpoint + rollout |
 | `wm-03-classic-world-models.ipynb` | Ha-style VAE+LSTM toy world model |
 | `wm-04-rssm-dreamer-lite.ipynb` | Dreamer-style RSSM toy dream |
+
+
+## 分轨目录
+
+| 目录 | 主题 | 说明 |
+|------|------|------|
+| [`v01-wangran521/`](v01-wangran521/) | Mini-Instruct / img3d / world models | 既有 notebook 合集 |
+| [`v02-shuhuaqaq@-深度估计/`](v02-shuhuaqaq@-深度估计/) | **深度估计** | 竞赛/数据/模型调研 + 后续 de-NN notebook |

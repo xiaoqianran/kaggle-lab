@@ -1,0 +1,102 @@
+{
+  "track": "v02-shuhuaqaq@-深度估计",
+  "topic": "depth estimation",
+  "kaggle_user": "shuhuaqqq",
+  "surveyed_at": "2026-08-10",
+  "competitions": [
+    {
+      "ref": "ethz-cil-monocular-depth-estimation-2025",
+      "title": "ETHZ CIL Monocular Depth Estimation 2025",
+      "url": "https://www.kaggle.com/competitions/ethz-cil-monocular-depth-estimation-2025",
+      "category": "Community",
+      "reward": "Kudos",
+      "deadline": "2025-05-30T21:59:00Z",
+      "team_count": 24,
+      "metric": "Scale Invariant RMSE",
+      "status": "ended",
+      "description": "RGB scenes of daily life -> pixel-wise depth",
+      "host": "CIL Lecture"
+    }
+  ],
+  "datasets": [
+    {
+      "ref": "goubeast/nyuv2-depth",
+      "title": "NYU-v2 Depth"
+    },
+    {
+      "ref": "polinastepanenko/nyudepthv2",
+      "title": "Nyudepthv2"
+    },
+    {
+      "ref": "prathamgrover/depth-estimation",
+      "title": "Depth Estimation"
+    },
+    {
+      "ref": "uditkumarrana/carla-depth-estimation-dataset",
+      "title": "CARLA Depth_Estimation_Dataset"
+    },
+    {
+      "ref": "uditkumarrana/carla-depth-estimation-fine-tune-1080p",
+      "title": "Carla Depth Estimation Fine Tune 1080p"
+    }
+  ],
+  "models": [
+    {
+      "ref": "intel/midas",
+      "title": "MiDaS"
+    },
+    {
+      "ref": "intel/midas-3.0",
+      "title": "MiDaS 3.0"
+    },
+    {
+      "ref": "artemmmtry/depth-anything-v2",
+      "title": "Depth Anything V2"
+    },
+    {
+      "ref": "artemmmtry/depth-anything-v1",
+      "title": "Depth Anything V1"
+    },
+    {
+      "ref": "keras/depth-anything",
+      "title": "Depth Anything (Keras)"
+    },
+    {
+      "ref": "tensorflow/ar-portrait-depth",
+      "title": "AR Portrait Depth"
+    },
+    {
+      "ref": "mediapipe/fastdepth",
+      "title": "FastDepth"
+    }
+  ],
+  "notebooks_reference": [
+    {
+      "ref": "shreydan/monocular-depth-estimation-nyuv2",
+      "votes": 157
+    },
+    {
+      "ref": "amanattheedge/depth-anything-v2-metric-fine-tunning-on-nyu",
+      "votes": 155
+    },
+    {
+      "ref": "muhammadhafil/monocular-depth-estimation",
+      "votes": 106
+    },
+    {
+      "ref": "greg115/pix2pix-depth-estimation",
+      "votes": 81
+    },
+    {
+      "ref": "cilabeth/monocular-depth-example-notebook",
+      "votes": 20
+    }
+  ],
+  "planned_notebooks": [
+    "de-00-survey.ipynb",
+    "de-01-midas-infer.ipynb",
+    "de-02-depth-anything-v2.ipynb",
+    "de-03-nyuv2-train-lite.ipynb",
+    "de-04-ethz-cil-baseline.ipynb"
+  ]
+}
