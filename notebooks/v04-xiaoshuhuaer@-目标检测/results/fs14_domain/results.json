@@ -1,0 +1,51 @@
+{
+  "step": "FS14",
+  "concept": "Domain shift / real Kaggle domains; open-vocab is next frontier setting",
+  "in_domain": {
+    "ap50": 0.7859566034685496,
+    "ap": 0.4562097778180839,
+    "ap_s": 0.7859566034685496,
+    "ap_m": 0.0,
+    "ap_l": 0.0,
+    "ar100": 0.85625,
+    "n_gt": 154,
+    "n_pred": 136
+  },
+  "ood": {
+    "ap50": 0.29783950617283955,
+    "ap": 0.10604787310737637,
+    "ap_s": 0.29783950617283955,
+    "ap_m": 0.0,
+    "ap_l": 0.0,
+    "ar100": 0.3125,
+    "n_gt": 196,
+    "n_pred": 58
+  },
+  "ood_ft": {
+    "ap50": 0.9213539336720385,
+    "ap": 0.5742337136656182,
+    "ap_s": 0.9213539336720385,
+    "ap_m": 0.0,
+    "ap_l": 0.0,
+    "ar100": 0.953125,
+    "n_gt": 196,
+    "n_pred": 199
+  },
+  "error_modes": {
+    "loc_err": 41,
+    "cls_err": 1,
+    "miss": 139,
+    "fp": 1
+  },
+  "kaggle_active": [
+    "rsna-knee-abnormality-detection",
+    "biohub-cell-tracking-during-development",
+    "hyperspectral-object-detection-challenge-2026",
+    "3-lc-multi-vehicle-detection-challenge",
+    "cs-444-sp-26-mp-4-a-yolo-object-detection",
+    "cs-444-sp-26-mp-4-a-detr-object-detection"
+  ],
+  "new_capability": "Diagnose domain failure modes; adapt with target FT",
+  "vs_previous": "FS13 closed-set synth; FS14 shows beautiful AP can collapse under shift",
+  "frontier": "OWL-ViT / Grounding DINO for text-open classes (inference on Kaggle GPU)"
+}

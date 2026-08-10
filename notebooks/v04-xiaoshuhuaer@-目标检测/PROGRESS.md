@@ -1,114 +1,61 @@
-# PROGRESS · 目标检测学习工程
+# PROGRESS · 目标检测 From-Scratch 全链路
 
 最后更新：2026-08-10  
-状态：**P0–P7 验收通过（可复现脚本 + 测试 + 实验 JSON + notebook）**
+状态：**FS00–FS15 全部跑通**（代码 + JSON + 可视化 PNG + 对比）
+
+权威地图：[FROM_SCRATCH.md](./FROM_SCRATCH.md)
 
 ## 总览
 
-| Phase | 状态 | 验收证据 |
-|-------|------|----------|
-| P0 指标与协议 | ✅ | `tests/test_metrics.py` + `results/p0_protocol` |
-| P1 框/锚/分配 | ✅ | `tests/test_boxes.py` + `results/p1_boxes` |
-| P2 两阶段 | ✅ | `results/p2_two_stage` AP50 0.00→**0.64** |
-| P3 单阶段 | ✅ | `results/p3_yolo_lite` AP50→**0.81** |
-| P4 DETR | ✅ | `results/p4_detr` loss↓ + matching + query 消融 |
-| P5 配方消融 | ✅ | `results/p5_recipe` 5 recipes，best=`flip_longer` AP50**0.79** |
-| P6 域偏移 | ✅ | `results/p6_domain` ID AP50 0.79 vs OOD **0.30** |
-| P7 假设 | ✅ | `results/p7_hypothesis` H1–H3 **全部 accepted** |
+| Step | 主题 | 状态 | 关键可观察结果 |
+|------|------|------|----------------|
+| FS00 | 协议 IoU/NMS/mAP | ✅ | loc_noise：AP50 高但 AP 崩 |
+| FS01 | 穷举滑窗 | ✅ | ~169 窗/图；AP50≈0.34 |
+| FS02 | 图像金字塔 | ✅ | 窗数×3+；朴素融合可掉点 |
+| FS03 | 梯度特征 | ✅ | 暗光下 color 崩、grad 更稳 |
+| FS04 | 候选区域 | ✅ | 窗 169 vs 提案 22；random recall≈0.18 |
+| FS05 | R-CNN 裁剪 CNN | ✅ | AP50 **0.85 vs 滑窗 0.37** |
+| FS06 | 共享 backbone | ✅ | **500:1** forwards；墙钟 **~10×** |
+| FS07 | Faster/RPN 味 | ✅ | AP50 0→**0.65** |
+| FS08 | 密集单阶段 | ✅ | AP50→**0.81** + conf 消融 |
+| FS09 | Focal Loss | ✅ | 正样本~1%；γ 超参课 |
+| FS10 | 多尺度头 | ✅ | 无融合可负结果（真 FPN 细节） |
+| FS11 | 锚 vs 无锚 | ✅ | 锚 pos_frac 随 thr 变 |
+| FS12 | DETR matching | ✅ | loss↓；Hungarian 可演示 |
+| FS13 | 现代配方 | ✅ | best=`flip_longer` AP50**0.79** |
+| FS14 | 域偏移 | ✅ | ID 0.79→OOD 0.30→FT 0.92 |
+| FS15 | 研究假设 | ✅ | H1–H3 **全部 accepted** |
 
-## 关键实验结果
+## 能力阶梯（你应能口述）
 
-| 实验 | 结论 |
-|------|------|
-| P0 perfect vs loc_noise | 定位噪声：AP50 0.99→0.78，AP 0.99→**0.22**（高 IoU 更敏感） |
-| P0 conf thr | 协议必须固定 conf；否则模型对比无效 |
-| P1 pos_thr | 0.5→0.7 正样本锚均值 4.2→1.9 |
-| P2 two-stage lite | 可训，AP50≈0.64（合成色块） |
-| P3 dense lite | 同设定 AP50≈0.81，收敛快于 DETR |
-| P4 DETR-lite | 匹配可运行；收敛慢（预期） |
-| P5 recipes | longer + flip 最优；low_lr 欠拟合 |
-| P6 domain | 域偏移主因 miss；小 FT 可部分恢复（见 JSON） |
-| P7 H1 | 小目标 val 上 train-small ≫ train-large |
-| P7 H2 | loc noise 下 AP 降幅 ≥ AP50 |
-| P7 H3 | Hungarian class cost 提升匹配类别一致性 |
-
-## 产物清单
-
-### 代码
-- `scripts/boxes.py` `metrics.py` `assignment.py` `data_synth.py` `models.py`
-- `scripts/run_p{0..7}_*.py` `scripts/run_all.sh`
-- `tests/test_{metrics,boxes,assignment}.py`
-
-### Notebooks
-- `det-00` … `det-07`（调用脚本）
-
-### 文档
-- `LEARNING_ROADMAP.md` · 各 Phase `NOTES.md`
-- `papers/FasterRCNN/SOURCE_MAP.md` · `YOLO_Ultralytics` · `DETR`
-- `papers/CLAIM_REVIEWS.md`
-
-### 实验 JSON
-- `results/p0_protocol` … `results/p7_hypothesis`
-
-## 路线修正（已执行）
-
-| 修正 | 原因 |
-|------|------|
-| 使用 **合成色块检测数据** 而非完整 COCO/Wheat 下载 | 本环境 CPU、无多 GB 数据集缓存；保证「能训练收敛 + 协议正确」的验收 |
-| P2 为 **TwoStageLite**（RPN 式 obj + head）非完整 Faster R-CNN+RoIAlign | CPU 预算；概念与 SOURCE_MAP 对齐 Detectron2/torchvision |
-| P3 为 **CenterNetLite**（中心分配+ltrb）映射 YOLO/FCOS 范式 | 同左；Ultralytics 全量训练放 Kaggle GPU 后续 |
-| P6 用 **可控域偏移** 模拟 Kaggle 真实域 | 不阻塞于竞赛数据下载；playbook 写入结果 JSON |
-| DETR AP 绝对值偏低 | 已知慢收敛；验收用 loss 下降 + matching 正确 + query 消融 |
+1. **FS00–01**：会评测；知道穷举搜索的病（慢、尺度、重复框）  
+2. **FS03–05**：特征与提案如何把搜索变成可算的「候选+分类」  
+3. **FS06–07**：共享计算 + 学提案（现代两阶段 DNA）  
+4. **FS08–11**：单阶段、损失、多尺度、无锚  
+5. **FS12–13**：集合预测与训练系统  
+6. **FS14–15**：真实域与可证伪研究  
 
 ## 一键复验
 
 ```bash
-# 建议：source /workspace/.venv-det/bin/activate  # 含 torch
+source /workspace/.venv-det/bin/activate
 cd notebooks/v04-xiaoshuhuaer@-目标检测
-./scripts/run_all.sh
-# 或逐步：
-python tests/test_metrics.py && python tests/test_boxes.py && python tests/test_assignment.py
-python scripts/run_p0_protocol.py
-python scripts/run_p1_boxes.py
-python scripts/run_p2_two_stage.py
-python scripts/run_p3_yolo_lite.py
-python scripts/run_p4_detr.py
-python scripts/run_p5_recipe_ablation.py
-python scripts/run_p6_domain.py
-python scripts/run_p7_hypothesis.py
+python scripts/run_fs_all.py
+# 或分步：python scripts/fs00_protocol_viz.py … fs15_hypothesis_viz.py
 ```
 
-## 当前任务
+产物：`results/fsXX_*/results.json` + `*.png`  
+总表：`results/fs_chain_summary.json`
 
-无阻塞。可选增强（**非**停止条件）：
-1. Kaggle GPU：VOC/COCO 子集或 Global Wheat 重跑 P3/P6  
-2. vendor clone detectron2 / ultralytics 做真源码步进  
-3. 当周 arXiv 检测论文 claim 卡  
+## 路线修正
 
-## 问题日志
-
-| 问题 | 处理 |
+| 修正 | 原因 |
 |------|------|
-| 系统 Python 无 torch/numpy | 使用 `/workspace/.venv-det`（torch CPU） |
-| P4 初版匹配 cost 很大 | 未训权重正常；训练后 loss 从 1.77→0.71 |
-| P0 false_pos 仍高 AP | 高分 GT 仍排前；结论写入「排序与阈值共同决定 precision」 |
+| 合成色块数据 | CPU 可训可看；保证闭环 |
+| FS02/10 保留负结果 | 朴素多尺度/无融合多头会掉点——历史动机课 |
+| FS06 用 500 提案模拟 | 少提案时墙钟对比失真 |
+| FS09 双组 Focal 超参 | 默认 γ=2 在 easy synth 可输 CE |
 
+## 研究轨（并行）
 
-## From-Scratch 实验链（2026-08-10）
-
-权威地图：`FROM_SCRATCH.md`
-
-| FS | 脚本 | 状态 |
-|----|------|------|
-| FS00 | `run_p0_protocol.py` | ✅ |
-| FS01 | `fs01_sliding_window.py` | ✅ ~169 win/img |
-| FS02 | `fs02_image_pyramid.py` | ✅ 代价↑；朴素融合可伤 AP |
-| FS05 | `fs05_rcnn_crops.py` | ✅ AP50 0.85 vs SW 0.37 |
-| FS07 | `run_p2_two_stage.py` | ✅ |
-| FS08 | `run_p3_yolo_lite.py` | ✅ |
-| FS09 | `fs09_focal_loss.py` | ✅ Focal 超参课 |
-| FS10 | `fs10_fpn_multiscale.py` | ✅ 无融合多头负结果教学 |
-| FS11–12 | P1 + P4 | ✅ |
-| FS13–15 | P5–P7 | ✅ |
-
-复验：`./scripts/run_fs_chain.sh`
+P0–P7 仍可用 `./scripts/run_all.sh`；与 FS 共享 `scripts/` 核心库。

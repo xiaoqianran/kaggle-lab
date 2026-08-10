@@ -1,0 +1,49 @@
+{
+  "step": "FS03",
+  "concept": "Hand-crafted features (gradient) more lighting-robust than raw RGB mean",
+  "rows": [
+    {
+      "detector": "color_template",
+      "brightness": "bright_1.0",
+      "ap50": 0.5106280193236715,
+      "ap": 0.19805372847764152
+    },
+    {
+      "detector": "color_template",
+      "brightness": "bright_0.45",
+      "ap50": 0.0,
+      "ap": 0.0
+    },
+    {
+      "detector": "color_template",
+      "brightness": "bright_1.6",
+      "ap50": 0.3429951690821256,
+      "ap": 0.11029589371980675
+    },
+    {
+      "detector": "grad+color",
+      "brightness": "bright_1.0",
+      "ap50": 0.8721597539052782,
+      "ap": 0.3413545412033263
+    },
+    {
+      "detector": "grad+color",
+      "brightness": "bright_0.45",
+      "ap50": 0.057971014492753624,
+      "ap": 0.04347826086956522
+    },
+    {
+      "detector": "grad+color",
+      "brightness": "bright_1.6",
+      "ap50": 0.7058132960035133,
+      "ap": 0.2511898224042334
+    }
+  ],
+  "new_capability": "Feature engineering before deep learning era",
+  "vs_previous": "FS01 pure color template fails under brightness shift; gradient helps",
+  "artifacts": [
+    "ap50_under_dark.png",
+    "dark_color.png",
+    "dark_grad.png"
+  ]
+}

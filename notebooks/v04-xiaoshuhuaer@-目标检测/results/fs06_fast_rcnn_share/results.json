@@ -1,0 +1,39 @@
+{
+  "step": "FS06",
+  "rcnn_style": {
+    "ap50": 0.7784966245270039,
+    "ap": 0.6984365713268738,
+    "ap_s": 0.7784966245270039,
+    "ap_m": 0.0,
+    "ap_l": 0.0,
+    "ar100": 0.9888888888888889,
+    "n_gt": 54,
+    "n_pred": 76,
+    "seconds_for_val": 0.9161283819998971,
+    "sec_per_image": 0.030537612733329902,
+    "cnn_forwards_per_image": 500,
+    "total_forwards": 15000
+  },
+  "shared_backbone": {
+    "ap50": 0.44269209138146187,
+    "ap": 0.1761185338632879,
+    "ap_s": 0.44269209138146187,
+    "ap_m": 0.0,
+    "ap_l": 0.0,
+    "ar100": 0.5722222222222223,
+    "n_gt": 54,
+    "n_pred": 42,
+    "seconds_for_val": 0.09330305000003136,
+    "sec_per_image": 0.003110101666667712,
+    "cnn_forwards_per_image": 1
+  },
+  "forward_ratio": 500,
+  "wall_speedup": 9.818847100921023,
+  "new_capability": "Amortize features: 1 backbone / image vs N crops",
+  "vs_previous": "FS05 correctness of crop-CNN; FS06 system cost of sharing",
+  "findings": [
+    "R-CNN-style ~500 crop CNN forwards/image vs shared 1 forward",
+    "Wall-clock speedup on this CPU run \u2248 9.8x",
+    "AP differs (different heads); the lesson is compute structure"
+  ]
+}

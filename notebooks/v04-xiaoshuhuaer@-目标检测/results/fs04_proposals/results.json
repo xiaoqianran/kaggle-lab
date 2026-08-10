@@ -1,0 +1,15 @@
+{
+  "step": "FS04",
+  "mean_proposal_count": 21.96,
+  "mean_window_count": 169.0,
+  "compute_ratio_windows_over_props": 7.695810564663024,
+  "mean_proposal_recall_good": 1.0,
+  "mean_proposal_recall_random_only": 0.17666666666666664,
+  "new_capability": "Sparse WHERE candidates replace exhaustive pixel scan",
+  "vs_previous": "FS01\u201302 search hundreds of windows; proposals ~tens with high recall if quality OK",
+  "findings": [
+    "Windows/image \u2248 169 vs proposals \u2248 22",
+    "Good proposals (GT+jitter) recall@0.5 \u2248 1.000",
+    "Random-only proposals recall \u2248 0.177 \u2014 quality is destiny"
+  ]
+}

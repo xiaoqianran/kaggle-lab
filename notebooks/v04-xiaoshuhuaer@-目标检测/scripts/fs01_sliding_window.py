@@ -17,6 +17,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 
 from data_synth import SynthConfig, generate_one  # noqa: E402
 from metrics import box_iou_xyxy, coco_style_ap, nms_xyxy, set_seed  # noqa: E402
+from fs_viz import save_det_panel, save_bar_compare  # noqa: E402
 
 OUT = ROOT / "results" / "fs01_sliding_window"
 OUT.mkdir(parents=True, exist_ok=True)
@@ -95,6 +96,16 @@ def main() -> None:
     best_iou = 0.0
     if len(b0) and len(s0["boxes"]):
         best_iou = float(box_iou_xyxy(b0, s0["boxes"].astype(float)).max())
+
+    
+    # visualization
+    s0 = generate_one(np.random.default_rng(3), cfg)
+    b0, sc0, l0, nw0 = sliding_window_detect(s0["image"])
+    if len(b0):
+        keep = nms_xyxy(b0, sc0, 0.3)
+        b0, sc0, l0 = b0[keep], sc0[keep], l0[keep]
+    save_det_panel(OUT / "example.png", s0["image"], s0["boxes"], s0["labels"], b0, sc0, l0, "FS01 sliding window")
+    save_bar_compare(OUT / "ap50.png", ["sliding_window"], [m.ap50], "FS01 AP50")
 
     analysis = {
         "method": "sliding_window_color_template",

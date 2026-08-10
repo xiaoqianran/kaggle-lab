@@ -1,0 +1,30 @@
+{
+  "step": "FS15",
+  "concept": "Falsifiable hypotheses + claim discipline",
+  "hypotheses": [
+    {
+      "id": "H1",
+      "statement": "Train-on-small beats train-on-large for small-only val (scale vs stride)",
+      "train_small_ap50": 0.6773803927664366,
+      "train_large_ap50": 0.007905566385098548,
+      "accepted": true
+    },
+    {
+      "id": "H2",
+      "statement": "Loc noise: AP drop >= AP50 drop",
+      "drop_ap50": 0.6199595420911985,
+      "drop_ap": 0.9136619877091642,
+      "accepted": true
+    },
+    {
+      "id": "H3",
+      "statement": "Identical boxes: class cost recovers correct label pairing; pure box cost cannot",
+      "with_class_cost": 1.0,
+      "without": 0.311111111111111,
+      "accepted": true
+    }
+  ],
+  "n_accepted": 3,
+  "new_capability": "Research loop: predict \u2192 measure \u2192 accept/reject",
+  "vs_previous": "FS00\u201314 build systems; FS15 judges contributions"
+}

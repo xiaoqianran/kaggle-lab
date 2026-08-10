@@ -1,0 +1,57 @@
+{
+  "step": "FS00",
+  "concept": "IoU/NMS/mAP protocol; conf is part of protocol",
+  "scenario_rows": [
+    {
+      "scenario": "perfect",
+      "ap50": 1.0,
+      "ap": 1.0,
+      "ap_s": 1.0,
+      "ap_m": 0.0,
+      "ap_l": 0.0,
+      "ar100": 1.0,
+      "n_gt": 83,
+      "n_pred": 83
+    },
+    {
+      "scenario": "loc_noise",
+      "ap50": 0.9145090917397661,
+      "ap": 0.266269936460528,
+      "ap_s": 0.9145090917397661,
+      "ap_m": 0.0,
+      "ap_l": 0.0,
+      "ar100": 0.9375,
+      "n_gt": 83,
+      "n_pred": 83
+    },
+    {
+      "scenario": "miss_gt",
+      "ap50": 0.6932870370370371,
+      "ap": 0.6932870370370371,
+      "ap_s": 0.6932870370370371,
+      "ap_m": 0.0,
+      "ap_l": 0.0,
+      "ar100": 0.6916666666666667,
+      "n_gt": 83,
+      "n_pred": 58
+    },
+    {
+      "scenario": "false_pos",
+      "ap50": 1.0,
+      "ap": 1.0,
+      "ap_s": 1.0,
+      "ap_m": 0.0,
+      "ap_l": 0.0,
+      "ar100": 1.0,
+      "n_gt": 83,
+      "n_pred": 199
+    }
+  ],
+  "new_capability": "Measure detectors fairly; see how error types move AP",
+  "vs_previous": "Starting point \u2014 no detector yet",
+  "artifacts": [
+    "ap50_by_scenario.png",
+    "example_loc_noise.png",
+    "results.json"
+  ]
+}

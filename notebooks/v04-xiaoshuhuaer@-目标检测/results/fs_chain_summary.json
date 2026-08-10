@@ -1,0 +1,98 @@
+[
+  {
+    "step": "FS00",
+    "results": "results/fs00_protocol/results.json",
+    "ok": true,
+    "n_png": 2
+  },
+  {
+    "step": "FS01",
+    "results": "results/fs01_sliding_window/results.json",
+    "ok": true,
+    "n_png": 2
+  },
+  {
+    "step": "FS02",
+    "results": "results/fs02_image_pyramid/results.json",
+    "ok": true,
+    "n_png": 0
+  },
+  {
+    "step": "FS03",
+    "results": "results/fs03_gradient_features/results.json",
+    "ok": true,
+    "n_png": 3
+  },
+  {
+    "step": "FS04",
+    "results": "results/fs04_proposals/results.json",
+    "ok": true,
+    "n_png": 3
+  },
+  {
+    "step": "FS05",
+    "results": "results/fs05_rcnn_crops/results.json",
+    "ok": true,
+    "n_png": 0
+  },
+  {
+    "step": "FS06",
+    "results": "results/fs06_fast_rcnn_share/results.json",
+    "ok": true,
+    "n_png": 4
+  },
+  {
+    "step": "FS07",
+    "results": "results/fs07_two_stage/results.json",
+    "ok": true,
+    "n_png": 2
+  },
+  {
+    "step": "FS08",
+    "results": "results/fs08_dense_yolo/results.json",
+    "ok": true,
+    "n_png": 3
+  },
+  {
+    "step": "FS09",
+    "results": "results/fs09_focal_loss/results.json",
+    "ok": true,
+    "n_png": 0
+  },
+  {
+    "step": "FS10",
+    "results": "results/fs10_fpn_multiscale/results.json",
+    "ok": true,
+    "n_png": 0
+  },
+  {
+    "step": "FS11",
+    "results": "results/fs11_anchor_free/results.json",
+    "ok": true,
+    "n_png": 2
+  },
+  {
+    "step": "FS12",
+    "results": "results/fs12_detr/results.json",
+    "ok": true,
+    "n_png": 2
+  },
+  {
+    "step": "FS13",
+    "results": "results/fs13_recipe/results.json",
+    "ok": true,
+    "n_png": 1
+  },
+  {
+    "step": "FS14",
+    "results": "results/fs14_domain/results.json",
+    "ok": true,
+    "n_png": 3
+  },
+  {
+    "step": "FS15",
+    "results": "results/fs15_hypothesis/results.json",
+    "ok": true,
+    "n_png": 3
+  }
+]

@@ -8,6 +8,7 @@ results/**
 !results/**/
 !results/**/*.json
 !results/**/*.md
+!results/**/*.png
 
 *.pt
 *.pth

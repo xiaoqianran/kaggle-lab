@@ -1,0 +1,32 @@
+{
+  "step": "FS11",
+  "n_anchors": 384,
+  "mean_anchor_pos_frac@0.5": 0.010904947916666668,
+  "mean_center_gt_coverage": 1.0,
+  "images_with_center_collision": 2,
+  "pos_thr_sweep": [
+    {
+      "pos_thr": 0.4,
+      "mean_pos_frac": 0.03121744791666667
+    },
+    {
+      "pos_thr": 0.5,
+      "mean_pos_frac": 0.010904947916666668
+    },
+    {
+      "pos_thr": 0.6,
+      "mean_pos_frac": 0.005501302083333333
+    },
+    {
+      "pos_thr": 0.7,
+      "mean_pos_frac": 0.005240885416666666
+    }
+  ],
+  "new_capability": "Anchor-free center assign removes scales/ratios knobs",
+  "vs_previous": "FS07/anchors need thr & shapes; FS08/11 center is simpler but collisions exist",
+  "findings": [
+    "Anchors=384; mean positive fraction=0.0109",
+    "Center assign covers 100.0% GT centers in-grid",
+    "Raising pos_thr shrinks positives \u2014 classic anchor hyperparam pain"
+  ]
+}

@@ -4,6 +4,8 @@
 > 每一步固定五段：**概念 → 最小实现 → 真实输入 → 可观察输出 → 与上一步对比**。  
 > 目标：用眼睛看到「这项技术到底修了什么病」。
 
+**执行状态：FS00–FS15 已全部跑通**（见 `PROGRESS.md` · `results/fs*`）。
+
 配套：研究向蓝图 [LEARNING_ROADMAP.md](./LEARNING_ROADMAP.md) · 进度 [PROGRESS.md](./PROGRESS.md)
 
 ---

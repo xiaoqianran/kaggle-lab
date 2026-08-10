@@ -14,7 +14,7 @@
     "n_pred": 20
   },
   "example_best_iou_to_gt": 0.8,
-  "example_raw_dets": 5,
+  "example_raw_dets": 0,
   "example_windows": 169,
   "findings": [
     "Thousands of windows per image even at 64px \u2014 classic speed disease.",
