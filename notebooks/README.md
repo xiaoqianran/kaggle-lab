@@ -78,5 +78,5 @@ Interactive HTML gallery of Kaggle img3d-00…03 outputs lives at [`v01-wangran5
 |------|------|------|
 | [`v01-wangran521/`](v01-wangran521/) | Mini-Instruct / img3d / world models | 既有 notebook 合集 |
 | [`v02-shuhuaqaq@-深度估计/`](v02-shuhuaqaq@-深度估计/) | **深度估计** | 竞赛/数据/模型调研 + 后续 de-NN notebook |
-| [`v03-zhengyingxionger@-图像分类/`](v03-zhengyingxionger@-图像分类/) | **图像分类**（含深度估计侦察） | 后续 notebook 统一放此；详见目录 README |
+| [`v03-zhengyingxionger@-图像分类/`](v03-zhengyingxionger@-图像分类/) | **图像分类** | 研究蓝图 [LEARNING_ROADMAP.md](v03-zhengyingxionger@-图像分类/LEARNING_ROADMAP.md) · `cls-NN` notebooks |
 

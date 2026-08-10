@@ -1,0 +1,130 @@
+{
+  "track": "v03-zhengyingxionger@-图像分类",
+  "topic": "image classification",
+  "kaggle_user": "zhengyingxiong",
+  "surveyed_at": "2026-08-10",
+  "roadmap": "LEARNING_ROADMAP.md",
+  "phases": [
+    {"id": "P0", "dir": "01-foundations", "name": "metrics-protocol-seed"},
+    {"id": "P1", "dir": "01-foundations", "name": "softmax-linear"},
+    {"id": "P2", "dir": "02-cnn-classic", "name": "cnn-resnet"},
+    {"id": "P3", "dir": "03-modern-arch", "name": "convnext-vit-deit"},
+    {"id": "P4", "dir": "04-training-recipe", "name": "timm-recipe"},
+    {"id": "P5", "dir": "05-ssl-transfer", "name": "ssl-clip-transfer"},
+    {"id": "P6", "dir": "06-frontier", "name": "kaggle-domain"},
+    {"id": "P7", "dir": "07-research-lab", "name": "research-hypothesis"}
+  ],
+  "canonical_courses": [
+    {
+      "name": "Stanford CS231n",
+      "url": "https://cs231n.stanford.edu/",
+      "notes": "https://cs231n.github.io/",
+      "role": "primary"
+    },
+    {
+      "name": "MIT 6.S191",
+      "url": "https://introtodeeplearning.com/",
+      "code": "https://github.com/MITDeepLearning/introtodeeplearning",
+      "role": "accelerator"
+    },
+    {
+      "name": "Berkeley EECS 182",
+      "url": "https://eecs182.org/",
+      "role": "optional-deepening"
+    }
+  ],
+  "canonical_papers": [
+    {"id": "resnet", "title": "Deep Residual Learning for Image Recognition", "year": 2016},
+    {"id": "vit", "title": "An Image is Worth 16x16 Words", "year": 2021},
+    {"id": "deit", "title": "Training data-efficient image transformers", "year": 2021},
+    {"id": "convnext", "title": "A ConvNet for the 2020s", "year": 2022},
+    {"id": "simclr", "title": "A Simple Framework for Contrastive Learning", "year": 2020},
+    {"id": "mae", "title": "Masked Autoencoders Are Scalable Vision Learners", "year": 2022},
+    {"id": "clip", "title": "Learning Transferable Visual Models From Natural Language Supervision", "year": 2021}
+  ],
+  "canonical_code": [
+    {
+      "name": "timm",
+      "url": "https://github.com/huggingface/pytorch-image-models",
+      "must_read": ["train.py", "validate.py"]
+    },
+    {
+      "name": "ConvNeXt",
+      "url": "https://github.com/facebookresearch/ConvNeXt"
+    },
+    {
+      "name": "DeiT",
+      "url": "https://github.com/facebookresearch/deit"
+    },
+    {
+      "name": "MAE",
+      "url": "https://github.com/facebookresearch/mae"
+    },
+    {
+      "name": "CLIP",
+      "url": "https://github.com/openai/CLIP"
+    }
+  ],
+  "competitions": [
+    {
+      "ref": "rsna-knee-abnormality-detection",
+      "title": "RSNA Knee Abnormality Detection",
+      "url": "https://www.kaggle.com/competitions/rsna-knee-abnormality-detection",
+      "category": "Research",
+      "reward": "77,000 Usd",
+      "deadline": "2026-10-22",
+      "status": "active",
+      "use": "P6 real-domain optional"
+    },
+    {
+      "ref": "isic-2024-challenge",
+      "title": "ISIC 2024 Challenge",
+      "url": "https://www.kaggle.com/competitions/isic-2024-challenge",
+      "status": "ended",
+      "use": "medical classification + calibration"
+    },
+    {
+      "ref": "cassava-leaf-disease-classification",
+      "title": "Cassava Leaf Disease Classification",
+      "url": "https://www.kaggle.com/competitions/cassava-leaf-disease-classification",
+      "status": "ended",
+      "use": "fine-grained transfer learning textbook"
+    },
+    {
+      "ref": "siim-isic-melanoma-classification",
+      "title": "SIIM-ISIC Melanoma Classification",
+      "url": "https://www.kaggle.com/competitions/siim-isic-melanoma-classification",
+      "status": "ended",
+      "use": "medical binary + metadata"
+    },
+    {
+      "ref": "human-protein-atlas-image-classification",
+      "title": "Human Protein Atlas Image Classification",
+      "url": "https://www.kaggle.com/competitions/human-protein-atlas-image-classification",
+      "status": "ended",
+      "use": "multi-label"
+    }
+  ],
+  "datasets": [
+    {"ref": "pankrzysiu/cifar10-python", "title": "CIFAR-10 Python", "use": "P1-P2"},
+    {"ref": "fedesoriano/cifar100", "title": "CIFAR-100 Python", "use": "P2-P3"},
+    {"ref": "zalando-research/fashionmnist", "title": "Fashion MNIST", "use": "warmup"},
+    {"ref": "puneet6060/intel-image-classification", "title": "Intel Image Classification", "use": "transfer"},
+    {"ref": "moltean/fruits", "title": "Fruits-360", "use": "fine-grained toy"}
+  ],
+  "models": [
+    {"ref": "google/resnet-v2", "title": "ResNet V2"},
+    {"ref": "tensorflow/resnet-50", "title": "ResNet-50"},
+    {"ref": "keras/resnetv1", "title": "Keras ResNetV1"},
+    {"note": "prefer timm local weights for research recipes"}
+  ],
+  "planned_notebooks": [
+    "cls-00-metrics-protocol-seed.ipynb",
+    "cls-01-softmax-knn-linear.ipynb",
+    "cls-02-cifar-resnet-from-scratch.ipynb",
+    "cls-03-convnext-vit-contrast.ipynb",
+    "cls-04-timm-recipe-ablation.ipynb",
+    "cls-05-ssl-clip-transfer.ipynb",
+    "cls-06-kaggle-domain-baseline.ipynb"
+  ]
+}
