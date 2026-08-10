@@ -1,0 +1,53 @@
+{
+  "status": {
+    "model": "MiDaS_small",
+    "loaded": true
+  },
+  "rows": [
+    {
+      "scene": 0,
+      "inverted": false,
+      "none_abs_rel": NaN,
+      "ls_abs_rel": 2.38125,
+      "rank_corr_abs": 0.44532062389082844
+    },
+    {
+      "scene": 1,
+      "inverted": false,
+      "none_abs_rel": NaN,
+      "ls_abs_rel": 2.38125,
+      "rank_corr_abs": 0.4898847641753405
+    },
+    {
+      "scene": 2,
+      "inverted": false,
+      "none_abs_rel": NaN,
+      "ls_abs_rel": 2.38125,
+      "rank_corr_abs": 0.5197694247894209
+    },
+    {
+      "scene": 3,
+      "inverted": false,
+      "none_abs_rel": NaN,
+      "ls_abs_rel": 2.38125,
+      "rank_corr_abs": 0.5305274247662121
+    },
+    {
+      "scene": 4,
+      "inverted": false,
+      "none_abs_rel": NaN,
+      "ls_abs_rel": 2.38125,
+      "rank_corr_abs": 0.5834564532939823
+    }
+  ],
+  "mean_rank_corr_abs": 0.5137917381831569,
+  "mean_rank_corr_random": 0.005041570593462298,
+  "mean_ls_abs_rel": 2.38125,
+  "mean_none_abs_rel": NaN,
+  "new_capability": "Run a real pretrained relative depth network; evaluate with alignment + ordinal metrics.",
+  "compare_to_fs09": "FS09 simulated relative maps; FS10 uses downloaded MiDaS weights.",
+  "compare_to_fs06": "FS06 trains on synthetic GT; MiDaS zero-shot ranks structure without our labels.",
+  "artifacts": [
+    "midas_gallery.png"
+  ]
+}

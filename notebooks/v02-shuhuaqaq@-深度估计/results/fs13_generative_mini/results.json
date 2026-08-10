@@ -1,0 +1,12 @@
+{
+  "denoise_train_loss_start": 0.2868306338787079,
+  "denoise_train_loss_end": 0.0010153783950954676,
+  "abs_rel_generative_mean": 0.06237674228145681,
+  "abs_rel_oneshot": 0.024160406280756278,
+  "new_capability": "Iterative generative refinement + multi-sample uncertainty map.",
+  "compare_to_fs11_12": "Discriminative foundation is one forward; generative trades compute for sampling/uncertainty.",
+  "note": "Toy diffusion on synthetic data \u2014 Marigold-scale models need GPU+weights (optional upgrade).",
+  "artifacts": [
+    "generative_vs_oneshot.png"
+  ]
+}

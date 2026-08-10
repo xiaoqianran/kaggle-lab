@@ -4,11 +4,13 @@ data/**
 vendor/**
 !vendor/.gitkeep
 
-# results: keep small json, ignore heavy artifacts
+# results: keep small artifacts
 results/**
 !results/**/
 !results/**/*.json
 !results/**/*.md
+!results/**/*.png
+!results/**/*.xyz
 
 # weights & caches
 **/*.pt

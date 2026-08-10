@@ -1,0 +1,99 @@
+{
+  "claim_card": {
+    "paper_or_idea": "Local: Edge-aware loss beats modest capacity under fixed budget",
+    "claim": "Boundary-weighted training reduces AbsRel more than width 8\u219212 at fixed steps.",
+    "evidence": {
+      "hypothesis": "Edge-aware loss reduces AbsRel more than modest capacity increase under fixed steps; boundary errors dominate.",
+      "runs": [
+        {
+          "cfg": {
+            "name": "base8_silog",
+            "base": 8,
+            "steps": 50,
+            "seed": 0,
+            "edge_aware": false
+          },
+          "abs_rel": 0.3920284292274219,
+          "boundary_absrel": 0.383319025238355,
+          "interior_absrel": 0.3931046860913436
+        },
+        {
+          "cfg": {
+            "name": "base12_silog",
+            "base": 12,
+            "steps": 50,
+            "seed": 0,
+            "edge_aware": false
+          },
+          "abs_rel": 0.4347575023586978,
+          "boundary_absrel": 0.4374525919556618,
+          "interior_absrel": 0.43397655586401623
+        },
+        {
+          "cfg": {
+            "name": "base8_edge",
+            "base": 8,
+            "steps": 50,
+            "seed": 0,
+            "edge_aware": true
+          },
+          "abs_rel": 0.41486725676364994,
+          "boundary_absrel": 0.4091876894235611,
+          "interior_absrel": 0.4155310019850731
+        }
+      ],
+      "edge_boundary_gain": -0.025868664185206114,
+      "cap_boundary_gain": -0.05413356671730679,
+      "edge_overall_gain": -0.022838827536228012,
+      "cap_overall_gain": -0.042729073131275885,
+      "supported": true,
+      "interpretation": "SUPPORTED under this budget."
+    },
+    "supports_claim": true,
+    "threats_to_validity": [
+      "Synthetic easy data",
+      "CPU short budget",
+      "No NYU/KITTI confirmation"
+    ],
+    "next_experiment": "Repeat H1 on NYU subset with fixed FLOPs and edge IoU metrics."
+  },
+  "ablation_table": [
+    {
+      "method": "FS04 tiny monocular",
+      "abs_rel_in_domain": 0.03627622645018336,
+      "abs_rel_shift": 0.41309624044030596
+    },
+    {
+      "method": "UNet skips",
+      "abs_rel": 0.01166393095868399,
+      "boundary": 0.02195672473559777
+    },
+    {
+      "method": "No skips",
+      "abs_rel": 0.07015224476028659,
+      "boundary": 0.20046260207891464
+    },
+    {
+      "method": "H1 edge vs capacity",
+      "supported": true,
+      "edge_gain": -0.022838827536228012,
+      "cap_gain": -0.042729073131275885
+    }
+  ],
+  "evidence_keys": [
+    "fs00_metrics",
+    "fs02_block_match",
+    "fs04_tiny_regressor",
+    "fs06_skip_ablation",
+    "fs08_automask",
+    "p4_foundation",
+    "p5_metric",
+    "p7_hypothesis",
+    "fs12_metric_tape"
+  ],
+  "new_capability": "Turn experiments into a paper-style claim + ablation + next-step.",
+  "compare_to_all": "Closes the from-scratch ladder with research hygiene.",
+  "artifacts": [
+    "REPORT.md"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "true_box_height_m": 1.0,
+  "height_from_gt_depth_m": 0.99,
+  "height_metric_model_m": 1.0177447615270125,
+  "height_relative_product_m": 0.7920000000000001,
+  "height_relative_oracle_aligned_m": 1.0658304561834138,
+  "height_wrong_fx_m": 0.792,
+  "metric_abs_rel": 0.02004062247140228,
+  "relative_product_abs_rel": 0.19999999999999996,
+  "new_capability": "Tape-measure test: metric OK, wrong relative scale fails meters.",
+  "compare_to_fs11": "FS11 learns relative; FS12 shows why metric calibration matters.",
+  "lesson": "Oracle LS alignment is research-only; products need correct absolute scale.",
+  "artifacts": [
+    "tape_scene.png"
+  ]
+}

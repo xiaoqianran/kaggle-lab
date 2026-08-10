@@ -120,8 +120,18 @@
   ],
   "midas": {
     "attempted": true,
-    "loaded": null,
-    "error": "No module named 'timm'"
+    "loaded": "MiDaS_small",
+    "metrics": {
+      "abs_rel": 3.188232421875,
+      "sq_rel": 49.83478461371528,
+      "rmse": 14.089587023692419,
+      "rmse_log": 1.3712750918467778,
+      "si_rmse": 0.4408436914873281,
+      "delta1": 0.0,
+      "delta2": 0.0,
+      "delta3": 0.0,
+      "n_valid": 12288.0
+    }
   },
   "interpretation": {
     "relative_repr": "disparity/log/neg need least_squares (or median for pure scale) before AbsRel is meaningful.",

@@ -1,0 +1,21 @@
+{
+  "results": {
+    "l1_single": {
+      "abs_rel": 0.037731055864460745
+    },
+    "l1_ms": {
+      "abs_rel": 0.03935963135041421
+    },
+    "silog_single": {
+      "abs_rel": 0.02089790799403251
+    },
+    "silog_ms": {
+      "abs_rel": 0.024159174980940543
+    }
+  },
+  "new_capability": "Multi-scale + SILog stabilize scale-sensitive training (Eigen DNA).",
+  "compare_to_fs04": "FS04 single-scale L1 tiny net; FS05 adds Eigen multi-scale/SILog recipe.",
+  "artifacts": [
+    "compare.png"
+  ]
+}

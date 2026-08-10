@@ -1,0 +1,14 @@
+{
+  "teacher": "MiDaS_small (stand-in for DA-V2 teacher when DA weights unavailable)",
+  "loss_start": 0.278104692697525,
+  "loss_end": 0.15571166574954987,
+  "mean_l1_to_teacher": 0.08360211178660393,
+  "student_ls_abs_rel_vs_gt": 0.3723525422142402,
+  "constant_ls_abs_rel": 0.43333043832444795,
+  "new_capability": "Distill relative depth from a strong teacher without GT depth labels.",
+  "compare_to_fs10": "FS10 only runs teacher; FS11 trains a student on pseudo-labels (Depth Anything idea).",
+  "compare_to_fs06": "FS06 needs GT depth; FS11 needs only RGB + teacher.",
+  "artifacts": [
+    "teacher_student.png"
+  ]
+}

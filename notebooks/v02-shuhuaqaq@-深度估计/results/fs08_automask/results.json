@@ -1,0 +1,12 @@
+{
+  "dyn_region_photo_err": 0.4350988268852234,
+  "bg_region_photo_err": 0.1111239343881607,
+  "dyn_automask_keep_rate": 0.5174999833106995,
+  "bg_automask_keep_rate": 0.699999988079071,
+  "loss_all_valid": 0.07272009551525116,
+  "loss_automasked": 0.046589262783527374,
+  "loss_min_reproj": 0.10252073407173157,
+  "new_capability": "Ignore pixels that rigid-warp cannot explain (dynamics/occlusion).",
+  "compare_to_fs07": "FS07 showed photo error tracks depth; FS08 adds min-reproj/automask for real training.",
+  "lesson": "Dynamic object should have higher photo error and lower automask keep rate than background."
+}
