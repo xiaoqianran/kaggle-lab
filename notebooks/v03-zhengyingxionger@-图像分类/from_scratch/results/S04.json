@@ -1,22 +1,20 @@
 {
   "step": "S04",
-  "title": "hand convolution + feature maps",
-  "input": "one test image label=Ankle boot",
+  "title": "hand-written convolution + feature maps",
+  "concept": "\u5c40\u90e8\u8fde\u63a5+\u6743\u503c\u5171\u4eab\uff1b\u540c\u4e00\u6ee4\u6ce2\u5668\u626b\u63cf\u5168\u56fe\u4ea7\u751f\u7279\u5f81\u56fe\u3002",
+  "input": "one image class=Ankle boot",
   "observable": {
-    "input_shape": [
-      1,
-      1,
-      28,
-      28
-    ],
-    "edge_map_mean": 0.5187590718269348,
-    "edge_map_max": 4.086045265197754,
-    "conv_params_1to8_k3": 72,
-    "naive_dense_same_spatial_params": 4917248,
-    "param_ratio_dense_over_conv": 68295.11111111111
+    "edge_mean": 0.5187590718269348,
+    "conv_params_1to8": 72,
+    "dense_params_same_map": 4917248,
+    "ratio": 68295.11111111111
   },
   "metric": 0.5187590718269348,
   "metric_kind": "feature_energy",
-  "takeaway": "Conv reuses local filters: orders-of-magnitude fewer params than dense spatial maps; edges emerge from simple kernels.",
-  "elapsed_sec": 0.00406193733215332
+  "takeaway": "\u80fd\u529b#4\uff1a\u5c40\u90e8\u6a21\u5f0f\u63d0\u53d6\u3002\u53c2\u6570\u6548\u7387\u6570\u91cf\u7ea7\u4f18\u52bf\uff1b\u7b2c\u4e00\u6b21\u2018\u770b\u89c1\u2019\u8fb9\u7f18\u3002",
+  "viz": [
+    "from_scratch/results/viz/S04_feature_maps.png"
+  ],
+  "new_capability": "\u80fd\u529b#4\uff1a\u5c40\u90e8\u6a21\u5f0f\u63d0\u53d6\u3002\u53c2\u6570\u6548\u7387\u6570\u91cf\u7ea7\u4f18\u52bf\uff1b\u7b2c\u4e00\u6b21\u2018\u770b\u89c1\u2019\u8fb9\u7f18\u3002",
+  "elapsed_sec": 0.1777048110961914
 }

@@ -1,35 +1,27 @@
 {
   "step": "S00",
   "title": "pixels as tensors",
-  "input": "FashionMNIST PIL image",
+  "concept": "\u56fe\u50cf\u662f HxW \u6570\u503c\u7f51\u683c\uff1b\u6807\u7b7e\u662f\u79bb\u6563\u7c7b id\u3002\u5f52\u4e00\u5316\u5f71\u54cd\u4f18\u5316\u3002",
+  "input": "FashionMNIST raw PIL",
   "observable": {
-    "sample_shape_hw": [
+    "shape": [
       28,
       28
     ],
-    "sample_min_max": [
+    "min_max": [
       0.0,
       255.0
     ],
-    "sample_mean": 97.25382995605469,
-    "label": 9,
-    "label_name": "Ankle boot",
-    "class_hist_n2000": {
-      "T-shirt/top": 193,
-      "Trouser": 198,
-      "Pullover": 215,
-      "Dress": 199,
-      "Coat": 193,
-      "Sandal": 218,
-      "Shirt": 194,
-      "Sneaker": 191,
-      "Bag": 191,
-      "Ankle boot": 208
-    },
-    "rgb32_note": "downstream steps resize to 32 and repeat to 3ch"
+    "mean": 97.25382995605469,
+    "n_train": 60000,
+    "n_classes": 10
   },
   "metric": null,
   "metric_kind": "none",
-  "takeaway": "Model input is a numeric tensor + discrete label; always check shape/scale first.",
-  "elapsed_sec": 0.07855033874511719
+  "takeaway": "\u80fd\u529b#0\uff1a\u628a\u50cf\u7d20\u5f53\u6570\u636e\u2014\u2014\u5148\u770b shape/scale/\u7c7b\u5206\u5e03\uff0c\u518d\u8c08\u6a21\u578b\u3002",
+  "viz": [
+    "from_scratch/results/viz/S00_class_samples.png"
+  ],
+  "new_capability": "\u80fd\u529b#0\uff1a\u628a\u50cf\u7d20\u5f53\u6570\u636e\u2014\u2014\u5148\u770b shape/scale/\u7c7b\u5206\u5e03\uff0c\u518d\u8c08\u6a21\u578b\u3002",
+  "elapsed_sec": 0.5316376686096191
 }

@@ -79,3 +79,38 @@ results/*.json        # 实验日志
 - 地图：`from_scratch/MAP.md`
 - 运行：`python from_scratch/run_ladder.py`
 - 状态：S00–S16 已在 CPU/FashionMNIST 跑通，见 `from_scratch/results/`
+
+
+## From Scratch 阶梯执行
+
+- **地图:** `from_scratch/MAP.md`
+- **运行:** `python from_scratch/run_ladder.py`
+- **已完成:** S00, S01, S02, S03, S04
+- **当前:** idle
+- **可视化:** `from_scratch/results/viz/`
+- **分步笔记:** `from_scratch/notes/`
+- **总表:** `from_scratch/results/LADDER_RESULTS.md`
+
+| Step | Status |
+|------|--------|
+| S00 | DONE |
+| S01 | DONE |
+| S02 | DONE |
+| S03 | DONE |
+| S04 | DONE |
+| S05 | TODO |
+| S06 | TODO |
+| S07 | TODO |
+| S08 | TODO |
+| S09 | TODO |
+| S10 | TODO |
+| S11 | TODO |
+| S12 | TODO |
+| S13 | TODO |
+| S14 | TODO |
+| S15 | TODO |
+| S16 | TODO |
+| S17 | TODO |
+| S18 | TODO |
+| S19 | TODO |
+| S20 | TODO |

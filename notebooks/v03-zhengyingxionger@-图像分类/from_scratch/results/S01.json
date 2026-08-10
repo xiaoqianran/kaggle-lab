@@ -1,15 +1,21 @@
 {
   "step": "S01",
   "title": "kNN baseline (no learning)",
-  "input": "flattened pixels -> 64d random projection",
+  "concept": "\u9884\u6d4b=\u6700\u8fd1\u8bad\u7ec3\u6837\u672c\u6807\u7b7e\uff1b\u65e0\u53c2\u6570\uff0c\u8ddd\u79bb\u5b9a\u4e49\u4e00\u5207\u3002",
+  "input": "flat pixels \u2192 64d random projection",
   "observable": {
     "top1": 0.71,
     "chance": 0.1,
-    "k": 3
+    "k": 3,
+    "n_errors_shown": 4
   },
   "metric": 0.71,
-  "delta_vs_prev": 0.61,
-  "takeaway": "Data has structure: kNN >> chance without any training.",
   "metric_kind": "top1",
-  "elapsed_sec": 0.14166831970214844
+  "takeaway": "\u80fd\u529b#1\uff1a\u65e0\u5b66\u4e60\u57fa\u7ebf\u3002kNN>>\u968f\u673a \u21d2 \u6570\u636e\u6709\u53ef\u5206\u7ed3\u6784\uff0c\u540e\u7eed\u6a21\u578b\u5fc5\u987b\u8d85\u8fc7\u5b83\u3002",
+  "viz": [
+    "from_scratch/results/viz/S01_knn_errors.png",
+    "from_scratch/results/viz/S01_vs_chance.png"
+  ],
+  "new_capability": "\u80fd\u529b#1\uff1a\u65e0\u5b66\u4e60\u57fa\u7ebf\u3002kNN>>\u968f\u673a \u21d2 \u6570\u636e\u6709\u53ef\u5206\u7ed3\u6784\uff0c\u540e\u7eed\u6a21\u578b\u5fc5\u987b\u8d85\u8fc7\u5b83\u3002",
+  "elapsed_sec": 0.3793363571166992
 }
