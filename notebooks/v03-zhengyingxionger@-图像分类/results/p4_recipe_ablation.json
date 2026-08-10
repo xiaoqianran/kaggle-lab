@@ -1,0 +1,55 @@
+{
+  "phase": "P4",
+  "ablation_table": [
+    {
+      "exp_id": "p4_base",
+      "strong_aug": false,
+      "label_smoothing": 0.0,
+      "mixup_alpha": 0.0,
+      "top1": 0.6633333333333333,
+      "macro_f1": 0.6498509869894605,
+      "ece": 0.16576110629716245,
+      "n": 600.0,
+      "top5": 0.985
+    },
+    {
+      "exp_id": "p4_strong_aug",
+      "strong_aug": true,
+      "label_smoothing": 0.0,
+      "mixup_alpha": 0.0,
+      "top1": 0.6433333333333333,
+      "macro_f1": 0.6206640075989249,
+      "ece": 0.16633018851396514,
+      "n": 600.0,
+      "top5": 0.9816666666666667
+    },
+    {
+      "exp_id": "p4_ls",
+      "strong_aug": true,
+      "label_smoothing": 0.1,
+      "mixup_alpha": 0.0,
+      "top1": 0.645,
+      "macro_f1": 0.627745167495396,
+      "ece": 0.22008617620066598,
+      "n": 600.0,
+      "top5": 0.9833333333333333
+    },
+    {
+      "exp_id": "p4_mixup",
+      "strong_aug": true,
+      "label_smoothing": 0.0,
+      "mixup_alpha": 0.2,
+      "top1": 0.65,
+      "macro_f1": 0.6309924021483231,
+      "ece": 0.17822880910555824,
+      "n": 600.0,
+      "top5": 0.98
+    }
+  ],
+  "best": "p4_base",
+  "acceptance": {
+    "all_ran": true,
+    "base_learns": true
+  },
+  "passed": true
+}

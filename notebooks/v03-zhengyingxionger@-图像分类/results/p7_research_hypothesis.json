@@ -1,0 +1,38 @@
+{
+  "phase": "P7",
+  "hypothesis": "Inverse-frequency class weighting improves macro-F1 vs unweighted CE under fixed architecture and epoch budget.",
+  "baseline": {
+    "top1": 0.6275,
+    "macro_f1": 0.5755510352272191,
+    "ece": 0.10736299939653507,
+    "n": 800.0,
+    "top5": 0.96625
+  },
+  "weighted": {
+    "top1": 0.6625,
+    "macro_f1": 0.6397159881906858,
+    "ece": 0.12022294807400186,
+    "n": 800.0,
+    "top5": 0.98125
+  },
+  "class_weights": [
+    0.9652509652509652,
+    1.1210762331838564,
+    1.0245901639344261,
+    0.9191176470588235,
+    0.9727626459143969,
+    1.0775862068965518,
+    0.946969696969697,
+    1.0121457489878543,
+    0.984251968503937,
+    1.0080645161290323
+  ],
+  "claim_supported": true,
+  "acceptance": {
+    "both_ran": true,
+    "metrics_logged": true,
+    "claim_verdict_recorded": true,
+    "research_note_written": true
+  },
+  "passed": true
+}

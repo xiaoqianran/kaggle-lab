@@ -1,0 +1,114 @@
+{
+  "dataset": "FashionMNIST->32x32 RGB (CIFAR-10 blocked by host bandwidth)",
+  "device": "cpu",
+  "phases": {
+    "P0": {
+      "passed": true,
+      "note": "metrics/seed/leakage"
+    },
+    "P1": {
+      "passed": true,
+      "softmax_top1": 0.81,
+      "knn_top1": 0.74
+    },
+    "P2": {
+      "passed": true,
+      "minicnn_top1": 0.63375,
+      "resnet_top1": 0.7546666666666667
+    },
+    "P3": {
+      "passed": true,
+      "convnext_top1": 0.27166666666666667,
+      "vit_top1": 0.5416666666666666
+    },
+    "P4": {
+      "passed": true,
+      "best": "p4_base",
+      "table": [
+        {
+          "exp_id": "p4_base",
+          "strong_aug": false,
+          "label_smoothing": 0.0,
+          "mixup_alpha": 0.0,
+          "top1": 0.6633333333333333,
+          "macro_f1": 0.6498509869894605,
+          "ece": 0.16576110629716245,
+          "n": 600.0,
+          "top5": 0.985
+        },
+        {
+          "exp_id": "p4_strong_aug",
+          "strong_aug": true,
+          "label_smoothing": 0.0,
+          "mixup_alpha": 0.0,
+          "top1": 0.6433333333333333,
+          "macro_f1": 0.6206640075989249,
+          "ece": 0.16633018851396514,
+          "n": 600.0,
+          "top5": 0.9816666666666667
+        },
+        {
+          "exp_id": "p4_ls",
+          "strong_aug": true,
+          "label_smoothing": 0.1,
+          "mixup_alpha": 0.0,
+          "top1": 0.645,
+          "macro_f1": 0.627745167495396,
+          "ece": 0.22008617620066598,
+          "n": 600.0,
+          "top5": 0.9833333333333333
+        },
+        {
+          "exp_id": "p4_mixup",
+          "strong_aug": true,
+          "label_smoothing": 0.0,
+          "mixup_alpha": 0.2,
+          "top1": 0.65,
+          "macro_f1": 0.6309924021483231,
+          "ece": 0.17822880910555824,
+          "n": 600.0,
+          "top5": 0.98
+        }
+      ]
+    },
+    "P5": {
+      "passed": true,
+      "probe": 0.628,
+      "ssl_loss": [
+        4.319275302124024,
+        3.9827097888946534,
+        3.8918743782043457,
+        3.854735206604004
+      ]
+    },
+    "P6": {
+      "passed": true,
+      "metrics": {
+        "top1": 0.63625,
+        "macro_f1": 0.6184833229454038,
+        "ece": 0.08274016740226063,
+        "n": 800.0,
+        "top5": 0.9775
+      },
+      "worst": "Shirt"
+    },
+    "P7": {
+      "passed": true,
+      "claim_supported": true,
+      "baseline": {
+        "top1": 0.6275,
+        "macro_f1": 0.5755510352272191,
+        "ece": 0.10736299939653507,
+        "n": 800.0,
+        "top5": 0.96625
+      },
+      "weighted": {
+        "top1": 0.6625,
+        "macro_f1": 0.6397159881906858,
+        "ece": 0.12022294807400186,
+        "n": 800.0,
+        "top5": 0.98125
+      }
+    }
+  }
+}

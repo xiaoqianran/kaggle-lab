@@ -1,0 +1,25 @@
+{
+  "phase": "P3",
+  "convnext": {
+    "top1": 0.27166666666666667,
+    "macro_f1": 0.1680612892505589,
+    "ece": 0.08082246385299924,
+    "n": 600.0,
+    "top5": 0.7933333333333333
+  },
+  "vit": {
+    "top1": 0.5416666666666666,
+    "macro_f1": 0.5313309380196006,
+    "ece": 0.07707400574334833,
+    "n": 1200.0,
+    "top5": 0.9508333333333333
+  },
+  "acceptance": {
+    "convnext_runs": true,
+    "vit_learns": true,
+    "contrast_logged": true,
+    "either_above_half": true
+  },
+  "interpretation": "Small-data: ConvNeXt/CNN inductive bias often beats tiny ViT without large pretrain (DeiT motivation).",
+  "passed": true
+}

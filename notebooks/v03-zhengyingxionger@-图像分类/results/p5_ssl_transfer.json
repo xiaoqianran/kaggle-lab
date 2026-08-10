@@ -1,0 +1,17 @@
+{
+  "phase": "P5",
+  "ssl_loss_curve": [
+    4.319275302124024,
+    3.9827097888946534,
+    3.8918743782043457,
+    3.854735206604004
+  ],
+  "linear_probe_top1": 0.628,
+  "prototype_zero_shot_top1": 0.442,
+  "acceptance": {
+    "ssl_loss_decreased": true,
+    "probe_above_chance": true,
+    "proto_runs": true
+  },
+  "passed": true
+}

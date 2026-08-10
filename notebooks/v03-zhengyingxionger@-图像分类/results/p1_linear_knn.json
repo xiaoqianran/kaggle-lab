@@ -1,0 +1,20 @@
+{
+  "phase": "P1",
+  "dataset": "FashionMNIST-flat",
+  "softmax": {
+    "history_loss_start": 1.2295967740855556,
+    "history_loss_end": 0.25121006715199495,
+    "top1": 0.81,
+    "macro_f1": 0.8084756285706837,
+    "ece": 0.07342978641183687,
+    "n": 800.0,
+    "top5": 0.9925
+  },
+  "knn_top1": 0.74,
+  "acceptance": {
+    "softmax_loss_decreased": true,
+    "softmax_better_than_chance": true,
+    "knn_better_than_chance": true
+  },
+  "passed": true
+}

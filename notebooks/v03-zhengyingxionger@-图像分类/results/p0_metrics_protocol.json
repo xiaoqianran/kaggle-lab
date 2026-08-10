@@ -1,0 +1,43 @@
+{
+  "phase": "P0",
+  "metrics_demo": {
+    "top1": 0.526,
+    "macro_f1": 0.5238864875639018,
+    "ece": 0.0942451019321293,
+    "n": 500.0,
+    "top5": 0.926
+  },
+  "leakage_clean": {
+    "train_val_overlap": 0,
+    "train_test_overlap": 0,
+    "val_test_overlap": 0,
+    "leaky": false,
+    "examples": {
+      "train_val": [],
+      "train_test": [],
+      "val_test": []
+    }
+  },
+  "leakage_dirty": {
+    "train_val_overlap": 1,
+    "train_test_overlap": 0,
+    "val_test_overlap": 1,
+    "leaky": true,
+    "examples": {
+      "train_val": [
+        4
+      ],
+      "train_test": [],
+      "val_test": [
+        6
+      ]
+    }
+  },
+  "seed_stable": true,
+  "acceptance": {
+    "metrics_ok": true,
+    "leakage_detector_ok": true,
+    "seed_ok": true
+  },
+  "passed": true
+}
