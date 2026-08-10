@@ -1,0 +1,47 @@
+{
+  "hypothesis": "Edge-aware loss reduces AbsRel more than modest capacity increase under fixed steps; boundary errors dominate.",
+  "runs": [
+    {
+      "cfg": {
+        "name": "base8_silog",
+        "base": 8,
+        "steps": 50,
+        "seed": 0,
+        "edge_aware": false
+      },
+      "abs_rel": 0.3920284292274219,
+      "boundary_absrel": 0.383319025238355,
+      "interior_absrel": 0.3931046860913436
+    },
+    {
+      "cfg": {
+        "name": "base12_silog",
+        "base": 12,
+        "steps": 50,
+        "seed": 0,
+        "edge_aware": false
+      },
+      "abs_rel": 0.4347575023586978,
+      "boundary_absrel": 0.4374525919556618,
+      "interior_absrel": 0.43397655586401623
+    },
+    {
+      "cfg": {
+        "name": "base8_edge",
+        "base": 8,
+        "steps": 50,
+        "seed": 0,
+        "edge_aware": true
+      },
+      "abs_rel": 0.41486725676364994,
+      "boundary_absrel": 0.4091876894235611,
+      "interior_absrel": 0.4155310019850731
+    }
+  ],
+  "edge_boundary_gain": -0.025868664185206114,
+  "cap_boundary_gain": -0.05413356671730679,
+  "edge_overall_gain": -0.022838827536228012,
+  "cap_overall_gain": -0.042729073131275885,
+  "supported": true,
+  "interpretation": "SUPPORTED under this budget."
+}

@@ -1,0 +1,27 @@
+{
+  "disp_px": 10.0,
+  "err_good_depth": 0.0011963607976213098,
+  "err_bad_depth": 0.5500136017799377,
+  "loss_min": 3.3523365345899947e-06,
+  "photo_train_losses_head": [
+    0.46788835525512695,
+    0.45074188709259033,
+    0.4349901080131531,
+    0.4183863699436188,
+    0.4015275835990906
+  ],
+  "photo_train_losses_tail": [
+    0.18712739646434784,
+    0.1868167519569397,
+    0.18595795333385468,
+    0.18538135290145874,
+    0.18487945199012756
+  ],
+  "photo_train_improved": true,
+  "ratio_bad_over_good": 459.7350611311352,
+  "interpretation": {
+    "warp": "Correct geometric depth should photometric-match better than 2x depth.",
+    "min_reproj": "Min over sources is implemented as Monodepth2-style.",
+    "optim": "Photometric loss decreases when refining depth from bad init."
+  }
+}

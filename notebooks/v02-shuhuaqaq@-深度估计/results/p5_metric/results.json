@@ -1,0 +1,189 @@
+{
+  "table": [
+    {
+      "family": "metric_oracle",
+      "align_none": {
+        "abs_rel": 0.008102156266335911,
+        "sq_rel": 0.0005069620819132727,
+        "rmse": 0.05004661751495628,
+        "rmse_log": 0.011338019001829522,
+        "si_rmse": 0.011337579868475155,
+        "delta1": 1.0,
+        "delta2": 1.0,
+        "delta3": 1.0,
+        "n_valid": 12288.0
+      },
+      "align_median": {
+        "abs_rel": 0.011277394348558964,
+        "sq_rel": 0.0010210001954772479,
+        "rmse": 0.07376781473620063,
+        "rmse_log": 0.014197143658699516,
+        "si_rmse": 0.011337579868475153,
+        "delta1": 1.0,
+        "delta2": 1.0,
+        "delta3": 1.0,
+        "n_valid": 12288.0
+      }
+    },
+    {
+      "family": "metric_scale_bias_1.15",
+      "align_none": {
+        "abs_rel": 0.15005045484172244,
+        "sq_rel": 0.13650882250091131,
+        "rmse": 0.9641691955190081,
+        "rmse_log": 0.14010726307664495,
+        "si_rmse": 0.009857771092801716,
+        "delta1": 1.0,
+        "delta2": 1.0,
+        "delta3": 1.0,
+        "n_valid": 12288.0
+      },
+      "align_median": {
+        "abs_rel": 0.009796265055277815,
+        "sq_rel": 0.0007700477186037853,
+        "rmse": 0.06407502982715108,
+        "rmse_log": 0.012343863726712872,
+        "si_rmse": 0.009857771092801861,
+        "delta1": 1.0,
+        "delta2": 1.0,
+        "delta3": 1.0,
+        "n_valid": 12288.0
+      }
+    },
+    {
+      "family": "relative_misused_as_metric",
+      "align_none": {
+        "abs_rel": 0.948164530103417,
+        "sq_rel": 5.650692807239348,
+        "rmse": 6.261150438254887,
+        "rmse_log": 3.5276477319089765,
+        "si_rmse": 0.8760450944731603,
+        "delta1": 0.0,
+        "delta2": 0.0,
+        "delta3": 0.0,
+        "n_valid": 12288.0
+      },
+      "align_median": {
+        "abs_rel": 0.6130674111136608,
+        "sq_rel": 5.956622111542015,
+        "rmse": 4.772916210580681,
+        "rmse_log": 0.6269343310624683,
+        "si_rmse": 0.5488412420608992,
+        "delta1": 0.6559235193696955,
+        "delta2": 0.6559235193696955,
+        "delta3": 0.7554542527927736,
+        "n_valid": 10616.166666666666
+      }
+    },
+    {
+      "family": "depth_pro_like",
+      "align_none": {
+        "abs_rel": 0.022735726359152362,
+        "sq_rel": 0.0037356553857187534,
+        "rmse": 0.15193530577063039,
+        "rmse_log": 0.02659300144827863,
+        "si_rmse": 0.017794795024760255,
+        "delta1": 1.0,
+        "delta2": 1.0,
+        "delta3": 1.0,
+        "n_valid": 12288.0
+      },
+      "align_median": {
+        "abs_rel": 0.01777073440982612,
+        "sq_rel": 0.0025407175697363294,
+        "rmse": 0.11627701505138481,
+        "rmse_log": 0.02228403789268507,
+        "si_rmse": 0.01779479502476026,
+        "delta1": 1.0,
+        "delta2": 1.0,
+        "delta3": 1.0,
+        "n_valid": 12288.0
+      }
+    },
+    {
+      "family": "metric3d_like",
+      "align_none": {
+        "abs_rel": 0.024385700490663683,
+        "sq_rel": 0.004416527613931991,
+        "rmse": 0.16232197285702263,
+        "rmse_log": 0.030882183322781077,
+        "si_rmse": 0.02316669818795059,
+        "delta1": 1.0,
+        "delta2": 1.0,
+        "delta3": 1.0,
+        "n_valid": 12288.0
+      },
+      "align_median": {
+        "abs_rel": 0.02320854444883752,
+        "sq_rel": 0.0043414827227259345,
+        "rmse": 0.1518954937471517,
+        "rmse_log": 0.02901098260655483,
+        "si_rmse": 0.023166698187950585,
+        "delta1": 1.0,
+        "delta2": 1.0,
+        "delta3": 1.0,
+        "n_valid": 12288.0
+      }
+    },
+    {
+      "family": "unidepth_like",
+      "align_none": {
+        "abs_rel": 0.050636349461864544,
+        "sq_rel": 0.016803917035108407,
+        "rmse": 0.3340135732561444,
+        "rmse_log": 0.05245654054751792,
+        "si_rmse": 0.019450798148143194,
+        "delta1": 1.0,
+        "delta2": 1.0,
+        "delta3": 1.0,
+        "n_valid": 12288.0
+      },
+      "align_median": {
+        "abs_rel": 0.019443692858059625,
+        "sq_rel": 0.0030433162116990146,
+        "rmse": 0.12723326387230677,
+        "rmse_log": 0.02435787927484709,
+        "si_rmse": 0.019450798148143187,
+        "delta1": 1.0,
+        "delta2": 1.0,
+        "delta3": 1.0,
+        "n_valid": 12288.0
+      }
+    }
+  ],
+  "focal_rows": [
+    {
+      "fx_assumed": 400,
+      "z_hat": 4.0,
+      "abs_rel": 0.2
+    },
+    {
+      "fx_assumed": 450,
+      "z_hat": 4.5,
+      "abs_rel": 0.1
+    },
+    {
+      "fx_assumed": 500,
+      "z_hat": 5.0,
+      "abs_rel": 0.0
+    },
+    {
+      "fx_assumed": 550,
+      "z_hat": 5.5,
+      "abs_rel": 0.1
+    },
+    {
+      "fx_assumed": 600,
+      "z_hat": 6.0,
+      "abs_rel": 0.2
+    }
+  ],
+  "point_rmse_scale_1.2": 0.5913814634351838,
+  "interpretation": {
+    "metric_protocol": "True metric models: report align=none. Median alignment hides absolute scale bugs.",
+    "relative_misuse": "Treating inverse depth as meters explodes AbsRel under align=none.",
+    "focal": "Wrong fx linearly scales stereo/metric depth; Depth Pro-style fx estimation targets this failure.",
+    "families": "Simulated DepthPro/Metric3D/UniDepth ranks by noise+bias \u2014 replace with real weights when GPU/weights available."
+  },
+  "real_weights_status": "Environment has no multi-GB foundation weights cached; protocol + analytic focal/3D tests are the executable core."
+}

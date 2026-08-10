@@ -1,0 +1,131 @@
+{
+  "rows": [
+    {
+      "repr": "disparity",
+      "align": "none",
+      "abs_rel": 0.9441735948626997,
+      "sq_rel": 5.754580459662049,
+      "rmse": 6.389896172964328,
+      "rmse_log": 3.549123139841871,
+      "si_rmse": 0.9041668020582272,
+      "delta1": 0.0,
+      "delta2": 0.0,
+      "delta3": 0.0,
+      "n_valid": 12288.0
+    },
+    {
+      "repr": "disparity",
+      "align": "median",
+      "abs_rel": 0.4687891040354799,
+      "sq_rel": 3.869902423724924,
+      "rmse": 3.8483508551680163,
+      "rmse_log": 0.6331657163234367,
+      "si_rmse": 0.5492015329845016,
+      "delta1": 0.6812781495841153,
+      "delta2": 0.6812781495841153,
+      "delta3": 0.7499686961417217,
+      "n_valid": 10814.25
+    },
+    {
+      "repr": "disparity",
+      "align": "least_squares",
+      "abs_rel": 0.0700032164555526,
+      "sq_rel": 0.04857151977807187,
+      "rmse": 0.4463482815363373,
+      "rmse_log": 0.09581256806407307,
+      "si_rmse": 0.09563231047875849,
+      "delta1": 0.9300740559895834,
+      "delta2": 1.0,
+      "delta3": 1.0,
+      "n_valid": 12288.0
+    },
+    {
+      "repr": "log",
+      "align": "none",
+      "abs_rel": 0.7034854230020644,
+      "sq_rel": 3.2078663225944863,
+      "rmse": 4.778453805592458,
+      "rmse_log": 1.2353879294286731,
+      "si_rmse": 0.13881017710893345,
+      "delta1": 0.0,
+      "delta2": 0.0,
+      "delta3": 0.0,
+      "n_valid": 12288.0
+    },
+    {
+      "repr": "log",
+      "align": "median",
+      "abs_rel": 0.11221335183734883,
+      "sq_rel": 0.14093309961770628,
+      "rmse": 0.7710271388372062,
+      "rmse_log": 0.17108580077274652,
+      "si_rmse": 0.13881017710893284,
+      "delta1": 0.7413533528645833,
+      "delta2": 1.0,
+      "delta3": 1.0,
+      "n_valid": 12288.0
+    },
+    {
+      "repr": "log",
+      "align": "least_squares",
+      "abs_rel": 0.0374786727710237,
+      "sq_rel": 0.012853768501539478,
+      "rmse": 0.22812959572938277,
+      "rmse_log": 0.05276496769979501,
+      "si_rmse": 0.05258096592839594,
+      "delta1": 1.0,
+      "delta2": 1.0,
+      "delta3": 1.0,
+      "n_valid": 12288.0
+    },
+    {
+      "repr": "neg_depth",
+      "align": "none",
+      "abs_rel": NaN,
+      "sq_rel": NaN,
+      "rmse": NaN,
+      "rmse_log": NaN,
+      "si_rmse": NaN,
+      "delta1": NaN,
+      "delta2": NaN,
+      "delta3": NaN,
+      "n_valid": 0.0
+    },
+    {
+      "repr": "neg_depth",
+      "align": "median",
+      "abs_rel": NaN,
+      "sq_rel": NaN,
+      "rmse": NaN,
+      "rmse_log": NaN,
+      "si_rmse": NaN,
+      "delta1": NaN,
+      "delta2": NaN,
+      "delta3": NaN,
+      "n_valid": 0.0
+    },
+    {
+      "repr": "neg_depth",
+      "align": "least_squares",
+      "abs_rel": NaN,
+      "sq_rel": NaN,
+      "rmse": NaN,
+      "rmse_log": NaN,
+      "si_rmse": NaN,
+      "delta1": NaN,
+      "delta2": NaN,
+      "delta3": NaN,
+      "n_valid": 0.0
+    }
+  ],
+  "midas": {
+    "attempted": true,
+    "loaded": null,
+    "error": "No module named 'timm'"
+  },
+  "interpretation": {
+    "relative_repr": "disparity/log/neg need least_squares (or median for pure scale) before AbsRel is meaningful.",
+    "protocol": "Foundation models reporting zero-shot relative depth must declare alignment; comparing raw AbsRel is invalid.",
+    "dav2_note": "Depth Anything V2 relative weights follow same affine-invariant eval; metric fine-tunes drop alignment."
+  }
+}

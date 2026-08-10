@@ -1,60 +1,58 @@
 # v02 · shuhuaqaq@ · 深度估计
 
-本目录 = **深度估计研究学习工程**。  
-权威学习蓝图：**[LEARNING_ROADMAP.md](./LEARNING_ROADMAP.md)**（领域地图 · 精选资料 · 最短路径 · 工程结构）。
+**状态：P0–P7 已跑通**（见 [PROGRESS.md](./PROGRESS.md)）。  
+蓝图：[LEARNING_ROADMAP.md](./LEARNING_ROADMAP.md)
 
-Kaggle 账号侧用户：`shuhuaqqq`。Notebook 命名：`de-NN-*.ipynb`。
+## 一键复验
 
----
+```bash
+python tests/test_metrics.py
+python tests/test_geometry.py
+python scripts/run_p0_experiment.py
+python scripts/run_p2_train.py
+python scripts/run_p3_photometric.py
+python scripts/run_p4_foundation_protocol.py
+python scripts/run_p5_metric_protocol.py
+python scripts/run_p7_hypothesis.py
+```
 
-## 快速导航
+## Notebooks
 
-| 文档 | 内容 |
+| 文件 | Phase |
+|------|-------|
+| `de-00-metrics-and-alignment.ipynb` | P0 |
+| `de-01-pinhole-and-stereo-depth.ipynb` | P1 |
+| `de-02-nyu-unet-supervised.ipynb` | P2 |
+| `de-03-monodepth2-source-and-mini.ipynb` | P3 |
+| `de-04-dav2-midas-zero-shot.ipynb` | P4 |
+| `de-05-metric-sota-protocol.ipynb` | P5 |
+| `de-06-research-claim-review.ipynb` | P6 |
+| `de-07-hypothesis-edge-vs-capacity.ipynb` | P7 |
+
+## 目录
+
+| 路径 | 内容 |
 |------|------|
-| [LEARNING_ROADMAP.md](./LEARNING_ROADMAP.md) | **主蓝图**（先读这个） |
-| [catalog.json](./catalog.json) | 竞赛/数据/模型机器索引 |
-| [papers/TEMPLATE.md](./papers/TEMPLATE.md) | 论文笔记模板 |
+| `00-map/`…`07-research-lab/` | 阶段 NOTES |
+| `scripts/` | 指标/几何/训练/协议实验 |
+| `tests/` | 单元测试 |
+| `papers/` | SOURCE_MAP + claim 审查 |
+| `results/` | 实验 JSON |
+| `vendor/` | 官方源码 clone（gitignore） |
 
-## 阶段目录
+## 关键结果速览
 
-| 目录 | Phase | 主题 |
-|------|-------|------|
-| `00-map/` | — | 术语、指标、概念卡 |
-| `01-geometry/` | P1 | 相机与立体最小实现 |
-| `02-supervised-classic/` | P2 | 有监督 baseline |
-| `03-self-supervised/` | P3 | Monodepth2 思想与源码 |
-| `04-foundation/` | P4 | MiDaS / DPT / DA-V2 |
-| `05-metric/` | P5 | Depth Pro / Metric3D / UniDepth |
-| `06-frontier/` | P6 | 新论文与失败 case |
-| `07-research-lab/` | P7 | 个人假设与实验日志 |
-| `scripts/` `tests/` | 全程 | 指标、对齐、单元测试 |
-| `vendor/` `data/` `results/` | 全程 | 源码/数据/结果（大文件不入库） |
-
-## Kaggle 深度估计任务速查（调研 2026-08-10）
-
-### 竞赛
-
-| 竞赛 | 状态 | 要点 |
-|------|------|------|
-| [ETHZ CIL Monocular Depth Estimation 2025](https://www.kaggle.com/competitions/ethz-cil-monocular-depth-estimation-2025) | 已结束 | SI-RMSE；课程向；可作工程闭环 |
-| [MDEC](https://jspenmar.github.io/MDEC/)（CVPR workshop） | 社区挑战 | 零样本泛化协议 |
-
-### 高票参考 Notebook（仅参考，不抄终点）
-
-| Notebook | 用途 |
-|----------|------|
-| [shreydan/monocular-depth-estimation-nyuv2](https://www.kaggle.com/code/shreydan/monocular-depth-estimation-nyuv2) | NYU 监督路径 |
-| [amanattheedge/depth-anything-v2-metric-fine-tunning-on-nyu](https://www.kaggle.com/code/amanattheedge/depth-anything-v2-metric-fine-tunning-on-nyu) | DA-V2 度量微调 |
-| [cilabeth/monocular-depth-example-notebook](https://www.kaggle.com/code/cilabeth/monocular-depth-example-notebook) | ETHZ 官方示例 |
-
-### Models Hub
-
-`intel/midas` · `artemmmtry/depth-anything-v2` · `keras/depth-anything` · `tensorflow/ar-portrait-depth`
-
----
+| 实验 | 结论 |
+|------|------|
+| P0 | 尺度→median；仿射→LS；逆深度不可硬评 |
+| P2 | silog AbsRel ≈0.014（easy synth） |
+| P3 | 错误深度光度误差 ≈460× |
+| P4 | disparity+LS AbsRel 0.07 vs none 0.94 |
+| P5 | metric 必须 align=none；median 掩盖尺度偏 |
+| P7 | H1 可脚本化检验（见 JSON） |
 
 ## 约定
 
-- 每个知识点：**原理 → 手写 → 源码 → Kaggle → 消融 → 解释**
-- 每次实质改动：**阿里规范 commit + push**
-- 密钥与大权重：**永不入库**
+- 六段闭环：原理 → 手写 → 源码 → 实验 → 消融 → 解释  
+- 每次实质改动：阿里规范 commit + push  
+- 大权重/数据不入库  
