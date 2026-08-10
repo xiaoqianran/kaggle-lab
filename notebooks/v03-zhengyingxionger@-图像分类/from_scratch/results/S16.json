@@ -1,14 +1,20 @@
 {
   "step": "S16",
-  "title": "transfer protocols",
+  "title": "transfer learning protocols",
+  "concept": "linear probe / full FT / scratch\uff1b\u5c11\u6837\u672c\u65f6\u590d\u7528\u9884\u8bad\u7ec3\u3002",
+  "input": "pretrain 4k then few-shot 500",
   "observable": {
-    "linear_probe_fewshot": 0.7066666666666667,
-    "scratch_fewshot": 0.41333333333333333,
-    "full_finetune_fewshot": 0.7333333333333333
+    "scratch": 0.30666666666666664,
+    "probe": 0.69,
+    "finetune": 0.73
   },
-  "metric": 0.7066666666666667,
-  "takeaway": "With few labels, reusing pretrained features (probe/FT) beats training from scratch.",
+  "metric": 0.73,
   "metric_kind": "top1",
-  "delta_vs_prev_metric": 0.08166666666666667,
-  "elapsed_sec": 14.69542932510376
+  "takeaway": "\u80fd\u529b#16\uff1a\u8fc1\u79fb\u534f\u8bae\u3002\u5c11\u6807\u7b7e\u4e0b probe/FT \u901a\u5e38\u78be\u538b\u4ece\u5934\u8bad\u3002",
+  "viz": [
+    "from_scratch/results/viz/S16_transfer.png"
+  ],
+  "new_capability": "\u80fd\u529b#16\uff1a\u8fc1\u79fb\u534f\u8bae\u3002\u5c11\u6807\u7b7e\u4e0b probe/FT \u901a\u5e38\u78be\u538b\u4ece\u5934\u8bad\u3002",
+  "delta_vs_prev_top1": 0.07624999999999993,
+  "elapsed_sec": 15.497358322143555
 }

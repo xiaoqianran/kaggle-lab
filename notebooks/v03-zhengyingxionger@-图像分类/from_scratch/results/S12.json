@@ -1,16 +1,29 @@
 {
   "step": "S12",
   "title": "minimal Vision Transformer",
+  "concept": "\u56fe\u50cf\u5207 patch \u2192 \u5e8f\u5217 Transformer \u2192 cls \u5206\u7c7b\u3002",
+  "input": "small data on purpose",
   "observable": {
-    "top1": 0.46,
-    "macro_f1": 0.4083647876592115,
-    "ece": 0.11686491694529522,
-    "n": 600.0,
-    "top5": 0.9333333333333333
+    "metrics": {
+      "top1": 0.49,
+      "macro_f1": 0.45387995744093307,
+      "ece": 0.10808966693164589,
+      "n": 600.0,
+      "top5": 0.9583333333333334
+    },
+    "curve": [
+      0.38166666666666665,
+      0.42833333333333334,
+      0.49
+    ]
   },
-  "metric": 0.46,
-  "takeaway": "Global attention works but is data-hungry without strong recipe/pretrain.",
+  "metric": 0.49,
   "metric_kind": "top1",
-  "delta_vs_prev_metric": -0.16833333333333328,
-  "elapsed_sec": 10.373764038085938
+  "takeaway": "\u80fd\u529b#12\uff1a\u5168\u5c40\u81ea\u6ce8\u610f\u529b\u3002\u5c0f\u6570\u636e\u5e38\u5f31\u4e8e CNN \u2192 \u9700\u914d\u65b9/\u9884\u8bad\u7ec3\u3002",
+  "viz": [
+    "from_scratch/results/viz/S12_vit.png"
+  ],
+  "new_capability": "\u80fd\u529b#12\uff1a\u5168\u5c40\u81ea\u6ce8\u610f\u529b\u3002\u5c0f\u6570\u636e\u5e38\u5f31\u4e8e CNN \u2192 \u9700\u914d\u65b9/\u9884\u8bad\u7ec3\u3002",
+  "delta_vs_prev_top1": -0.021666666666666723,
+  "elapsed_sec": 10.347458124160767
 }

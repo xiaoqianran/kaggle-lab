@@ -4,67 +4,307 @@
       "step": "S00",
       "title": "pixels as tensors",
       "metric": null,
+      "metric_kind": "none",
       "delta_vs_prev_top1": null,
       "takeaway": "\u80fd\u529b#0\uff1a\u628a\u50cf\u7d20\u5f53\u6570\u636e\u2014\u2014\u5148\u770b shape/scale/\u7c7b\u5206\u5e03\uff0c\u518d\u8c08\u6a21\u578b\u3002",
-      "elapsed_sec": 0.5316376686096191,
       "viz": [
         "from_scratch/results/viz/S00_class_samples.png"
-      ]
+      ],
+      "elapsed_sec": 0.5316376686096191,
+      "new_capability": "\u80fd\u529b#0\uff1a\u628a\u50cf\u7d20\u5f53\u6570\u636e\u2014\u2014\u5148\u770b shape/scale/\u7c7b\u5206\u5e03\uff0c\u518d\u8c08\u6a21\u578b\u3002"
     },
     {
       "step": "S01",
       "title": "kNN baseline (no learning)",
       "metric": 0.71,
+      "metric_kind": "top1",
       "delta_vs_prev_top1": null,
       "takeaway": "\u80fd\u529b#1\uff1a\u65e0\u5b66\u4e60\u57fa\u7ebf\u3002kNN>>\u968f\u673a \u21d2 \u6570\u636e\u6709\u53ef\u5206\u7ed3\u6784\uff0c\u540e\u7eed\u6a21\u578b\u5fc5\u987b\u8d85\u8fc7\u5b83\u3002",
-      "elapsed_sec": 0.3793363571166992,
       "viz": [
         "from_scratch/results/viz/S01_knn_errors.png",
         "from_scratch/results/viz/S01_vs_chance.png"
-      ]
+      ],
+      "elapsed_sec": 0.3793363571166992,
+      "new_capability": "\u80fd\u529b#1\uff1a\u65e0\u5b66\u4e60\u57fa\u7ebf\u3002kNN>>\u968f\u673a \u21d2 \u6570\u636e\u6709\u53ef\u5206\u7ed3\u6784\uff0c\u540e\u7eed\u6a21\u578b\u5fc5\u987b\u8d85\u8fc7\u5b83\u3002"
     },
     {
       "step": "S02",
       "title": "linear softmax from scratch",
       "metric": 0.80625,
+      "metric_kind": "top1",
       "delta_vs_prev_top1": 0.09625000000000006,
       "takeaway": "\u80fd\u529b#2\uff1a\u53c2\u6570\u5b66\u4e60+\u6982\u7387\u8f93\u51fa\u3002\u4ecd\u662f\u8d85\u5e73\u9762\u51b3\u7b56\uff0c\u65e0\u7a7a\u95f4\u7ed3\u6784\u3002",
-      "elapsed_sec": 0.8556969165802002,
       "viz": [
         "from_scratch/results/viz/S02_loss.png",
         "from_scratch/results/viz/S02_class_templates.png"
-      ]
+      ],
+      "elapsed_sec": 0.8556969165802002,
+      "new_capability": "\u80fd\u529b#2\uff1a\u53c2\u6570\u5b66\u4e60+\u6982\u7387\u8f93\u51fa\u3002\u4ecd\u662f\u8d85\u5e73\u9762\u51b3\u7b56\uff0c\u65e0\u7a7a\u95f4\u7ed3\u6784\u3002"
     },
     {
       "step": "S03",
       "title": "MLP on flat pixels",
       "metric": 0.82,
+      "metric_kind": "top1",
       "delta_vs_prev_top1": 0.013749999999999929,
       "takeaway": "\u80fd\u529b#3\uff1a\u6df1\u5ea6\u975e\u7ebf\u6027\u3002\u5e38\u7565\u597d\u4e8e\u7ebf\u6027\uff0c\u4f46\u8fc7\u62df\u5408\u4e0e\u65e0\u89c6\u7a7a\u95f4 \u2192 \u9700\u8981\u5377\u79ef\u3002",
-      "elapsed_sec": 1.0359792709350586,
       "viz": [
         "from_scratch/results/viz/S03_mlp_curves.png"
-      ]
+      ],
+      "elapsed_sec": 1.0359792709350586,
+      "new_capability": "\u80fd\u529b#3\uff1a\u6df1\u5ea6\u975e\u7ebf\u6027\u3002\u5e38\u7565\u597d\u4e8e\u7ebf\u6027\uff0c\u4f46\u8fc7\u62df\u5408\u4e0e\u65e0\u89c6\u7a7a\u95f4 \u2192 \u9700\u8981\u5377\u79ef\u3002"
     },
     {
       "step": "S04",
       "title": "hand-written convolution + feature maps",
       "metric": 0.5187590718269348,
+      "metric_kind": "feature_energy",
       "delta_vs_prev_top1": null,
       "takeaway": "\u80fd\u529b#4\uff1a\u5c40\u90e8\u6a21\u5f0f\u63d0\u53d6\u3002\u53c2\u6570\u6548\u7387\u6570\u91cf\u7ea7\u4f18\u52bf\uff1b\u7b2c\u4e00\u6b21\u2018\u770b\u89c1\u2019\u8fb9\u7f18\u3002",
-      "elapsed_sec": 0.1777048110961914,
       "viz": [
         "from_scratch/results/viz/S04_feature_maps.png"
-      ]
+      ],
+      "elapsed_sec": 0.1777048110961914,
+      "new_capability": "\u80fd\u529b#4\uff1a\u5c40\u90e8\u6a21\u5f0f\u63d0\u53d6\u3002\u53c2\u6570\u6548\u7387\u6570\u91cf\u7ea7\u4f18\u52bf\uff1b\u7b2c\u4e00\u6b21\u2018\u770b\u89c1\u2019\u8fb9\u7f18\u3002"
+    },
+    {
+      "step": "S05",
+      "title": "shallow CNN end-to-end",
+      "metric": 0.42,
+      "metric_kind": "top1",
+      "delta_vs_prev_top1": -0.39999999999999997,
+      "takeaway": "\u80fd\u529b#5\uff1a\u5b8c\u6574\u5377\u79ef\u5206\u7c7b\u5668\u3002\u7a7a\u95f4\u5f52\u7eb3\u504f\u7f6e\u8fdb\u5165\u95ed\u73af\u3002",
+      "viz": [
+        "from_scratch/results/viz/S05_top1.png",
+        "from_scratch/results/viz/S05_cm.png"
+      ],
+      "elapsed_sec": 9.609986305236816,
+      "new_capability": "\u80fd\u529b#5\uff1a\u5b8c\u6574\u5377\u79ef\u5206\u7c7b\u5668\u3002\u7a7a\u95f4\u5f52\u7eb3\u504f\u7f6e\u8fdb\u5165\u95ed\u73af\u3002"
+    },
+    {
+      "step": "S06",
+      "title": "BatchNorm ablation",
+      "metric": 0.5833333333333334,
+      "metric_kind": "top1",
+      "delta_vs_prev_top1": 0.16333333333333339,
+      "takeaway": "\u80fd\u529b#6\uff1a\u8bad\u7ec3\u7a33\u5b9a\u6027\u6280\u672f\u3002\u540c\u67b6\u6784\u4e0b BN \u901a\u5e38\u66f4\u5feb\u66f4\u7a33\u3002",
+      "viz": [
+        "from_scratch/results/viz/S06_bn_ablation.png"
+      ],
+      "elapsed_sec": 14.129796981811523,
+      "new_capability": "\u80fd\u529b#6\uff1a\u8bad\u7ec3\u7a33\u5b9a\u6027\u6280\u672f\u3002\u540c\u67b6\u6784\u4e0b BN \u901a\u5e38\u66f4\u5feb\u66f4\u7a33\u3002"
+    },
+    {
+      "step": "S07",
+      "title": "3x3 stacks (VGG intuition)",
+      "metric": 0.555,
+      "metric_kind": "top1",
+      "delta_vs_prev_top1": -0.02833333333333332,
+      "takeaway": "\u80fd\u529b#7\uff1a\u6df1\u5ea6\u8bbe\u8ba1\u76f4\u89c9\u3002\u8fc7\u6df1\u53ef\u80fd\u9000\u5316 \u2192 \u5f15\u51fa\u6b8b\u5dee\u3002",
+      "viz": [
+        "from_scratch/results/viz/S07_depth.png"
+      ],
+      "elapsed_sec": 22.403781414031982,
+      "new_capability": "\u80fd\u529b#7\uff1a\u6df1\u5ea6\u8bbe\u8ba1\u76f4\u89c9\u3002\u8fc7\u6df1\u53ef\u80fd\u9000\u5316 \u2192 \u5f15\u51fa\u6b8b\u5dee\u3002"
+    },
+    {
+      "step": "S08",
+      "title": "ResNet residual breakthrough",
+      "metric": 0.67625,
+      "metric_kind": "top1",
+      "delta_vs_prev_top1": 0.12124999999999997,
+      "takeaway": "\u80fd\u529b#8\uff1a\u53ef\u8bad\u7ec3\u7684\u6df1\u5ea6\u30022015 \u5206\u6c34\u5cad\u2014\u2014\u73b0\u4ee3\u4e3b\u5e72\u9ed8\u8ba4\u6b8b\u5dee\u3002",
+      "viz": [
+        "from_scratch/results/viz/S08_residual.png"
+      ],
+      "elapsed_sec": 107.6448450088501,
+      "new_capability": "\u80fd\u529b#8\uff1a\u53ef\u8bad\u7ec3\u7684\u6df1\u5ea6\u30022015 \u5206\u6c34\u5cad\u2014\u2014\u73b0\u4ee3\u4e3b\u5e72\u9ed8\u8ba4\u6b8b\u5dee\u3002"
+    },
+    {
+      "step": "S09",
+      "title": "depthwise separable conv",
+      "metric": 0.4066666666666667,
+      "metric_kind": "top1",
+      "delta_vs_prev_top1": -0.26958333333333334,
+      "takeaway": "\u80fd\u529b#9\uff1a\u6548\u7387\u8f74\u3002\u7814\u7a76\u4e5f\u8981\u62a5\u6210\u672c\uff0c\u4e0d\u53ea\u62a5 top1\u3002",
+      "viz": [
+        "from_scratch/results/viz/S09_params.png"
+      ],
+      "elapsed_sec": 5.090550899505615,
+      "new_capability": "\u80fd\u529b#9\uff1a\u6548\u7387\u8f74\u3002\u7814\u7a76\u4e5f\u8981\u62a5\u6210\u672c\uff0c\u4e0d\u53ea\u62a5 top1\u3002"
+    },
+    {
+      "step": "S10",
+      "title": "modern training recipe",
+      "metric": 0.6266666666666667,
+      "metric_kind": "top1",
+      "delta_vs_prev_top1": 0.22000000000000003,
+      "takeaway": "\u80fd\u529b#10\uff1a\u5de5\u4e1a\u7ea7\u8bad\u7ec3\u914d\u65b9\u3002SOTA \u63d0\u5347\u5e38\u6765\u81ea recipe\u3002",
+      "viz": [
+        "from_scratch/results/viz/S10_recipe.png"
+      ],
+      "elapsed_sec": 22.97242021560669,
+      "new_capability": "\u80fd\u529b#10\uff1a\u5de5\u4e1a\u7ea7\u8bad\u7ec3\u914d\u65b9\u3002SOTA \u63d0\u5347\u5e38\u6765\u81ea recipe\u3002"
+    },
+    {
+      "step": "S11",
+      "title": "Squeeze-and-Excitation",
+      "metric": 0.5116666666666667,
+      "metric_kind": "top1",
+      "delta_vs_prev_top1": -0.11499999999999999,
+      "takeaway": "\u80fd\u529b#11\uff1a\u901a\u9053\u6ce8\u610f\u529b\u3002ViT \u4e4b\u524d\u7684\u5b9e\u7528\u6ce8\u610f\u5f62\u6001\u3002",
+      "viz": [
+        "from_scratch/results/viz/S11_se.png"
+      ],
+      "elapsed_sec": 10.438360691070557,
+      "new_capability": "\u80fd\u529b#11\uff1a\u901a\u9053\u6ce8\u610f\u529b\u3002ViT \u4e4b\u524d\u7684\u5b9e\u7528\u6ce8\u610f\u5f62\u6001\u3002"
+    },
+    {
+      "step": "S12",
+      "title": "minimal Vision Transformer",
+      "metric": 0.49,
+      "metric_kind": "top1",
+      "delta_vs_prev_top1": -0.021666666666666723,
+      "takeaway": "\u80fd\u529b#12\uff1a\u5168\u5c40\u81ea\u6ce8\u610f\u529b\u3002\u5c0f\u6570\u636e\u5e38\u5f31\u4e8e CNN \u2192 \u9700\u914d\u65b9/\u9884\u8bad\u7ec3\u3002",
+      "viz": [
+        "from_scratch/results/viz/S12_vit.png"
+      ],
+      "elapsed_sec": 10.347458124160767,
+      "new_capability": "\u80fd\u529b#12\uff1a\u5168\u5c40\u81ea\u6ce8\u610f\u529b\u3002\u5c0f\u6570\u636e\u5e38\u5f31\u4e8e CNN \u2192 \u9700\u914d\u65b9/\u9884\u8bad\u7ec3\u3002"
+    },
+    {
+      "step": "S13",
+      "title": "ConvNeXt modern CNN",
+      "metric": 0.31333333333333335,
+      "metric_kind": "top1",
+      "delta_vs_prev_top1": -0.17666666666666664,
+      "takeaway": "\u80fd\u529b#13\uff1a\u73b0\u4ee3 CNN \u53cc\u8def\u7ebf\u3002\u6ce8\u610f\u529b\u975e\u552f\u4e00\u7b54\u6848\u3002",
+      "viz": [
+        "from_scratch/results/viz/S13_vs_vit.png"
+      ],
+      "elapsed_sec": 62.266143798828125,
+      "new_capability": "\u80fd\u529b#13\uff1a\u73b0\u4ee3 CNN \u53cc\u8def\u7ebf\u3002\u6ce8\u610f\u529b\u975e\u552f\u4e00\u7b54\u6848\u3002"
+    },
+    {
+      "step": "S14",
+      "title": "SimCLR-style contrastive SSL",
+      "metric": 0.628,
+      "metric_kind": "top1",
+      "delta_vs_prev_top1": 0.31466666666666665,
+      "takeaway": "\u80fd\u529b#14\uff1a\u65e0\u6807\u7b7e\u8868\u5f81\u5b66\u4e60\u3002linear probe \u662f\u6807\u51c6\u5ea6\u91cf\u3002",
+      "viz": [
+        "from_scratch/results/viz/S14_ssl_loss.png",
+        "from_scratch/results/viz/S14_probe.png"
+      ],
+      "elapsed_sec": 15.771376371383667,
+      "new_capability": "\u80fd\u529b#14\uff1a\u65e0\u6807\u7b7e\u8868\u5f81\u5b66\u4e60\u3002linear probe \u662f\u6807\u51c6\u5ea6\u91cf\u3002"
+    },
+    {
+      "step": "S15",
+      "title": "prototype cosine (CLIP interface)",
+      "metric": 0.65375,
+      "metric_kind": "top1",
+      "delta_vs_prev_top1": 0.02575000000000005,
+      "takeaway": "\u80fd\u529b#15\uff1a\u5f00\u653e\u96c6\u63a5\u53e3\u3002\u6362\u539f\u578b\u5373\u53ef\u6269\u7c7b\uff08\u771f CLIP \u7528\u6587\u672c\u5854\uff09\u3002",
+      "viz": [
+        "from_scratch/results/viz/S15_proto.png"
+      ],
+      "elapsed_sec": 7.943997859954834,
+      "new_capability": "\u80fd\u529b#15\uff1a\u5f00\u653e\u96c6\u63a5\u53e3\u3002\u6362\u539f\u578b\u5373\u53ef\u6269\u7c7b\uff08\u771f CLIP \u7528\u6587\u672c\u5854\uff09\u3002"
+    },
+    {
+      "step": "S16",
+      "title": "transfer learning protocols",
+      "metric": 0.73,
+      "metric_kind": "top1",
+      "delta_vs_prev_top1": 0.07624999999999993,
+      "takeaway": "\u80fd\u529b#16\uff1a\u8fc1\u79fb\u534f\u8bae\u3002\u5c11\u6807\u7b7e\u4e0b probe/FT \u901a\u5e38\u78be\u538b\u4ece\u5934\u8bad\u3002",
+      "viz": [
+        "from_scratch/results/viz/S16_transfer.png"
+      ],
+      "elapsed_sec": 15.497358322143555,
+      "new_capability": "\u80fd\u529b#16\uff1a\u8fc1\u79fb\u534f\u8bae\u3002\u5c11\u6807\u7b7e\u4e0b probe/FT \u901a\u5e38\u78be\u538b\u4ece\u5934\u8bad\u3002"
+    },
+    {
+      "step": "S17",
+      "title": "toy MAE (masked autoencoder)",
+      "metric": 0.5244832347866241,
+      "metric_kind": "recon_quality_proxy",
+      "delta_vs_prev_top1": null,
+      "takeaway": "\u80fd\u529b#17\uff1a\u63a9\u7801\u56fe\u50cf\u5efa\u6a21\u3002MAE \u8def\u7ebf\u4e0e\u5bf9\u6bd4\u5b66\u4e60\u5e76\u5217\u7684 SSL \u652f\u67f1\u3002",
+      "viz": [
+        "from_scratch/results/viz/S17_mae_recon.png",
+        "from_scratch/results/viz/S17_mae_loss.png"
+      ],
+      "elapsed_sec": 2.1667492389678955,
+      "new_capability": "\u80fd\u529b#17\uff1a\u63a9\u7801\u56fe\u50cf\u5efa\u6a21\u3002MAE \u8def\u7ebf\u4e0e\u5bf9\u6bd4\u5b66\u4e60\u5e76\u5217\u7684 SSL \u652f\u67f1\u3002"
+    },
+    {
+      "step": "S18",
+      "title": "DeiT-style data-efficient ViT recipe",
+      "metric": 0.5066666666666667,
+      "metric_kind": "top1",
+      "delta_vs_prev_top1": -0.22333333333333327,
+      "takeaway": "\u80fd\u529b#18\uff1a\u6570\u636e\u9ad8\u6548 ViT \u914d\u65b9\u3002\u67b6\u6784+\u914d\u65b9\u7f3a\u4e00\u4e0d\u53ef\u3002",
+      "viz": [
+        "from_scratch/results/viz/S18_deit_recipe.png"
+      ],
+      "elapsed_sec": 24.896517753601074,
+      "new_capability": "\u80fd\u529b#18\uff1a\u6570\u636e\u9ad8\u6548 ViT \u914d\u65b9\u3002\u67b6\u6784+\u914d\u65b9\u7f3a\u4e00\u4e0d\u53ef\u3002"
+    },
+    {
+      "step": "S19",
+      "title": "MiniCLIP dual-encoder (from scratch)",
+      "metric": 0.7275,
+      "metric_kind": "top1",
+      "delta_vs_prev_top1": 0.22083333333333333,
+      "takeaway": "\u80fd\u529b#19\uff1a\u591a\u6a21\u6001\u5bf9\u9f50\u63a5\u53e3\u3002\u771f CLIP \u6362\u6587\u672c\u7f16\u7801\u5668\u5373\u53ef\u6269\u5c55\u4efb\u610f\u7c7b\u540d\u3002",
+      "viz": [
+        "from_scratch/results/viz/S19_clip_loss.png",
+        "from_scratch/results/viz/S19_zs.png"
+      ],
+      "elapsed_sec": 13.535782814025879,
+      "new_capability": "\u80fd\u529b#19\uff1a\u591a\u6a21\u6001\u5bf9\u9f50\u63a5\u53e3\u3002\u771f CLIP \u6362\u6587\u672c\u7f16\u7801\u5668\u5373\u53ef\u6269\u5c55\u4efb\u610f\u7c7b\u540d\u3002"
+    },
+    {
+      "step": "S20",
+      "title": "modern evaluation protocol",
+      "metric": 0.68,
+      "metric_kind": "top1",
+      "delta_vs_prev_top1": -0.04749999999999999,
+      "takeaway": "\u80fd\u529b#20\uff1a\u5b8c\u6574\u8bc4\u6d4b\u534f\u8bae\u3002\u53ea\u6709 top1 \u4e0d\u591f\uff0c\u6821\u51c6\u4e0e OOD \u540c\u5c5e\u73b0\u4ee3\u7cfb\u7edf\u3002",
+      "viz": [
+        "from_scratch/results/viz/S20_cm.png",
+        "from_scratch/results/viz/S20_protocol.png",
+        "from_scratch/results/viz/S20_ood_conf.png"
+      ],
+      "elapsed_sec": 59.35104155540466,
+      "new_capability": "\u80fd\u529b#20\uff1a\u5b8c\u6574\u8bc4\u6d4b\u534f\u8bae\u3002\u53ea\u6709 top1 \u4e0d\u591f\uff0c\u6821\u51c6\u4e0e OOD \u540c\u5c5e\u73b0\u4ee3\u7cfb\u7edf\u3002"
     }
   ],
   "dataset": "FashionMNIST-32RGB",
   "map": "from_scratch/MAP.md",
-  "complete": [
+  "steps_complete": [
     "S00",
     "S01",
     "S02",
     "S03",
-    "S04"
+    "S04",
+    "S05",
+    "S06",
+    "S07",
+    "S08",
+    "S09",
+    "S10",
+    "S11",
+    "S12",
+    "S13",
+    "S14",
+    "S15",
+    "S16",
+    "S17",
+    "S18",
+    "S19",
+    "S20"
   ]
 }

@@ -1,13 +1,19 @@
 {
   "step": "S15",
-  "title": "prototype cosine (CLIP intuition)",
+  "title": "prototype cosine (CLIP interface)",
+  "concept": "\u56fe\u7279\u5f81\u4e0e\u7c7b\u539f\u578b\u4f59\u5f26\u76f8\u4f3c\u5ea6\u5206\u7c7b\uff1b\u5f00\u653e\u8bcd\u6c47\u63a5\u53e3\u7684\u96cf\u5f62\u3002",
+  "input": "supervised features + class mean prototypes",
   "observable": {
-    "prototype_top1": 0.625,
-    "closed_head_top1": 0.535
+    "closed_top1": 0.59375,
+    "prototype_top1": 0.65375
   },
-  "metric": 0.625,
-  "takeaway": "Cosine-to-prototype is the interface of open-vocab models; usually trails closed heads.",
+  "metric": 0.65375,
   "metric_kind": "top1",
-  "delta_vs_prev_metric": 0.009000000000000008,
-  "elapsed_sec": 7.325013875961304
+  "takeaway": "\u80fd\u529b#15\uff1a\u5f00\u653e\u96c6\u63a5\u53e3\u3002\u6362\u539f\u578b\u5373\u53ef\u6269\u7c7b\uff08\u771f CLIP \u7528\u6587\u672c\u5854\uff09\u3002",
+  "viz": [
+    "from_scratch/results/viz/S15_proto.png"
+  ],
+  "new_capability": "\u80fd\u529b#15\uff1a\u5f00\u653e\u96c6\u63a5\u53e3\u3002\u6362\u539f\u578b\u5373\u53ef\u6269\u7c7b\uff08\u771f CLIP \u7528\u6587\u672c\u5854\uff09\u3002",
+  "delta_vs_prev_top1": 0.02575000000000005,
+  "elapsed_sec": 7.943997859954834
 }

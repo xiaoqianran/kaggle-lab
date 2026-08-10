@@ -1,26 +1,30 @@
 {
   "step": "S08",
-  "title": "residual vs plain deep",
+  "title": "ResNet residual breakthrough",
+  "concept": "y=F(x)+x\uff0c\u5b66\u4e60\u6b8b\u5dee\u4f7f\u6781\u6df1\u7f51\u7edc\u53ef\u4f18\u5316\u3002",
+  "input": "same data budget; residual vs plain deep",
   "observable": {
     "residual": {
-      "top1": 0.73,
-      "macro_f1": 0.7038054660699613,
-      "ece": 0.04427544266353794,
+      "top1": 0.67625,
+      "macro_f1": 0.6459042006543825,
+      "ece": 0.11167068961228988,
       "n": 800.0,
-      "top5": 0.9925
+      "top5": 0.99375
     },
-    "plain_deep": {
-      "top1": 0.4825,
-      "macro_f1": 0.44211559135146156,
-      "ece": 0.11955421546335775,
+    "plain": {
+      "top1": 0.11875,
+      "macro_f1": 0.021229050279329607,
+      "ece": 0.0063878020430028215,
       "n": 800.0,
-      "top5": 0.96625
+      "top5": 0.52125
     }
   },
-  "metric": 0.73,
-  "delta_internal": 0.2475,
-  "takeaway": "Residual path keeps deep nets optimizable \u2014 key 2015 breakthrough.",
+  "metric": 0.67625,
   "metric_kind": "top1",
-  "delta_vs_prev_metric": 0.1316666666666666,
-  "elapsed_sec": 71.13628149032593
+  "takeaway": "\u80fd\u529b#8\uff1a\u53ef\u8bad\u7ec3\u7684\u6df1\u5ea6\u30022015 \u5206\u6c34\u5cad\u2014\u2014\u73b0\u4ee3\u4e3b\u5e72\u9ed8\u8ba4\u6b8b\u5dee\u3002",
+  "viz": [
+    "from_scratch/results/viz/S08_residual.png"
+  ],
+  "new_capability": "\u80fd\u529b#8\uff1a\u53ef\u8bad\u7ec3\u7684\u6df1\u5ea6\u30022015 \u5206\u6c34\u5cad\u2014\u2014\u73b0\u4ee3\u4e3b\u5e72\u9ed8\u8ba4\u6b8b\u5dee\u3002",
+  "elapsed_sec": 107.6448450088501
 }

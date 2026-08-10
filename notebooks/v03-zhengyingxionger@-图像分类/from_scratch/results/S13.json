@@ -1,15 +1,25 @@
 {
   "step": "S13",
-  "title": "Mini ConvNeXt",
+  "title": "ConvNeXt modern CNN",
+  "concept": "\u5927\u6838 DWConv + LN + \u9636\u6bb5\u8bbe\u8ba1\uff0c\u628a Transformer \u8bfe\u642c\u56de CNN\u3002",
+  "input": "same budget as S12",
   "observable": {
-    "top1": 0.5033333333333333,
-    "macro_f1": 0.44792939842671214,
-    "ece": 0.18400698266007035,
-    "n": 600.0,
-    "top5": 0.9116666666666666
+    "metrics": {
+      "top1": 0.31333333333333335,
+      "macro_f1": 0.19139725665874324,
+      "ece": 0.06971591471338737,
+      "n": 600.0,
+      "top5": 0.7816666666666666
+    },
+    "vit_top1_ref": 0.49
   },
-  "metric": 0.5033333333333333,
-  "takeaway": "Modernized CNNs compete with ViTs; architecture is not settled on attention-only.",
+  "metric": 0.31333333333333335,
   "metric_kind": "top1",
-  "elapsed_sec": 64.49355292320251
+  "takeaway": "\u80fd\u529b#13\uff1a\u73b0\u4ee3 CNN \u53cc\u8def\u7ebf\u3002\u6ce8\u610f\u529b\u975e\u552f\u4e00\u7b54\u6848\u3002",
+  "viz": [
+    "from_scratch/results/viz/S13_vs_vit.png"
+  ],
+  "new_capability": "\u80fd\u529b#13\uff1a\u73b0\u4ee3 CNN \u53cc\u8def\u7ebf\u3002\u6ce8\u610f\u529b\u975e\u552f\u4e00\u7b54\u6848\u3002",
+  "delta_vs_prev_top1": -0.17666666666666664,
+  "elapsed_sec": 62.266143798828125
 }

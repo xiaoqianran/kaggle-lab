@@ -1,16 +1,42 @@
 {
   "step": "S05",
-  "title": "shallow CNN (LeNet spirit)",
+  "title": "shallow CNN end-to-end",
+  "concept": "Conv-Pool \u5806\u53e0 + \u5206\u7c7b\u5934\uff1b\u7aef\u5230\u7aef\u53cd\u4f20\u3002",
+  "input": "32x32 RGB FashionMNIST loaders",
   "observable": {
-    "top1": 0.6625,
-    "macro_f1": 0.6535533531901639,
-    "ece": 0.14791999425718064,
-    "n": 800.0,
-    "top5": 0.98125
+    "history": [
+      {
+        "loss": 1.8311176504135132,
+        "top1": 0.46
+      },
+      {
+        "loss": 1.235379837989807,
+        "top1": 0.61
+      },
+      {
+        "loss": 1.0164551229476928,
+        "top1": 0.58125
+      },
+      {
+        "loss": 0.9026633996963501,
+        "top1": 0.42
+      }
+    ],
+    "final": {
+      "top1": 0.42,
+      "macro_f1": 0.3723562276128774,
+      "ece": 0.23330599619188686,
+      "n": 800.0,
+      "top5": 0.96375
+    }
   },
-  "metric": 0.6625,
-  "takeaway": "End-to-end CNN uses spatial structure; should beat flat MLP under similar budget.",
+  "metric": 0.42,
   "metric_kind": "top1",
-  "delta_vs_prev_metric": -0.15749999999999997,
-  "elapsed_sec": 7.674738168716431
+  "takeaway": "\u80fd\u529b#5\uff1a\u5b8c\u6574\u5377\u79ef\u5206\u7c7b\u5668\u3002\u7a7a\u95f4\u5f52\u7eb3\u504f\u7f6e\u8fdb\u5165\u95ed\u73af\u3002",
+  "viz": [
+    "from_scratch/results/viz/S05_top1.png",
+    "from_scratch/results/viz/S05_cm.png"
+  ],
+  "new_capability": "\u80fd\u529b#5\uff1a\u5b8c\u6574\u5377\u79ef\u5206\u7c7b\u5668\u3002\u7a7a\u95f4\u5f52\u7eb3\u504f\u7f6e\u8fdb\u5165\u95ed\u73af\u3002",
+  "elapsed_sec": 9.609986305236816
 }

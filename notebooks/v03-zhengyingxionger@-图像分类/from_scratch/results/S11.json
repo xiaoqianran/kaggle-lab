@@ -1,26 +1,31 @@
 {
   "step": "S11",
   "title": "Squeeze-and-Excitation",
+  "concept": "\u5168\u5c40\u6c60\u5316\u2192FC\u2192\u901a\u9053\u6743\u91cd\uff0c\u8f7b\u91cf\u6ce8\u610f\u529b\u3002",
+  "input": "CNN \u00b1 SE blocks",
   "observable": {
     "se": {
-      "top1": 0.6283333333333333,
-      "macro_f1": 0.6089094305566427,
-      "ece": 0.15092529815594974,
+      "top1": 0.5116666666666667,
+      "macro_f1": 0.4476783187836181,
+      "ece": 0.09691530740006084,
       "n": 600.0,
-      "top5": 0.98
+      "top5": 0.9516666666666667
     },
     "base": {
-      "top1": 0.665,
-      "macro_f1": 0.6412271612548169,
-      "ece": 0.18876581793494204,
+      "top1": 0.655,
+      "macro_f1": 0.633781328151518,
+      "ece": 0.07151633725228725,
       "n": 600.0,
-      "top5": 0.98
+      "top5": 0.9833333333333333
     }
   },
-  "metric": 0.6283333333333333,
-  "delta_internal": -0.036666666666666736,
-  "takeaway": "Channel attention is a cheap pre-ViT way to reweight features.",
+  "metric": 0.5116666666666667,
   "metric_kind": "top1",
-  "delta_vs_prev_metric": 0.0016666666666665941,
-  "elapsed_sec": 13.483397483825684
+  "takeaway": "\u80fd\u529b#11\uff1a\u901a\u9053\u6ce8\u610f\u529b\u3002ViT \u4e4b\u524d\u7684\u5b9e\u7528\u6ce8\u610f\u5f62\u6001\u3002",
+  "viz": [
+    "from_scratch/results/viz/S11_se.png"
+  ],
+  "new_capability": "\u80fd\u529b#11\uff1a\u901a\u9053\u6ce8\u610f\u529b\u3002ViT \u4e4b\u524d\u7684\u5b9e\u7528\u6ce8\u610f\u5f62\u6001\u3002",
+  "delta_vs_prev_top1": -0.11499999999999999,
+  "elapsed_sec": 10.438360691070557
 }

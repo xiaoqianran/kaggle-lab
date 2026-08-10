@@ -1,0 +1,26 @@
+{
+  "step": "S17",
+  "title": "toy MAE (masked autoencoder)",
+  "concept": "\u9ad8\u6bd4\u4f8b mask patch\uff0c\u7f16\u7801\u5668\u53ea\u770b\u53ef\u89c1\u5757\uff0c\u9884\u6d4b\u88ab\u906e\u50cf\u7d20\u2014\u2014\u81ea\u76d1\u7763\u91cd\u5efa\u3002",
+  "input": "Fashion 32RGB batches, mask_ratio=0.75",
+  "observable": {
+    "loss_curve": [
+      0.9083611816167831,
+      0.9069852828979492,
+      0.9062312841415405,
+      0.905584454536438,
+      0.903659999370575,
+      0.9066386371850967
+    ],
+    "final_loss": 0.9066386371850967
+  },
+  "metric": 0.5244832347866241,
+  "metric_kind": "recon_quality_proxy",
+  "takeaway": "\u80fd\u529b#17\uff1a\u63a9\u7801\u56fe\u50cf\u5efa\u6a21\u3002MAE \u8def\u7ebf\u4e0e\u5bf9\u6bd4\u5b66\u4e60\u5e76\u5217\u7684 SSL \u652f\u67f1\u3002",
+  "viz": [
+    "from_scratch/results/viz/S17_mae_recon.png",
+    "from_scratch/results/viz/S17_mae_loss.png"
+  ],
+  "new_capability": "\u80fd\u529b#17\uff1a\u63a9\u7801\u56fe\u50cf\u5efa\u6a21\u3002MAE \u8def\u7ebf\u4e0e\u5bf9\u6bd4\u5b66\u4e60\u5e76\u5217\u7684 SSL \u652f\u67f1\u3002",
+  "elapsed_sec": 2.1667492389678955
+}

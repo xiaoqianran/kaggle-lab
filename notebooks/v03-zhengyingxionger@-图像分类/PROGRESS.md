@@ -80,37 +80,37 @@ results/*.json        # 实验日志
 - 运行：`python from_scratch/run_ladder.py`
 - 状态：S00–S16 已在 CPU/FashionMNIST 跑通，见 `from_scratch/results/`
 
-
 ## From Scratch 阶梯执行
 
-- **地图:** `from_scratch/MAP.md`
-- **运行:** `python from_scratch/run_ladder.py`
-- **已完成:** S00, S01, S02, S03, S04
-- **当前:** idle
-- **可视化:** `from_scratch/results/viz/`
-- **分步笔记:** `from_scratch/notes/`
-- **总表:** `from_scratch/results/LADDER_RESULTS.md`
+**状态: S00–S20 全部完成**（2026-08-10）
 
-| Step | Status |
-|------|--------|
-| S00 | DONE |
-| S01 | DONE |
-| S02 | DONE |
-| S03 | DONE |
-| S04 | DONE |
-| S05 | TODO |
-| S06 | TODO |
-| S07 | TODO |
-| S08 | TODO |
-| S09 | TODO |
-| S10 | TODO |
-| S11 | TODO |
-| S12 | TODO |
-| S13 | TODO |
-| S14 | TODO |
-| S15 | TODO |
-| S16 | TODO |
-| S17 | TODO |
-| S18 | TODO |
-| S19 | TODO |
-| S20 | TODO |
+- 地图: `from_scratch/MAP.md`
+- 能力链: `from_scratch/CAPABILITY_MAP.md`
+- 结果表: `from_scratch/results/LADDER_RESULTS.md`
+- 可视化: `from_scratch/results/viz/`（每步 PNG）
+- 笔记: `from_scratch/notes/Sxx.md`
+- 复现: `python from_scratch/run_ladder.py`
+
+| Step | Status | 新增能力一句话 |
+|------|--------|----------------|
+| S00 | DONE | 能力#0：把像素当数据——先看 shape/scale/类分布，再谈模型。 |
+| S01 | DONE | 能力#1：无学习基线。kNN>>随机 ⇒ 数据有可分结构，后续模型必须超过它。 |
+| S02 | DONE | 能力#2：参数学习+概率输出。仍是超平面决策，无空间结构。 |
+| S03 | DONE | 能力#3：深度非线性。常略好于线性，但过拟合与无视空间 → 需要卷积。 |
+| S04 | DONE | 能力#4：局部模式提取。参数效率数量级优势；第一次‘看见’边缘。 |
+| S05 | DONE | 能力#5：完整卷积分类器。空间归纳偏置进入闭环。 |
+| S06 | DONE | 能力#6：训练稳定性技术。同架构下 BN 通常更快更稳。 |
+| S07 | DONE | 能力#7：深度设计直觉。过深可能退化 → 引出残差。 |
+| S08 | DONE | 能力#8：可训练的深度。2015 分水岭——现代主干默认残差。 |
+| S09 | DONE | 能力#9：效率轴。研究也要报成本，不只报 top1。 |
+| S10 | DONE | 能力#10：工业级训练配方。SOTA 提升常来自 recipe。 |
+| S11 | DONE | 能力#11：通道注意力。ViT 之前的实用注意形态。 |
+| S12 | DONE | 能力#12：全局自注意力。小数据常弱于 CNN → 需配方/预训练。 |
+| S13 | DONE | 能力#13：现代 CNN 双路线。注意力非唯一答案。 |
+| S14 | DONE | 能力#14：无标签表征学习。linear probe 是标准度量。 |
+| S15 | DONE | 能力#15：开放集接口。换原型即可扩类（真 CLIP 用文本塔）。 |
+| S16 | DONE | 能力#16：迁移协议。少标签下 probe/FT 通常碾压从头训。 |
+| S17 | DONE | 能力#17：掩码图像建模。MAE 路线与对比学习并列的 SSL 支柱。 |
+| S18 | DONE | 能力#18：数据高效 ViT 配方。架构+配方缺一不可。 |
+| S19 | DONE | 能力#19：多模态对齐接口。真 CLIP 换文本编码器即可扩展任意类名。 |
+| S20 | DONE | 能力#20：完整评测协议。只有 top1 不够，校准与 OOD 同属现代系统。 |

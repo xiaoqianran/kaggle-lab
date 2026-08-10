@@ -1,20 +1,25 @@
 {
   "step": "S09",
   "title": "depthwise separable conv",
+  "concept": "DW+PW \u5206\u89e3\u6807\u51c6\u5377\u79ef\uff0c\u964d\u53c2\u6570/FLOPs\u3002",
+  "input": "MobileNet-style blocks",
   "observable": {
     "metrics": {
-      "top1": 0.49166666666666664,
-      "macro_f1": 0.45945499376956545,
-      "ece": 0.17527807495957065,
+      "top1": 0.4066666666666667,
+      "macro_f1": 0.3447712689768837,
+      "ece": 0.0647792242818065,
       "n": 600.0,
-      "top5": 0.9666666666666667
+      "top5": 0.9466666666666667
     },
     "params_dw": 13930,
-    "params_minicnn": 94986
+    "params_cnn": 94986
   },
-  "metric": 0.49166666666666664,
-  "takeaway": "Factorizing conv buys efficiency; report params/latency with accuracy.",
+  "metric": 0.4066666666666667,
   "metric_kind": "top1",
-  "delta_vs_prev_metric": -0.23833333333333334,
-  "elapsed_sec": 4.042546987533569
+  "takeaway": "\u80fd\u529b#9\uff1a\u6548\u7387\u8f74\u3002\u7814\u7a76\u4e5f\u8981\u62a5\u6210\u672c\uff0c\u4e0d\u53ea\u62a5 top1\u3002",
+  "viz": [
+    "from_scratch/results/viz/S09_params.png"
+  ],
+  "new_capability": "\u80fd\u529b#9\uff1a\u6548\u7387\u8f74\u3002\u7814\u7a76\u4e5f\u8981\u62a5\u6210\u672c\uff0c\u4e0d\u53ea\u62a5 top1\u3002",
+  "elapsed_sec": 5.090550899505615
 }

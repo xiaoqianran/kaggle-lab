@@ -1,0 +1,37 @@
+{
+  "step": "S18",
+  "title": "DeiT-style data-efficient ViT recipe",
+  "concept": "ViT \u9760\u5f3a\u589e\u5f3a\u3001LS\u3001AdamW\u3001\u66f4\u957f\u8bad\u5728\u5c0f\u6570\u636e\u4e0a\u53ef\u6218 CNN\u3002",
+  "input": "bare ViT 2ep vs aug+LS+AdamW 5ep",
+  "observable": {
+    "bare": {
+      "top1": 0.44,
+      "macro_f1": 0.40892050127939045,
+      "ece": 0.06543725189825608,
+      "n": 600.0,
+      "top5": 0.9166666666666666
+    },
+    "deit_ish_top1": 0.5066666666666667,
+    "curves": {
+      "bare": [
+        0.36333333333333334,
+        0.44
+      ],
+      "deit": [
+        0.32,
+        0.415,
+        0.46,
+        0.505,
+        0.5066666666666667
+      ]
+    }
+  },
+  "metric": 0.5066666666666667,
+  "metric_kind": "top1",
+  "takeaway": "\u80fd\u529b#18\uff1a\u6570\u636e\u9ad8\u6548 ViT \u914d\u65b9\u3002\u67b6\u6784+\u914d\u65b9\u7f3a\u4e00\u4e0d\u53ef\u3002",
+  "viz": [
+    "from_scratch/results/viz/S18_deit_recipe.png"
+  ],
+  "new_capability": "\u80fd\u529b#18\uff1a\u6570\u636e\u9ad8\u6548 ViT \u914d\u65b9\u3002\u67b6\u6784+\u914d\u65b9\u7f3a\u4e00\u4e0d\u53ef\u3002",
+  "elapsed_sec": 24.896517753601074
+}

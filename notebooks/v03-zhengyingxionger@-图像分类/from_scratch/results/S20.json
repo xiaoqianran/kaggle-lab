@@ -1,0 +1,30 @@
+{
+  "step": "S20",
+  "title": "modern evaluation protocol",
+  "concept": "Top-1 + macro-F1 + ECE + \u7b80\u5355 OOD \u7f6e\u4fe1\u5ea6\u5206\u79bb\u2014\u2014\u7814\u7a76\u7ea7\u8bc4\u6d4b\u6700\u5c0f\u96c6\u3002",
+  "input": "ResNet final model + Gaussian noise OOD",
+  "observable": {
+    "metrics": {
+      "top1": 0.68,
+      "macro_f1": 0.6569092977417049,
+      "ece": 0.09951486861094877,
+      "n": 1000.0,
+      "top5": 0.995
+    },
+    "ece": 0.09951486861094877,
+    "id_mean_conf": 0.7774486836514672,
+    "ood_mean_conf": 0.7518565194638045,
+    "conf_gap": 0.025592164187662747
+  },
+  "metric": 0.68,
+  "metric_kind": "top1",
+  "takeaway": "\u80fd\u529b#20\uff1a\u5b8c\u6574\u8bc4\u6d4b\u534f\u8bae\u3002\u53ea\u6709 top1 \u4e0d\u591f\uff0c\u6821\u51c6\u4e0e OOD \u540c\u5c5e\u73b0\u4ee3\u7cfb\u7edf\u3002",
+  "viz": [
+    "from_scratch/results/viz/S20_cm.png",
+    "from_scratch/results/viz/S20_protocol.png",
+    "from_scratch/results/viz/S20_ood_conf.png"
+  ],
+  "new_capability": "\u80fd\u529b#20\uff1a\u5b8c\u6574\u8bc4\u6d4b\u534f\u8bae\u3002\u53ea\u6709 top1 \u4e0d\u591f\uff0c\u6821\u51c6\u4e0e OOD \u540c\u5c5e\u73b0\u4ee3\u7cfb\u7edf\u3002",
+  "delta_vs_prev_top1": -0.04749999999999999,
+  "elapsed_sec": 59.35104155540466
+}

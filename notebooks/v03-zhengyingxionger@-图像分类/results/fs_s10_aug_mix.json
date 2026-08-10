@@ -3,7 +3,7 @@
   "device": "cpu",
   "dataset": "FashionMNIST-32RGB",
   "epochs": 3,
-  "elapsed_sec": 6.699517488479614,
+  "elapsed_sec": 5.4800567626953125,
   "metrics": {
     "top1": 0.5883333333333334,
     "macro_f1": 0.5621528758176418,

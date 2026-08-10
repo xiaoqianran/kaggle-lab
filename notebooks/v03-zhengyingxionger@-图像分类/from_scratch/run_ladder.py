@@ -465,11 +465,12 @@ def step_S07() -> dict:
 
 
 class PlainDeep(nn.Module):
-    def __init__(self, depth=10, ch=32):
+    def __init__(self, depth=16, ch=32):
         super().__init__()
-        layers: List[nn.Module] = [nn.Conv2d(3, ch, 3, padding=1), nn.BatchNorm2d(ch), nn.ReLU(True)]
+        # No BN + very deep: classic degradation setup vs residual
+        layers: List[nn.Module] = [nn.Conv2d(3, ch, 3, padding=1), nn.ReLU(True)]
         for _ in range(depth):
-            layers += [nn.Conv2d(ch, ch, 3, padding=1), nn.BatchNorm2d(ch), nn.ReLU(True)]
+            layers += [nn.Conv2d(ch, ch, 3, padding=1), nn.ReLU(True)]
         layers += [nn.AdaptiveAvgPool2d(1), nn.Flatten(), nn.Linear(ch, 10)]
         self.net = nn.Sequential(*layers)
 
@@ -480,10 +481,10 @@ class PlainDeep(nn.Module):
 def step_S08() -> dict:
     set_seed(0)
     tr, te = fashion_loaders(2500, 800, seed=2)
-    _, lr, tr_top, rr = _train_hist(ResNetCIFAR(10), tr, te, 3, 0.05, "res")
+    _, lr, tr_top, rr = _train_hist(ResNetCIFAR(10), tr, te, 4, 0.05, "res")
     set_seed(0)
     tr, te = fashion_loaders(2500, 800, seed=2)
-    _, lp, tp, rp = _train_hist(PlainDeep(10), tr, te, 3, 0.05, "plain")
+    _, lp, tp, rp = _train_hist(PlainDeep(), tr, te, 4, 0.05, "plain")
     viz = plot_curves({"residual": tr_top, "plain": tp}, "S08_residual.png", "S08 residual vs plain", "top1")
     return save_payload(
         "S08",

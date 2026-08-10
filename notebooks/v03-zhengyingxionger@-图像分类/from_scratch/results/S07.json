@@ -1,0 +1,49 @@
+{
+  "step": "S07",
+  "title": "3x3 stacks (VGG intuition)",
+  "concept": "\u5c0f\u5377\u79ef\u6838\u5806\u53e0\u6269\u5927\u611f\u53d7\u91ce\u5e76\u589e\u52a0\u975e\u7ebf\u6027\uff1b\u66f4\u6df1\u4e0d\u4e00\u5b9a\u66f4\u597d\u3002",
+  "input": "depth \u2208 {3,5,7} same channel",
+  "observable": {
+    "rows": [
+      {
+        "depth": 3,
+        "top1": 0.4766666666666667,
+        "final_loss": 1.492963010787964,
+        "curve": [
+          0.2733333333333333,
+          0.37333333333333335,
+          0.4766666666666667
+        ]
+      },
+      {
+        "depth": 5,
+        "top1": 0.3016666666666667,
+        "final_loss": 1.1261809940338134,
+        "curve": [
+          0.2633333333333333,
+          0.4116666666666667,
+          0.3016666666666667
+        ]
+      },
+      {
+        "depth": 7,
+        "top1": 0.555,
+        "final_loss": 0.9611773495674133,
+        "curve": [
+          0.25333333333333335,
+          0.5883333333333334,
+          0.555
+        ]
+      }
+    ]
+  },
+  "metric": 0.555,
+  "metric_kind": "top1",
+  "takeaway": "\u80fd\u529b#7\uff1a\u6df1\u5ea6\u8bbe\u8ba1\u76f4\u89c9\u3002\u8fc7\u6df1\u53ef\u80fd\u9000\u5316 \u2192 \u5f15\u51fa\u6b8b\u5dee\u3002",
+  "viz": [
+    "from_scratch/results/viz/S07_depth.png"
+  ],
+  "new_capability": "\u80fd\u529b#7\uff1a\u6df1\u5ea6\u8bbe\u8ba1\u76f4\u89c9\u3002\u8fc7\u6df1\u53ef\u80fd\u9000\u5316 \u2192 \u5f15\u51fa\u6b8b\u5dee\u3002",
+  "delta_vs_prev_top1": -0.02833333333333332,
+  "elapsed_sec": 22.403781414031982
+}

@@ -1,0 +1,26 @@
+{
+  "step": "S19",
+  "title": "MiniCLIP dual-encoder (from scratch)",
+  "concept": "\u56fe\u50cf\u5854+\u6587\u672c(\u7c7b)\u5854\u5171\u4eab\u7a7a\u95f4\uff1b\u63a8\u7406\u65f6\u7528\u4f59\u5f26\u5bf9\u9f50\uff0c\u65e0\u9700\u5206\u7c7b\u5934\u3002",
+  "input": "class id embeddings as text tower surrogate",
+  "observable": {
+    "loss": [
+      1.4260602582295736,
+      0.9627223118146261,
+      0.7957056226730347,
+      0.7788882433573405,
+      0.7386477457682291
+    ],
+    "zero_shot_top1": 0.7275
+  },
+  "metric": 0.7275,
+  "metric_kind": "top1",
+  "takeaway": "\u80fd\u529b#19\uff1a\u591a\u6a21\u6001\u5bf9\u9f50\u63a5\u53e3\u3002\u771f CLIP \u6362\u6587\u672c\u7f16\u7801\u5668\u5373\u53ef\u6269\u5c55\u4efb\u610f\u7c7b\u540d\u3002",
+  "viz": [
+    "from_scratch/results/viz/S19_clip_loss.png",
+    "from_scratch/results/viz/S19_zs.png"
+  ],
+  "new_capability": "\u80fd\u529b#19\uff1a\u591a\u6a21\u6001\u5bf9\u9f50\u63a5\u53e3\u3002\u771f CLIP \u6362\u6587\u672c\u7f16\u7801\u5668\u5373\u53ef\u6269\u5c55\u4efb\u610f\u7c7b\u540d\u3002",
+  "delta_vs_prev_top1": 0.22083333333333333,
+  "elapsed_sec": 13.535782814025879
+}
