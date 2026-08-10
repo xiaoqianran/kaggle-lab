@@ -6,64 +6,178 @@
   "surveyed_at": "2026-08-10",
   "roadmap": "LEARNING_ROADMAP.md",
   "phases": [
-    {"id": "P0", "dir": "00-map", "name": "metrics-iou-map"},
-    {"id": "P1", "dir": "01-foundations", "name": "boxes-anchors-assign"},
-    {"id": "P2", "dir": "02-two-stage", "name": "faster-rcnn"},
-    {"id": "P3", "dir": "03-one-stage", "name": "yolo-retinanet-fcos"},
-    {"id": "P4", "dir": "04-modern-detr", "name": "detr-dino"},
-    {"id": "P5", "dir": "05-training-recipe", "name": "ultralytics-mmdet-recipe"},
-    {"id": "P6", "dir": "06-frontier", "name": "kaggle-domain-open-vocab"},
-    {"id": "P7", "dir": "07-research-lab", "name": "research-hypothesis"}
+    {
+      "id": "P0",
+      "dir": "00-map",
+      "name": "metrics-iou-map"
+    },
+    {
+      "id": "P1",
+      "dir": "01-foundations",
+      "name": "boxes-anchors-assign"
+    },
+    {
+      "id": "P2",
+      "dir": "02-two-stage",
+      "name": "faster-rcnn"
+    },
+    {
+      "id": "P3",
+      "dir": "03-one-stage",
+      "name": "yolo-retinanet-fcos"
+    },
+    {
+      "id": "P4",
+      "dir": "04-modern-detr",
+      "name": "detr-dino"
+    },
+    {
+      "id": "P5",
+      "dir": "05-training-recipe",
+      "name": "ultralytics-mmdet-recipe"
+    },
+    {
+      "id": "P6",
+      "dir": "06-frontier",
+      "name": "kaggle-domain-open-vocab"
+    },
+    {
+      "id": "P7",
+      "dir": "07-research-lab",
+      "name": "research-hypothesis"
+    }
   ],
   "canonical_courses": [
     {
-      "name": "Stanford CS231n Detection lectures",
+      "name": "Stanford CS231n",
       "url": "https://cs231n.stanford.edu/",
       "notes": "https://cs231n.github.io/",
-      "role": "primary-foundations"
+      "role": "primary-entry",
+      "use": "problem definition + detection lecture; not full detection homework substitute"
     },
     {
-      "name": "Deep Learning for Computer Vision (detection modules)",
-      "url": "https://www.youtube.com/playlist?list=PL3FW7Lu3i5JvHM8ljYj-zLfQRF3EO8sYv",
-      "role": "optional-video"
+      "name": "CMU 16-824 Visual Learning and Recognition",
+      "url": "https://visual-learning.cs.cmu.edu/",
+      "role": "paper-reading-discipline",
+      "use": "recognition/detection paper rhythm"
+    },
+    {
+      "name": "MIT 6.8300 Advances in Computer Vision",
+      "url": "https://ocw.mit.edu/courses/6-8300-advances-in-computer-vision-spring-2025/",
+      "role": "boundary-geometry-representation",
+      "use": "not main detection path"
+    },
+    {
+      "name": "Berkeley CS280 Computer Vision",
+      "url": "http://cs280-berkeley.github.io/",
+      "role": "optional-modern-detection",
+      "use": "modern detection/segmentation lectures"
+    },
+    {
+      "name": "PKU Intro2CV",
+      "url": "https://pku-epic.github.io/Intro2CV_2025/schedule/",
+      "role": "zh-terms-outline",
+      "use": "terminology; not primary path"
     }
   ],
   "canonical_papers": [
-    {"id": "rcnn", "title": "Rich feature hierarchies for accurate object detection (R-CNN)", "year": 2014},
-    {"id": "fast-rcnn", "title": "Fast R-CNN", "year": 2015},
-    {"id": "faster-rcnn", "title": "Faster R-CNN: Towards Real-Time Object Detection with Region Proposal Networks", "year": 2015},
-    {"id": "ssd", "title": "SSD: Single Shot MultiBox Detector", "year": 2016},
-    {"id": "yolov1", "title": "You Only Look Once: Unified, Real-Time Object Detection", "year": 2016},
-    {"id": "retinanet", "title": "Focal Loss for Dense Object Detection", "year": 2017},
-    {"id": "fcos", "title": "FCOS: Fully Convolutional One-Stage Object Detection", "year": 2019},
-    {"id": "detr", "title": "End-to-End Object Detection with Transformers", "year": 2020},
-    {"id": "deformable-detr", "title": "Deformable DETR", "year": 2021},
-    {"id": "dino", "title": "DINO: DETR with Improved DeNoising Anchor Boxes", "year": 2022},
-    {"id": "yolov8-tech", "title": "Ultralytics YOLOv8 (docs + design notes)", "year": 2023},
-    {"id": "owl-vit", "title": "Simple Open-Vocabulary Object Detection with Vision Transformers", "year": 2022}
+    {
+      "id": "faster-rcnn",
+      "title": "Faster R-CNN",
+      "year": 2015,
+      "role": "two-stage DNA"
+    },
+    {
+      "id": "retinanet",
+      "title": "Focal Loss for Dense Object Detection",
+      "year": 2017,
+      "role": "imbalance"
+    },
+    {
+      "id": "fcos",
+      "title": "FCOS",
+      "year": 2019,
+      "role": "anchor-free contrast"
+    },
+    {
+      "id": "detr",
+      "title": "End-to-End Object Detection with Transformers",
+      "year": 2020,
+      "role": "set prediction"
+    },
+    {
+      "id": "dino-detr",
+      "title": "DINO: DETR with Improved DeNoising Anchor Boxes",
+      "year": 2022,
+      "role": "strong DETR baseline"
+    },
+    {
+      "id": "rt-detr",
+      "title": "DETRs Beat YOLOs on Real-time Object Detection",
+      "year": 2024,
+      "role": "realtime end-to-end"
+    },
+    {
+      "id": "owl-vit",
+      "title": "Simple Open-Vocabulary Object Detection with Vision Transformers",
+      "year": 2022,
+      "role": "open-vocab"
+    },
+    {
+      "id": "yolo-modern",
+      "title": "Ultralytics YOLOv8/YOLO11 (docs + design)",
+      "year": 2023,
+      "role": "realtime industrial path"
+    }
   ],
   "canonical_code": [
     {
       "name": "ultralytics",
       "url": "https://github.com/ultralytics/ultralytics",
-      "must_read": ["ultralytics/nn/tasks.py", "ultralytics/utils/metrics.py", "ultralytics/engine/trainer.py"]
-    },
-    {
-      "name": "MMDetection",
-      "url": "https://github.com/open-mmlab/mmdetection",
-      "must_read": ["mmdet/models/detectors/", "mmdet/models/dense_heads/"]
-    },
-    {
-      "name": "torchvision detection",
-      "url": "https://github.com/pytorch/vision/tree/main/torchvision/models/detection"
+      "must_read": [
+        "ultralytics/utils/metrics.py",
+        "ultralytics/engine/trainer.py",
+        "ultralytics/nn/tasks.py"
+      ]
     },
     {
       "name": "detectron2",
-      "url": "https://github.com/facebookresearch/detectron2"
+      "url": "https://github.com/facebookresearch/detectron2",
+      "must_read": [
+        "detectron2/modeling/proposal_generator",
+        "detectron2/modeling/roi_heads"
+      ]
     },
     {
-      "name": "DETR",
-      "url": "https://github.com/facebookresearch/detr"
+      "name": "mmdetection",
+      "url": "https://github.com/open-mmlab/mmdetection",
+      "must_read": [
+        "mmdet/models/dense_heads",
+        "configs"
+      ]
+    },
+    {
+      "name": "detr",
+      "url": "https://github.com/facebookresearch/detr",
+      "must_read": [
+        "models/matcher.py",
+        "models/detr.py"
+      ]
+    },
+    {
+      "name": "RT-DETR",
+      "url": "https://github.com/lyuwenyu/RT-DETR",
+      "must_read": [
+        "rtdetr_pytorch or official package"
+      ]
+    },
+    {
+      "name": "torchvision.detection",
+      "url": "https://github.com/pytorch/vision/tree/main/torchvision/models/detection",
+      "must_read": [
+        "faster_rcnn.py",
+        "anchor_utils.py"
+      ]
     }
   ],
   "competitions": [
@@ -183,38 +297,133 @@
     }
   ],
   "datasets": [
-    {"ref": "zaraks/pascal-voc-2007", "title": "PASCAL VOC 2007", "use": "P1-P2 small protocol"},
-    {"ref": "vijayabhaskar96/pascal-voc-2007-and-2012", "title": "PASCAL VOC 2007 and 2012", "use": "classic OD train"},
-    {"ref": "malaychand/coco-25-class-object-detection-yolo-datasets", "title": "COCO 25-Class YOLO", "use": "P3 YOLO format lite"},
-    {"ref": "sabahesaraki/2017-2017", "title": "COCO Dataset 2017", "use": "full COCO when bandwidth allows"},
-    {"ref": "jeffaudi/coco-2014-dataset-for-yolov3", "title": "COCO 2014 for YOLOv3", "use": "legacy YOLO packs"},
-    {"ref": "snehilsanyal/construction-site-safety-image-dataset-roboflow", "title": "Construction Site Safety", "use": "P5 finetune demo"},
-    {"ref": "pkdarabi/vehicle-detection-image-dataset", "title": "Vehicle Detection Image Dataset", "use": "vehicle OD practice"},
-    {"ref": "pestipeti/global-wheat-detection-public", "title": "Global Wheat Detection Public", "use": "dense heads"},
-    {"ref": "thedatasith/sku110k-annotations", "title": "SKU110K Dataset", "use": "dense retail optional"},
-    {"ref": "solesensei/solesensei_bdd100k", "title": "BDD100K", "use": "driving multi-task optional"},
-    {"ref": "a7madmostafa/bdd100k-yolo", "title": "BDD100K YOLO format", "use": "driving YOLO pack"}
+    {
+      "ref": "zaraks/pascal-voc-2007",
+      "title": "PASCAL VOC 2007",
+      "use": "P1-P2 small protocol"
+    },
+    {
+      "ref": "vijayabhaskar96/pascal-voc-2007-and-2012",
+      "title": "PASCAL VOC 2007 and 2012",
+      "use": "classic OD train"
+    },
+    {
+      "ref": "malaychand/coco-25-class-object-detection-yolo-datasets",
+      "title": "COCO 25-Class YOLO",
+      "use": "P3 YOLO format lite"
+    },
+    {
+      "ref": "sabahesaraki/2017-2017",
+      "title": "COCO Dataset 2017",
+      "use": "full COCO when bandwidth allows"
+    },
+    {
+      "ref": "jeffaudi/coco-2014-dataset-for-yolov3",
+      "title": "COCO 2014 for YOLOv3",
+      "use": "legacy YOLO packs"
+    },
+    {
+      "ref": "snehilsanyal/construction-site-safety-image-dataset-roboflow",
+      "title": "Construction Site Safety",
+      "use": "P5 finetune demo"
+    },
+    {
+      "ref": "pkdarabi/vehicle-detection-image-dataset",
+      "title": "Vehicle Detection Image Dataset",
+      "use": "vehicle OD practice"
+    },
+    {
+      "ref": "pestipeti/global-wheat-detection-public",
+      "title": "Global Wheat Detection Public",
+      "use": "dense heads"
+    },
+    {
+      "ref": "thedatasith/sku110k-annotations",
+      "title": "SKU110K Dataset",
+      "use": "dense retail optional"
+    },
+    {
+      "ref": "solesensei/solesensei_bdd100k",
+      "title": "BDD100K",
+      "use": "driving multi-task optional"
+    },
+    {
+      "ref": "a7madmostafa/bdd100k-yolo",
+      "title": "BDD100K YOLO format",
+      "use": "driving YOLO pack"
+    }
   ],
   "models": [
-    {"ref": "ultralytics/yolo11", "title": "Ultralytics YOLO11"},
-    {"ref": "ultralytics/yolov8", "title": "Ultralytics YOLOv8"},
-    {"ref": "ultralytics/yolov5", "title": "Ultralytics YOLOv5"},
-    {"ref": "keras/yolov8", "title": "Keras YOLOv8"},
-    {"ref": "kaggle/yolo-v5", "title": "Kaggle YOLOv5"},
-    {"ref": "tensorflow/efficientdet", "title": "EfficientDet"},
-    {"ref": "tensorflow/ssd-mobilenet-v2", "title": "SSD MobileNet V2"},
-    {"ref": "tensorflow/faster-rcnn-resnet-v1", "title": "Faster R-CNN ResNet"},
-    {"ref": "google/owl-vit", "title": "OWL-ViT open-vocab"},
-    {"ref": "google/paligemma-2", "title": "PaliGemma 2 (grounding optional)"}
+    {
+      "ref": "ultralytics/yolo11",
+      "title": "Ultralytics YOLO11"
+    },
+    {
+      "ref": "ultralytics/yolov8",
+      "title": "Ultralytics YOLOv8"
+    },
+    {
+      "ref": "ultralytics/yolov5",
+      "title": "Ultralytics YOLOv5"
+    },
+    {
+      "ref": "keras/yolov8",
+      "title": "Keras YOLOv8"
+    },
+    {
+      "ref": "kaggle/yolo-v5",
+      "title": "Kaggle YOLOv5"
+    },
+    {
+      "ref": "tensorflow/efficientdet",
+      "title": "EfficientDet"
+    },
+    {
+      "ref": "tensorflow/ssd-mobilenet-v2",
+      "title": "SSD MobileNet V2"
+    },
+    {
+      "ref": "tensorflow/faster-rcnn-resnet-v1",
+      "title": "Faster R-CNN ResNet"
+    },
+    {
+      "ref": "google/owl-vit",
+      "title": "OWL-ViT open-vocab"
+    },
+    {
+      "ref": "google/paligemma-2",
+      "title": "PaliGemma 2 (grounding optional)"
+    }
   ],
   "notebooks_reference": [
-    {"ref": "aruchomu/yolo-v3-object-detection-in-tensorflow", "votes": 6096},
-    {"ref": "pkdarabi/traffic-signs-detection-using-yolov8", "votes": 2750},
-    {"ref": "glennjocherultralytics/ultralytics-yolov8-notebook", "votes": 2146},
-    {"ref": "awsaf49/great-barrier-reef-yolov5-train", "votes": 1875},
-    {"ref": "balraj98/yolo-v5-car-object-detection", "votes": 1826},
-    {"ref": "glennjocherultralytics/ultralytics-yolo11-notebook", "votes": 763},
-    {"ref": "arunmohan003/yolo-v3-pytorch-tutorial-from-scratch", "votes": 674}
+    {
+      "ref": "aruchomu/yolo-v3-object-detection-in-tensorflow",
+      "votes": 6096
+    },
+    {
+      "ref": "pkdarabi/traffic-signs-detection-using-yolov8",
+      "votes": 2750
+    },
+    {
+      "ref": "glennjocherultralytics/ultralytics-yolov8-notebook",
+      "votes": 2146
+    },
+    {
+      "ref": "awsaf49/great-barrier-reef-yolov5-train",
+      "votes": 1875
+    },
+    {
+      "ref": "balraj98/yolo-v5-car-object-detection",
+      "votes": 1826
+    },
+    {
+      "ref": "glennjocherultralytics/ultralytics-yolo11-notebook",
+      "votes": 763
+    },
+    {
+      "ref": "arunmohan003/yolo-v3-pytorch-tutorial-from-scratch",
+      "votes": 674
+    }
   ],
   "planned_notebooks": [
     "det-00-iou-map-protocol.ipynb",
@@ -225,5 +434,21 @@
     "det-05-ultralytics-recipe-ablation.ipynb",
     "det-06-kaggle-wheat-or-reef-baseline.ipynb",
     "det-07-research-hypothesis.ipynb"
-  ]
+  ],
+  "roadmap_version": "v2-2026-08-10",
+  "learning_goal": "research-capable object detection: read papers, reproduce, ablate, hypothesize",
+  "six_phase_binding": [
+    "principle",
+    "from_scratch",
+    "github_source",
+    "kaggle_experiment",
+    "ablation",
+    "interpretation"
+  ],
+  "status": {
+    "roadmap": "ready",
+    "scaffold": "ready",
+    "notebooks": "pending",
+    "tests": "pending"
+  }
 }
