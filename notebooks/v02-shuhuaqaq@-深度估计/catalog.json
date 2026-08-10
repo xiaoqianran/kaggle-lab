@@ -98,5 +98,64 @@
     "de-02-depth-anything-v2.ipynb",
     "de-03-nyuv2-train-lite.ipynb",
     "de-04-ethz-cil-baseline.ipynb"
+  ],
+  "learning_roadmap": "LEARNING_ROADMAP.md",
+  "phases": [
+    {
+      "id": "P0",
+      "name": "metrics-alignment",
+      "dir": "00-map"
+    },
+    {
+      "id": "P1",
+      "name": "geometry",
+      "dir": "01-geometry"
+    },
+    {
+      "id": "P2",
+      "name": "supervised",
+      "dir": "02-supervised-classic"
+    },
+    {
+      "id": "P3",
+      "name": "self-supervised",
+      "dir": "03-self-supervised"
+    },
+    {
+      "id": "P4",
+      "name": "foundation",
+      "dir": "04-foundation"
+    },
+    {
+      "id": "P5",
+      "name": "metric-sota",
+      "dir": "05-metric"
+    },
+    {
+      "id": "P6",
+      "name": "frontier",
+      "dir": "06-frontier"
+    },
+    {
+      "id": "P7",
+      "name": "research-lab",
+      "dir": "07-research-lab"
+    }
+  ],
+  "canonical_papers": [
+    "Eigen2014",
+    "Monodepth2",
+    "MiDaS/DPT",
+    "DepthAnythingV2",
+    "DepthPro|Metric3Dv2|UniDepth"
+  ],
+  "canonical_repos": [
+    "https://github.com/nianticlabs/monodepth2",
+    "https://github.com/isl-org/MiDaS",
+    "https://github.com/isl-org/DPT",
+    "https://github.com/DepthAnything/Depth-Anything-V2",
+    "https://github.com/apple/ml-depth-pro",
+    "https://github.com/YvanYin/Metric3D",
+    "https://github.com/lpiccinelli-eth/UniDepth"
   ]
 }

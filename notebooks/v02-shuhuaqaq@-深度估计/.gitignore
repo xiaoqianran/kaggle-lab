@@ -1,0 +1,16 @@
+# large / local only
+data/**
+!data/.gitkeep
+vendor/**
+!vendor/.gitkeep
+results/**
+!results/.gitkeep
+
+# weights & caches
+**/*.pt
+**/*.pth
+**/*.onnx
+**/*.ckpt
+**/*.safetensors
+**/__pycache__/
+.ipynb_checkpoints/
