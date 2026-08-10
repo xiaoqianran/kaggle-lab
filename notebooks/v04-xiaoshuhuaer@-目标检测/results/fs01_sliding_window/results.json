@@ -1,0 +1,26 @@
+{
+  "method": "sliding_window_color_template",
+  "n_images": 40,
+  "windows_per_image_mean": 169.0,
+  "raw_dets_per_image_mean": 0.975,
+  "after_nms_metrics": {
+    "ap50": 0.3371848739495798,
+    "ap": 0.1635426392779334,
+    "ap_s": 0.3371848739495798,
+    "ap_m": 0.0,
+    "ap_l": 0.0,
+    "ar100": 0.325,
+    "n_gt": 62,
+    "n_pred": 20
+  },
+  "example_best_iou_to_gt": 0.8,
+  "example_raw_dets": 5,
+  "example_windows": 169,
+  "findings": [
+    "Thousands of windows per image even at 64px \u2014 classic speed disease.",
+    "Fixed window size cannot match arbitrary aspect/scale \u2192 localization IoU limited.",
+    "Color template works only because synth objects are pure color \u2014 real images need features.",
+    "NMS is mandatory: raw dets explode; without NMS precision collapses."
+  ],
+  "disease_shown": "exhaustive search cost + scale/aspect brittleness + duplicate fires"
+}

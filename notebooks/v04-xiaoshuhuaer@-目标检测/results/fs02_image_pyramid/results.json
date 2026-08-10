@@ -1,0 +1,36 @@
+{
+  "single_scale": {
+    "ap50": 0.14640522875816994,
+    "ap": 0.038108645167468695,
+    "ap_s": 0.14640522875816994,
+    "ap_m": 0.0,
+    "ap_l": 0.0,
+    "ar100": 0.25,
+    "n_gt": 62,
+    "n_pred": 32,
+    "windows_per_image": 169.0,
+    "dets_after_nms_mean": 3.75
+  },
+  "pyramid": {
+    "ap50": 0.07051516258677383,
+    "ap": 0.0258011834509825,
+    "ap_s": 0.07051516258677383,
+    "ap_m": 0.0,
+    "ap_l": 0.0,
+    "ar100": 0.1875,
+    "n_gt": 62,
+    "n_pred": 103,
+    "windows_per_image": 574.0,
+    "dets_after_nms_mean": 2.575
+  },
+  "delta_ap50": -0.07589006617139611,
+  "window_cost_ratio": 3.396449704142012,
+  "findings": [
+    "Pyramid multiplies compute (~n_scales) \u2014 scale coverage is bought with FLOPs.",
+    "Naive fusion without score calibration / size-aware NMS can HURT AP by adding FPs.",
+    "Historical lesson: multi-scale search is necessary but needs careful post-process (later solved better by feature pyramids, not image pyramids alone).",
+    "Compare cost_ratio vs AP delta \u2014 if AP drops while cost rises, you felt the classic footgun."
+  ],
+  "disease_targeted": "scale brittleness of fixed window",
+  "disease_remaining_or_side_effect": "FP inflation + cost; motivates FPN (FS10) over image pyramid"
+}

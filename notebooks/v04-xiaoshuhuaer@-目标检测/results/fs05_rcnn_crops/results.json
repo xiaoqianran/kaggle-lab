@@ -1,0 +1,31 @@
+{
+  "rcnn_style_proposals_plus_cnn": {
+    "ap50": 0.8448376009674087,
+    "ap": 0.7345085010800049,
+    "ap_s": 0.8448376009674087,
+    "ap_m": 0.0,
+    "ap_l": 0.0,
+    "ar100": 0.9791666666666666,
+    "n_gt": 75,
+    "n_pred": 99
+  },
+  "sliding_window_baseline_fs01": {
+    "ap50": 0.37290956170266515,
+    "ap": 0.10471790661445834,
+    "ap_s": 0.37290956170266515,
+    "ap_m": 0.0,
+    "ap_l": 0.0,
+    "ar100": 0.3916666666666666,
+    "n_gt": 75,
+    "n_pred": 33
+  },
+  "delta_ap50": 0.4719280392647435,
+  "findings": [
+    "R-CNN decouples WHERE (proposals) from WHAT (CNN on crop).",
+    "Far fewer CNN forwards than sliding windows if proposals are sparse.",
+    "Proposal quality is destiny: missing GT regions \u21d2 recall hard-caps (classic R-CNN pain).",
+    "Still no shared computation across crops \u2014 Fast R-CNN fixes that next."
+  ],
+  "disease_fixed_vs_fs01": "exhaustive per-window deep scoring",
+  "disease_remaining": "redundant CNN per crop + external proposal module"
+}

@@ -92,3 +92,23 @@ python scripts/run_p7_hypothesis.py
 | 系统 Python 无 torch/numpy | 使用 `/workspace/.venv-det`（torch CPU） |
 | P4 初版匹配 cost 很大 | 未训权重正常；训练后 loss 从 1.77→0.71 |
 | P0 false_pos 仍高 AP | 高分 GT 仍排前；结论写入「排序与阈值共同决定 precision」 |
+
+
+## From-Scratch 实验链（2026-08-10）
+
+权威地图：`FROM_SCRATCH.md`
+
+| FS | 脚本 | 状态 |
+|----|------|------|
+| FS00 | `run_p0_protocol.py` | ✅ |
+| FS01 | `fs01_sliding_window.py` | ✅ ~169 win/img |
+| FS02 | `fs02_image_pyramid.py` | ✅ 代价↑；朴素融合可伤 AP |
+| FS05 | `fs05_rcnn_crops.py` | ✅ AP50 0.85 vs SW 0.37 |
+| FS07 | `run_p2_two_stage.py` | ✅ |
+| FS08 | `run_p3_yolo_lite.py` | ✅ |
+| FS09 | `fs09_focal_loss.py` | ✅ Focal 超参课 |
+| FS10 | `fs10_fpn_multiscale.py` | ✅ 无融合多头负结果教学 |
+| FS11–12 | P1 + P4 | ✅ |
+| FS13–15 | P5–P7 | ✅ |
+
+复验：`./scripts/run_fs_chain.sh`

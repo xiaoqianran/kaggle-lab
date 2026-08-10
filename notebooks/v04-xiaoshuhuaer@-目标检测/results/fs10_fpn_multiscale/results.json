@@ -1,0 +1,34 @@
+{
+  "single_stride8": {
+    "ap50": 0.5850389367007628,
+    "ap": 0.2567030756514849,
+    "ap_s": 0.5850389367007628,
+    "ap_m": 0.0,
+    "ap_l": 0.0,
+    "ar100": 0.6523809523809523,
+    "n_gt": 144,
+    "n_pred": 111
+  },
+  "dual_stride_8_16": {
+    "ap50": 0.3614199407663314,
+    "ap": 0.0987581713518226,
+    "ap_s": 0.3614199407663314,
+    "ap_m": 0.0,
+    "ap_l": 0.0,
+    "ar100": 0.6523809523809524,
+    "n_gt": 144,
+    "n_pred": 207
+  },
+  "delta_ap50": -0.2236189959344314,
+  "delta_ap_s": -0.2236189959344314,
+  "delta_ap_l": 0.0,
+  "findings": [
+    "Dual-stride without lateral top-down fusion is NOT full FPN \u2014 can hurt if coarse head injects FPs.",
+    "Real FPN value shows on wide size ranges + proper size routing + fusion (paper ablation).",
+    "This run is a controlled negative/partial result: multi-head alone \u2260 free multi-scale gains.",
+    "Disease targeted: single-map scale blindness; remaining: need true FPN fusion (next engineering step on Kaggle/mmdet)."
+  ],
+  "disease_fixed": "single-feature-map scale blindness",
+  "paper": "FPN (Lin et al. 2017)",
+  "interpretation": "Partial multi-scale head without fusion underperformed single stride on this synth \u2014 documents why FPN design details matter."
+}
