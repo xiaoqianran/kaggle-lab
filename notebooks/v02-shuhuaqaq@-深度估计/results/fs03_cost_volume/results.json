@@ -1,0 +1,31 @@
+{
+  "max_disp": 8,
+  "err_wta_px": 0.5137067522321429,
+  "err_smooth_px": 0.4731558725595244,
+  "cost_curve_edge_pixel": [
+    0.7939354060800544,
+    0.8912140013350756,
+    0.7006691120271971,
+    0.1359213507110663,
+    0.4940811422140207,
+    0.830936920852057,
+    1.2790180606209147,
+    1.5146203953475892,
+    1.5912012146831418
+  ],
+  "cost_curve_flat_pixel": [
+    1.0464114161785036,
+    0.7070844591177388,
+    0.3649505027021861,
+    0.06403583450936556,
+    0.31377092905104415,
+    0.3950332730377942,
+    0.6261372025254707,
+    0.9197712018502052,
+    1.0127673734288316
+  ],
+  "argmin_edge": 3,
+  "argmin_flat": 3,
+  "compare_to_fs02": "FS02 hid the cost volume inside nested loops; FS03 makes D\u00d7H\u00d7W explicit.",
+  "lesson": "Ambiguous cost curves at edges/occlusion; smoothing trades edge sharpness for stability."
+}

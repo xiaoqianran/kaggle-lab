@@ -1,0 +1,27 @@
+{
+  "train_loss_start": 1.8051444292068481,
+  "train_loss_end": 0.1220821812748909,
+  "metrics_easy_holdout": {
+    "abs_rel": 0.03627622645018336,
+    "sq_rel": 0.015150167875538469,
+    "rmse": 0.24522648110462023,
+    "rmse_log": 0.06349001832798776,
+    "si_rmse": 0.06265595523231599,
+    "delta1": 0.9664713541666666,
+    "delta2": 0.9993489583333334,
+    "delta3": 1.0,
+    "n_valid": 3072.0
+  },
+  "metrics_hard_domain_shift": {
+    "abs_rel": 0.41309624044030596,
+    "sq_rel": 1.2219628892494132,
+    "rmse": 2.734057315439711,
+    "rmse_log": 0.5400610986091574,
+    "si_rmse": 0.5088497233054505,
+    "delta1": 0.3121744791666667,
+    "delta2": 0.44140625,
+    "delta3": 0.8118489583333334,
+    "n_valid": 3072.0
+  },
+  "compare_to_fs02": "Stereo searched correspondences; FS04 memorizes monocular cues \u2014 collapses under domain shift."
+}

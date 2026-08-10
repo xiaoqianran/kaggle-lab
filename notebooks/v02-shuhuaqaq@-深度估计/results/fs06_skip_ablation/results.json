@@ -1,0 +1,8 @@
+{
+  "unet_abs_rel": 0.01166393095868399,
+  "unet_boundary_absrel": 0.02195672473559777,
+  "noskip_abs_rel": 0.07015224476028659,
+  "noskip_boundary_absrel": 0.20046260207891464,
+  "compare_to_fs04": "FS04 tiny reg lacks multi-scale skips; FS06 shows skip pathways help structure.",
+  "lesson": "If noskip boundary error is higher, skips are doing real work on edges."
+}

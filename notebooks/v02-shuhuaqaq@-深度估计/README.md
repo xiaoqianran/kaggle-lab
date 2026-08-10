@@ -1,7 +1,7 @@
 # v02 · shuhuaqaq@ · 深度估计
 
 **状态：P0–P7 已跑通**（见 [PROGRESS.md](./PROGRESS.md)）。  
-蓝图：[LEARNING_ROADMAP.md](./LEARNING_ROADMAP.md)
+蓝图：[LEARNING_ROADMAP.md](./LEARNING_ROADMAP.md) · **From Scratch 地图**：[FROM_SCRATCH.md](./FROM_SCRATCH.md)
 
 ## 一键复验
 

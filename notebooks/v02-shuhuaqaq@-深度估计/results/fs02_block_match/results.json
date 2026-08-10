@@ -1,0 +1,22 @@
+{
+  "fx": 200.0,
+  "baseline": 0.2,
+  "disp_gt_mean": 6.388888888888889,
+  "disp_est_mean": 5.562395833333333,
+  "metrics_textured": {
+    "abs_rel": 0.1772416901172266,
+    "sq_rel": 0.7805528979502002,
+    "rmse": 1.8457509761325972,
+    "rmse_log": 0.32854123739128577,
+    "si_rmse": 0.32012409183880197,
+    "delta1": 0.8396995708154507,
+    "delta2": 0.8521459227467811,
+    "delta3": 0.8655579399141631,
+    "n_valid": 9320.0
+  },
+  "weak_texture_total_failure": true,
+  "metrics_weak_texture": null,
+  "weak_abs_rel_or_inf": "inf",
+  "compare_to_fs01": "FS01 used given depth; FS02 recovers depth from two images.",
+  "observable_failure": "No texture \u21d2 matching degenerates (zeros / random) \u2014 stereo's fundamental disease."
+}

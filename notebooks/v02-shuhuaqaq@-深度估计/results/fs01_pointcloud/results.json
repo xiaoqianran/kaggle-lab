@@ -1,0 +1,58 @@
+{
+  "lesson": "Larger fx (same depth map pixels) pulls X,Y toward optical axis \u2014 FOV narrower interpretation.",
+  "depth_scale_1.2_Z_ratio": 1.2000000487393214,
+  "easy_scene_by_fx": [
+    {
+      "fx": 300.0,
+      "mean_X": 0.20369966026395558,
+      "std_X": 0.63983097880839,
+      "mean_Z": 4.668030263856053,
+      "span_X": 2.1251443552970883,
+      "n": 12288
+    },
+    {
+      "fx": 500.0,
+      "mean_X": 0.12221979615837336,
+      "std_X": 0.383898587285034,
+      "mean_Z": 4.668030263856053,
+      "span_X": 1.2750866131782532,
+      "n": 12288
+    },
+    {
+      "fx": 800.0,
+      "mean_X": 0.07638737259898336,
+      "std_X": 0.23993661705314628,
+      "mean_Z": 4.668030263856053,
+      "span_X": 0.7969291332364082,
+      "n": 12288
+    }
+  ],
+  "fronto_Z5_by_fx": [
+    {
+      "fx": 300.0,
+      "mean_X": -0.008333333333333323,
+      "std_X": 0.6158214928947439,
+      "mean_Z": 5.0,
+      "span_X": 2.1166666666666667,
+      "n": 12288
+    },
+    {
+      "fx": 500.0,
+      "mean_X": -0.004999999999999986,
+      "std_X": 0.36949289573684635,
+      "mean_Z": 5.0,
+      "span_X": 1.27,
+      "n": 12288
+    },
+    {
+      "fx": 800.0,
+      "mean_X": -0.003124999999999998,
+      "std_X": 0.23093305983552898,
+      "mean_Z": 5.0,
+      "span_X": 0.79375,
+      "n": 12288
+    }
+  ],
+  "artifacts": "/workspace/kaggle-lab/notebooks/v02-shuhuaqaq@-\u6df1\u5ea6\u4f30\u8ba1/results/fs01_pointcloud/cloud_fx500.xyz",
+  "compare_to_fs00": "FS00 showed metric tables; FS01 shows the same depth error becomes 3D scale error."
+}

@@ -76,3 +76,22 @@ python scripts/run_p7_hypothesis.py
 | P2 初版不收敛 | sigmoid→sigmoid·max_depth；easy 数据 |
 | P3 初版 good>bad | 重建几何正确的 fronto-plane 立体对 |
 | SI-RMSE nan | 数值保护 |
+
+## From Scratch 轨（2026-08-10 增补）
+
+权威地图：`FROM_SCRATCH.md`（FS00–FS14）
+
+| FS | 状态 | 入口 |
+|----|------|------|
+| FS00 | ✅ | `run_p0_experiment.py` |
+| FS01 | ✅ | `scripts/fs01_pointcloud_vis.py` |
+| FS02 | ✅ | `scripts/fs02_block_match_stereo.py` |
+| FS03 | ✅ | `scripts/fs03_cost_volume.py` |
+| FS04 | ✅ | `scripts/fs04_tiny_regressor.py` |
+| FS05 | ✅ | SILog 消融 in `run_p2_train.py` |
+| FS06 | ✅ | `scripts/fs06_skip_ablation.py` |
+| FS07–08 | ✅ | photometric + Monodepth2 SOURCE_MAP |
+| FS09 | ✅ | `run_p4_foundation_protocol.py` |
+| FS10–13 | 🔜 真权重推理 | 协议已备 |
+| FS14 | ✅ | claim reviews + P7 |
+
