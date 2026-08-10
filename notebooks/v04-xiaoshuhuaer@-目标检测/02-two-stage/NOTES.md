@@ -20,3 +20,7 @@
 ## 不做什么
 
 不复现 2014 selective search 全流程。
+
+## 执行状态
+
+- ✅ 已完成（见 `PROGRESS.md` + `results/`）

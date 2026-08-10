@@ -1,0 +1,34 @@
+{
+  "encode_decode_max_abs_err": 0.0,
+  "flip_roundtrip_err": 0.0,
+  "n_anchors": 384,
+  "assign_pos_thr_ablation": [
+    {
+      "pos_thr": 0.5,
+      "mean_pos_anchors": 4.15,
+      "std_pos": 3.3507461855533016
+    },
+    {
+      "pos_thr": 0.6,
+      "mean_pos_anchors": 1.95,
+      "std_pos": 0.8046738469715541
+    },
+    {
+      "pos_thr": 0.7,
+      "mean_pos_anchors": 1.875,
+      "std_pos": 0.7479137650825796
+    }
+  ],
+  "assign_stats_pos_thr_0.7": {
+    "mean_pos": 1.875,
+    "mean_neg": 357.4,
+    "mean_ignore": 24.725
+  },
+  "simota_pos_count": 10,
+  "findings": [
+    "encode/decode is numerically invertible (err ~0).",
+    "horizontal flip twice restores boxes \u2014 aug must transform boxes.",
+    "Higher pos_thr reduces mean positive anchors \u2192 fewer positives, harder training if too high.",
+    "Best-anchor-per-GT guarantee keeps at least n_gt positives even at high thr."
+  ]
+}

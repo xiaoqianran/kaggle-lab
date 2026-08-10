@@ -1,0 +1,96 @@
+{
+  "model": "TwoStageLite (RPN obj + cls/reg head pedagogical)",
+  "data": "SynthDet 64x64 colored shapes",
+  "untrained": {
+    "ap50": 0.0,
+    "ap": 0.0,
+    "ap_s": 0.0,
+    "ap_m": 0.0,
+    "ap_l": 0.0,
+    "ar100": 0.0,
+    "n_gt": 120,
+    "n_pred": 0
+  },
+  "final": {
+    "ap50": 0.6380606007376312,
+    "ap": 0.31549362971731887,
+    "ap_s": 0.6380606007376312,
+    "ap_m": 0.0,
+    "ap_l": 0.0,
+    "ar100": 0.6861111111111111,
+    "n_gt": 120,
+    "n_pred": 92
+  },
+  "history": [
+    {
+      "epoch": 0,
+      "train_loss": 1.5658581165167003,
+      "ap50": 0.0,
+      "ap": 0.0,
+      "ap_s": 0.0,
+      "ap_m": 0.0,
+      "ap_l": 0.0,
+      "ar100": 0.0,
+      "n_gt": 120,
+      "n_pred": 0
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.6021816845123584,
+      "ap50": 0.18396115445058203,
+      "ap": 0.05991785630514492,
+      "ap_s": 0.18396115445058203,
+      "ap_m": 0.0,
+      "ap_l": 0.0,
+      "ar100": 0.23888888888888887,
+      "n_gt": 120,
+      "n_pred": 41
+    },
+    {
+      "epoch": 6,
+      "train_loss": 0.3428150690518893,
+      "ap50": 0.5277955075426314,
+      "ap": 0.2378482640905367,
+      "ap_s": 0.5277955075426314,
+      "ap_m": 0.0,
+      "ap_l": 0.0,
+      "ar100": 0.6055555555555555,
+      "n_gt": 120,
+      "n_pred": 100
+    },
+    {
+      "epoch": 9,
+      "train_loss": 0.2763737359872231,
+      "ap50": 0.6312578148998936,
+      "ap": 0.32073688721131294,
+      "ap_s": 0.6312578148998936,
+      "ap_m": 0.0,
+      "ap_l": 0.0,
+      "ar100": 0.6916666666666667,
+      "n_gt": 120,
+      "n_pred": 104
+    },
+    {
+      "epoch": 11,
+      "train_loss": 0.2424772553719007,
+      "ap50": 0.6380606007376312,
+      "ap": 0.31549362971731887,
+      "ap_s": 0.6380606007376312,
+      "ap_m": 0.0,
+      "ap_l": 0.0,
+      "ar100": 0.6861111111111111,
+      "n_gt": 120,
+      "n_pred": 92
+    }
+  ],
+  "acceptance": {
+    "final_ap50_gt_untrained": true,
+    "final_ap50": 0.6380606007376312,
+    "untrained_ap50": 0.0
+  },
+  "findings": [
+    "RPN objectness + second head cls/reg is the two-stage DNA in miniature.",
+    "Training reduces loss and lifts AP50 vs random init on easy synthetic.",
+    "Not Faster R-CNN production; SOURCE_MAP maps concepts to Detectron2/torchvision paths."
+  ]
+}

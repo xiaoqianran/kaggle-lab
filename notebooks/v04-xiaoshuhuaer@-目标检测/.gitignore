@@ -2,9 +2,13 @@
 data/
 vendor/
 !vendor/.gitkeep
+
+# results: keep small json/md, ignore heavy artifacts
 results/**
-!results/.gitkeep
-!results/**/.gitkeep
+!results/**/
+!results/**/*.json
+!results/**/*.md
+
 *.pt
 *.pth
 *.ckpt

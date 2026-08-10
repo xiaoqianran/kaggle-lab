@@ -1,0 +1,82 @@
+{
+  "protocol": "coco_style_v0 conf=0.25 fixed val split",
+  "rows": [
+    {
+      "name": "baseline",
+      "epochs": 10,
+      "lr": 0.001,
+      "use_flip": false,
+      "ap50": 0.6544035425086393,
+      "ap": 0.32360728253908544,
+      "ap_s": 0.6544035425086393,
+      "ap_m": 0.0,
+      "ap_l": 0.0,
+      "ar100": 0.6944444444444443,
+      "n_gt": 120,
+      "n_pred": 97
+    },
+    {
+      "name": "longer",
+      "epochs": 18,
+      "lr": 0.001,
+      "use_flip": false,
+      "ap50": 0.7612662141246535,
+      "ap": 0.37583959046018134,
+      "ap_s": 0.7612662141246535,
+      "ap_m": 0.0,
+      "ap_l": 0.0,
+      "ar100": 0.7999999999999999,
+      "n_gt": 120,
+      "n_pred": 104
+    },
+    {
+      "name": "low_lr",
+      "epochs": 10,
+      "lr": 0.0001,
+      "use_flip": false,
+      "ap50": 0.4339358180814255,
+      "ap": 0.14927706273641791,
+      "ap_s": 0.4339358180814255,
+      "ap_m": 0.0,
+      "ap_l": 0.0,
+      "ar100": 0.7249999999999999,
+      "n_gt": 120,
+      "n_pred": 430
+    },
+    {
+      "name": "flip_aug",
+      "epochs": 10,
+      "lr": 0.001,
+      "use_flip": true,
+      "ap50": 0.7123503185511048,
+      "ap": 0.3441442639513301,
+      "ap_s": 0.7123503185511048,
+      "ap_m": 0.0,
+      "ap_l": 0.0,
+      "ar100": 0.8027777777777776,
+      "n_gt": 120,
+      "n_pred": 111
+    },
+    {
+      "name": "flip_longer",
+      "epochs": 18,
+      "lr": 0.001,
+      "use_flip": true,
+      "ap50": 0.7890291892543161,
+      "ap": 0.4510858797207612,
+      "ap_s": 0.7890291892543161,
+      "ap_m": 0.0,
+      "ap_l": 0.0,
+      "ar100": 0.8333333333333333,
+      "n_gt": 120,
+      "n_pred": 108
+    }
+  ],
+  "best": "flip_longer",
+  "findings": [
+    "Compare only under fixed val + conf \u2014 recipe claims otherwise invalid.",
+    "Longer training often helps on easy synth; low_lr may underfit at same epochs.",
+    "HFlip with correct box transform is free diversity; broken flip would destroy boxes (tested in P1).",
+    "Best recipe by AP50: flip_longer AP50=0.789"
+  ]
+}

@@ -1,0 +1,163 @@
+{
+  "in_domain": {
+    "ap50": 0.7859566034685496,
+    "ap": 0.4562097778180839,
+    "ap_s": 0.7859566034685496,
+    "ap_m": 0.0,
+    "ap_l": 0.0,
+    "ar100": 0.85625,
+    "n_gt": 154,
+    "n_pred": 136
+  },
+  "out_of_domain": {
+    "ap50": 0.29783950617283955,
+    "ap": 0.10604787310737637,
+    "ap_s": 0.29783950617283955,
+    "ap_m": 0.0,
+    "ap_l": 0.0,
+    "ar100": 0.3125,
+    "n_gt": 196,
+    "n_pred": 58
+  },
+  "out_of_domain_after_ft": {
+    "ap50": 0.8946758491587968,
+    "ap": 0.43710230518203,
+    "ap_s": 0.8946758491587968,
+    "ap_m": 0.0,
+    "ap_l": 0.0,
+    "ar100": 0.925,
+    "n_gt": 196,
+    "n_pred": 188
+  },
+  "error_modes_ood": {
+    "loc_err": 41,
+    "cls_err": 1,
+    "miss": 139,
+    "fp": 1
+  },
+  "gap_ap50": 0.48811709729571,
+  "kaggle_playbook": {
+    "kaggle_active": [
+      {
+        "ref": "rsna-knee-abnormality-detection",
+        "title": "RSNA Knee Abnormality Detection",
+        "url": "https://www.kaggle.com/competitions/rsna-knee-abnormality-detection",
+        "category": "Research",
+        "reward": "77,000 Usd",
+        "deadline": "2026-10-22",
+        "status": "active",
+        "team_count": 1007,
+        "use": "P6 medical localization / real domain"
+      },
+      {
+        "ref": "biohub-cell-tracking-during-development",
+        "title": "Biohub - Cell Tracking During Development",
+        "url": "https://www.kaggle.com/competitions/biohub-cell-tracking-during-development",
+        "category": "Research",
+        "reward": "60,000 Usd",
+        "deadline": "2026-09-29",
+        "status": "active",
+        "team_count": 2207,
+        "use": "P6 detection+tracking optional"
+      },
+      {
+        "ref": "hyperspectral-object-detection-challenge-2026",
+        "title": "Hyperspectral Object Detection Challenge 2026",
+        "url": "https://www.kaggle.com/competitions/hyperspectral-object-detection-challenge-2026",
+        "category": "Community",
+        "reward": "738 Usd",
+        "deadline": "2026-09-24",
+        "status": "active",
+        "team_count": 27,
+        "use": "P6 multi-spectral OD"
+      },
+      {
+        "ref": "3-lc-multi-vehicle-detection-challenge",
+        "title": "3LC Multi-Vehicle Detection Challenge",
+        "url": "https://www.kaggle.com/competitions/3-lc-multi-vehicle-detection-challenge",
+        "category": "Community",
+        "reward": "2,000 Usd",
+        "deadline": "2026-06-09",
+        "status": "active",
+        "team_count": 97,
+        "use": "P5-P6 vehicle OD practice"
+      },
+      {
+        "ref": "cs-444-sp-26-mp-4-a-yolo-object-detection",
+        "title": "CS444 YOLO Object Detection (course)",
+        "url": "https://www.kaggle.com/competitions/cs-444-sp-26-mp-4-a-yolo-object-detection",
+        "category": "Community",
+        "reward": "Kudos",
+        "deadline": "2026-04-26",
+        "status": "active",
+        "team_count": 207,
+        "use": "P3 course-style YOLO implement"
+      },
+      {
+        "ref": "cs-444-sp-26-mp-4-a-detr-object-detection",
+        "title": "CS444 DETR Object Detection (course)",
+        "url": "https://www.kaggle.com/competitions/cs-444-sp-26-mp-4-a-detr-object-detection",
+        "category": "Community",
+        "reward": "Kudos",
+        "deadline": "2026-04-26",
+        "status": "active",
+        "team_count": 206,
+        "use": "P4 course-style DETR implement"
+      }
+    ],
+    "classic_learning": [
+      {
+        "ref": "global-wheat-detection",
+        "title": "Global Wheat Detection",
+        "url": "https://www.kaggle.com/competitions/global-wheat-detection",
+        "status": "ended",
+        "team_count": 2245,
+        "use": "dense small-object textbook"
+      },
+      {
+        "ref": "tensorflow-great-barrier-reef",
+        "title": "TensorFlow - Help Protect the Great Barrier Reef",
+        "url": "https://www.kaggle.com/competitions/tensorflow-great-barrier-reef",
+        "status": "ended",
+        "team_count": 2025,
+        "use": "video-frame OD + YOLOv5 writeups"
+      },
+      {
+        "ref": "vinbigdata-chest-xray-abnormalities-detection",
+        "title": "VinBigData Chest X-ray Abnormalities Detection",
+        "url": "https://www.kaggle.com/competitions/vinbigdata-chest-xray-abnormalities-detection",
+        "status": "ended",
+        "team_count": 1275,
+        "use": "medical multi-class boxes"
+      },
+      {
+        "ref": "airbus-ship-detection",
+        "title": "Airbus Ship Detection Challenge",
+        "url": "https://www.kaggle.com/competitions/airbus-ship-detection",
+        "status": "ended",
+        "team_count": 878,
+        "use": "ship detection / segmentation contrast"
+      },
+      {
+        "ref": "open-images-object-detection-rvc-2020",
+        "title": "Open Images Object Detection RVC 2020",
+        "url": "https://www.kaggle.com/competitions/open-images-object-detection-rvc-2020",
+        "status": "ended",
+        "team_count": 89,
+        "use": "large-vocabulary OD"
+      }
+    ],
+    "baseline_recipe_for_wheat_or_reef": [
+      "Convert labels to YOLO/COCO",
+      "Train CenterNet/YOLO with frozen protocol val",
+      "Error analysis: small object miss rate",
+      "Ablate imgsz before exotic necks"
+    ]
+  },
+  "findings": [
+    "Domain shift (darker/smaller) drops AP even when architecture fixed.",
+    "Error modes on OOD often miss + fp rather than pure cls swap on this synth.",
+    "Small FT on target domain recovers part of gap \u2014 typical Kaggle adaptation.",
+    "Real Kaggle Wheat/Reef/RSNA: same protocol discipline; data is heavier but loop identical."
+  ]
+}

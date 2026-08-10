@@ -20,3 +20,7 @@
 ## 记录
 
 使用蓝图 §4.4 YAML 字段写入 `results/`。
+
+## 执行状态
+
+- ✅ 已完成（见 `PROGRESS.md` + `results/`）

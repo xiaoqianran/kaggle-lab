@@ -20,3 +20,7 @@
 ## 门禁
 
 把 DETR 说成“带 attention 的 YOLO” → 重读原理。
+
+## 执行状态
+
+- ✅ 已完成（见 `PROGRESS.md` + `results/`）

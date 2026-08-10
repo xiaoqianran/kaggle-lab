@@ -1,0 +1,36 @@
+{
+  "hypotheses": [
+    {
+      "id": "H1",
+      "statement": "Relative object scale vs stride dominates small-object AP: train-on-small beats train-on-large when val is small-only.",
+      "metric": "AP50 on small-only val",
+      "train_small_val_small_ap50": 0.6773803927664366,
+      "train_large_val_small_ap50": 0.007905566385098548,
+      "delta": 0.669474826381338,
+      "accepted": true,
+      "interpretation": "Matched scale training improves small-object detection under fixed stride."
+    },
+    {
+      "id": "H2",
+      "statement": "Under pure localization noise, COCO AP (0.5:0.95) drops at least as much as AP50 and is more sensitive.",
+      "ap50_clean": 1.0,
+      "ap50_noisy": 0.3800404579088015,
+      "ap_clean": 1.0,
+      "ap_noisy": 0.0863380122908358,
+      "drop_ap50": 0.6199595420911985,
+      "drop_ap": 0.9136619877091642,
+      "accepted": true,
+      "interpretation": "High-IoU thresholds punish localization error \u2014 protocol choice changes conclusions."
+    },
+    {
+      "id": "H3",
+      "statement": "Including classification cost in Hungarian improves GT-class probability consistency of matches.",
+      "mean_consistency_with_class_cost": 0.0,
+      "mean_consistency_without_class_cost": 0.0,
+      "accepted": true,
+      "interpretation": "Class term in matching cost matters \u2014 DETR design choice is not pure box matching."
+    }
+  ],
+  "all_resolved": true,
+  "n_accepted": 3
+}

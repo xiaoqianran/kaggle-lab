@@ -26,3 +26,7 @@
 ## 门禁
 
 改 random flip 后框仍正确；否则不进 P2。
+
+## 执行状态
+
+- ✅ 已完成（见 `PROGRESS.md` + `results/`）

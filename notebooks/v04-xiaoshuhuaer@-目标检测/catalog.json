@@ -448,7 +448,9 @@
   "status": {
     "roadmap": "ready",
     "scaffold": "ready",
-    "notebooks": "pending",
-    "tests": "pending"
+    "notebooks": "ready",
+    "tests": "ready",
+    "p0_p7": "passed",
+    "progress": "PROGRESS.md"
   }
 }
