@@ -20,6 +20,7 @@
   - 队 id `16593868`
   - 同一天公开榜上 **63 队卡在整整 0.17**，像同一档「只过教程关」的封顶分，不是随机噪声
 - 当天额度已用完：`numToday=1`，`numAllowedNow=0`。Kaggle 这赛每天大约 1 次正式提交。**不要在 8 月 14 日再交。**
+- **2026-08-14 已 `kernels push` 出 v11**（compose-click）。Save and Run All COMPLETE，日志有 `MODEL_PATH` 和 `NVIDIA RTX PRO 6000 Blackwell Server Edition`，并写明「没有打任何一局游戏」。**明天用 `-v 11` Submit**，不要交这份假 parquet。
 - Save and Run All 十几秒 COMPLETE **不是分数**。只有 Submit to Competition 才会打 hidden 集、改榜。
 
 ---
