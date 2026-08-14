@@ -41,7 +41,7 @@ MODEL_CANDIDATES = [
     "/kaggle/input/models/google/gemma-4/transformers/gemma-4-31b-it/1",
     "/kaggle/input/google/gemma-4/transformers/gemma-4-31b-it/1",
     "/kaggle/input/models/google/gemma-4/transformers/gemma-4-26b-a4b-it/1",
-    "/kaggle/input/google/gemma-4/transformers/gemma-4-26b-a4b-it/1",
+    "/kaggle/input/models/google/gemma-4/transformers/gemma-4-26b-a4b-it/1",
     "/kaggle/input/models/google/gemma-4/transformers/gemma-4-e2b-it/1",
     "/kaggle/input/google/gemma-4/transformers/gemma-4-e2b-it/1",
 ]
@@ -209,19 +209,20 @@ class SkillSheet:
 
 
 def pick_hunt_target(comps: list[dict[str, Any]], agent_pos, prefer_color: int | None):
-    """目标设定：优先追上一关赢过的颜色，否则追小而稀有的块。"""
-    ranked = list(comps)
-    ranked.sort(key=lambda c: (0 if prefer_color is not None and c["color"] == prefer_color else 1, c["size"], c["y"], c["x"]))
-    for comp in ranked:
+    """目标设定：只追小色块。赢过的颜色如果铺成地板，追它等于撞墙。"""
+    small = [c for c in comps if _le(c["size"], 24)]
+    small.sort(
+        key=lambda c: (
+            0 if prefer_color is not None and c["color"] == prefer_color else 1,
+            c["size"],
+            c["y"],
+            c["x"],
+        )
+    )
+    for comp in small:
         if agent_pos is not None and _le(abs(int(comp["x"]) - agent_pos[0]) + abs(int(comp["y"]) - agent_pos[1]), 0):
             continue
-        if prefer_color is not None and comp["color"] == prefer_color:
-            return int(comp["x"]), int(comp["y"]), int(comp["color"])
-    for comp in ranked:
-        if _le(comp["size"], 24):
-            if agent_pos is not None and _le(abs(int(comp["x"]) - agent_pos[0]) + abs(int(comp["y"]) - agent_pos[1]), 1):
-                continue
-            return int(comp["x"]), int(comp["y"]), int(comp["color"])
+        return int(comp["x"]), int(comp["y"]), int(comp["color"])
     return None
 
 
@@ -665,9 +666,9 @@ class GraphMemory:
                 queue.append(nxt)
         return None
 
-    def pick(self, start: str, painted: np.ndarray | None = None, bg: int = 0) -> str | None:
-        """先全图走路，再全图点击。这是公开探索器比「本格点完再走」强的关键。"""
-        for kind in ("s", "c"):
+    def pick(self, start: str, painted: np.ndarray | None = None, bg: int = 0, kinds: tuple[str, ...] = ("s", "c")) -> str | None:
+        """默认先全图走路再点击。点选关认出来之后反过来，避免在墙上空走。"""
+        for kind in kinds:
             local = self.untested(start, kind)
             if local:
                 if kind == "s":
@@ -684,9 +685,10 @@ class GraphMemory:
 
 
 class MyAgent(Agent):
-    """哈希图探索；步数预算按官方平方分来砍；Gemma 只当顾问。"""
+    """教程关收割技能纸；后面关 A* 猎目标；Gemma 只当顾问。"""
 
-    MAX_ACTIONS = 1500
+    # 官方后面关权重大。6 关预算加起来已超过 1500，1500 会把第 5、6 关直接掐死。
+    MAX_ACTIONS = 8000
     GLOBAL_TIME_LIMIT_S = 8 * 60 * 60
     GLOBAL_RESERVE_S = 20 * 60
     LLM_MAX_CALLS = 8
@@ -750,6 +752,7 @@ class MyAgent(Agent):
         prompt = (
             "Unknown ARC-AGI-3 game. Reply ONE line: ACTION1-5, ACTION6 x y, ACTION7, RESET.\n"
             f"available={sorted(avail)} levels={levels} spent={self.level_spent} nochg={self.no_change}\n"
+            f"genre={self.skill.genre} goal_color={self.skill.goal_color}\n"
             f"objects={obj_txt}\n"
             f"grid16=\n{_downsample(frame)}\n"
         )
@@ -915,10 +918,15 @@ class MyAgent(Agent):
             self.pending_interact = False
             return self._emit(5, 32, 32, "s5", "hunt-arrive")
 
+        # 还没认出角色：新格子先按一下。认出来之后只在目标上按，避免走路关步数翻倍。
+        if self.g.agent_color is None and "s5" in self.g.untested(now_h, "s") and 5 in avail:
+            return self._emit(5, 32, 32, "s5", "new-cell-interact")
+
+        hunt_ok = self.skill.genre != "click"
         if (
-            pos is not None
+            hunt_ok
+            and pos is not None
             and self.g.nav_target is not None
-            and self.skill.genre in ("nav", "hybrid", "unknown")
             and 5 in avail
         ):
             tx, ty = self.g.nav_target
@@ -938,7 +946,8 @@ class MyAgent(Agent):
             if node and self.prev_key:
                 node["tested"].add(self.prev_key)
 
-        key = self.g.pick(now_h, painted, bg)
+        kinds = ("c", "s") if self.skill.genre == "click" else ("s", "c")
+        key = self.g.pick(now_h, painted, bg, kinds=kinds)
         if key is None:
             # 图穷了：关卡重打，用已标死的知识换条路。
             if _lt(self.level_resets, REPLAY_RESETS):
