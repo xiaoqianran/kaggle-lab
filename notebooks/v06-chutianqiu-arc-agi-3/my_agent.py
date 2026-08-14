@@ -1,14 +1,12 @@
-"""ARC-AGI-3 智能体：画面哈希图 + 先走后点 + RHAE 预算。
+"""ARC-AGI-3 智能体：教程关收割技能 + 因果分类 + 向目标 A* 走近。
 
-公开本共识（Just Explore / pscamillo / Ash）：
-把「抹掉 HUD 后的画面」当成图上的点；每个点记下没试过的动作；
-画面不变就把该动作标死；当前没得试就沿已知路走回去；再不行就关卡 RESET。
+官方赛题（不是公开本）真正在考四件事：探索、建模、自己定目标、规划执行。
+环境至少 6 关；第 1 关是教程；后面关要组合前面学会的机制；没打完后面关整局按加权完成度封顶。
 
-关键差别（别人踩过的坑）：
-- 先在全图找没试过的 ACTION1-5，再点。当前格点完再走，导航关会玩死。
-- 计分是 (人步/AI步)^2，步数必须有上限。Goose 写成无限步，跟规则对着干。
-- 点击顺序全固定会把点选关困死；最像按钮的几个固定，后面打乱。
-- Gemma 只在图穷了才问。不按游戏名写死，不绑 duck 额外数据包。
+我们的打法：
+1. 教程关用便宜实验认清「会不会走 / 要点哪里 / 按一下会不会赢」
+2. 认出角色后，朝「上一关赢过的颜色」或小稀有块 A* 走近，踩上就 ACTION5
+3. 走路没用再点；图穷了才问 Gemma（模型内部思考不计步）
 """
 from __future__ import annotations
 
@@ -64,8 +62,6 @@ ID_TO_NAME = {
 
 # 人步数未知，只用先验做停手，不进提交分。
 REPLAY_RESETS = 3
-ABANDON_AFTER = 250
-HARD_LEVEL_CAP = 900
 MAX_CLICKS = 16
 CLICK_KEEP = 4
 NAV_BIAS = 0.7
@@ -99,15 +95,134 @@ def rhae_level_score(human_actions: float, ai_actions: float) -> float:
     return 1.15 if score > 1.15 else score
 
 
-def should_abandon(level_spent: int, can_still_explore: bool, remaining_s: float) -> bool:
-    """本关该停了：时间没了、图穷了还磨、或步数已经多到平方分≈0。"""
+def should_abandon(level_spent: int, can_still_explore: bool, remaining_s: float, level_index: int = 0) -> bool:
+    """整局放弃才叫放弃：没打完后面关，官方会按加权完成度封顶。"""
     if _le(remaining_s, 0):
         return True
-    if level_spent >= HARD_LEVEL_CAP:
+    budget = level_action_budget(level_index)
+    if level_spent >= 700:
         return True
-    if level_spent >= ABANDON_AFTER and not can_still_explore:
+    if level_spent >= budget and not can_still_explore:
         return True
     return False
+
+
+def rhae_game_score(level_scores: list[float], n_levels: int | None = None) -> float:
+    """官方整局分：关卡号加权平均，再按「从第 1 关起连续打完几关」封顶。
+
+    5 关权重 1+2+3+4+5=15。只打完前 3 关，封顶 6/15=0.40。
+    所以教程关可以慢，后面关必须打完。
+    """
+    n = n_levels if n_levels is not None else len(level_scores)
+    scores = list(level_scores) + [0.0] * max(0, n - len(level_scores))
+    scores = scores[:n]
+    k = 0
+    for s in scores:
+        if s > 0:
+            k += 1
+        else:
+            break
+    denom = n * (n + 1) / 2.0
+    if _le(denom, 0):
+        return 0.0
+    cap = (k * (k + 1) / 2.0) / denom
+    weighted = sum((i + 1) * float(scores[i]) for i in range(n)) / denom
+    return cap if _le(cap, weighted) else weighted
+
+
+def level_action_budget(level_index: int) -> int:
+    """第 1 关是教程（权重最小）：把机制学到手就过。后面关权重更大、机制要组合，多给步数。"""
+    idx = 0 if _lt(level_index, 0) else int(level_index)
+    budget = 160 + 50 * idx
+    return 700 if budget > 700 else budget
+
+
+def classify_genre(move_hits: int, click_hits: int, interact_hits: int) -> str:
+    if move_hits > 0 and click_hits > 0:
+        return "hybrid"
+    if move_hits > 0:
+        return "nav"
+    if click_hits > 0:
+        return "click"
+    if interact_hits > 0:
+        return "nav"
+    return "unknown"
+
+
+def first_step_toward(start, goal, blocked, dir_map):
+    """在已知墙里走一步靠近目标。目标格本身可踩（旗子要走进去）。"""
+    if start is None or goal is None:
+        return None
+    sx, sy = int(start[0]), int(start[1])
+    gx, gy = int(goal[0]), int(goal[1])
+    if sx == gx and sy == gy:
+        return None
+    prev: dict[tuple[int, int], tuple[tuple[int, int], int] | None] = {(sx, sy): None}
+    queue = deque([(sx, sy)])
+    found = False
+    while queue:
+        x, y = queue.popleft()
+        if x == gx and y == gy:
+            found = True
+            break
+        for sid, (dx, dy) in dir_map.items():
+            nx, ny = x + dx, y + dy
+            if not _in_bounds(nx, ny) or (nx, ny) in blocked or (nx, ny) in prev:
+                continue
+            prev[(nx, ny)] = ((x, y), int(sid))
+            queue.append((nx, ny))
+    if not found:
+        return None
+    node = (gx, gy)
+    sid_out = None
+    while prev[node] is not None:
+        parent, sid_out = prev[node]
+        node = parent
+        if node == (sx, sy):
+            break
+    return sid_out
+
+
+class SkillSheet:
+    """跨关技能纸。官方：后面关要组合前面关学到的机制，不是每关当新游戏。"""
+
+    def __init__(self) -> None:
+        self.genre = "unknown"
+        self.move_hits = 0
+        self.click_hits = 0
+        self.interact_hits = 0
+        self.goal_color: int | None = None
+
+    def note_effect(self, kind: str) -> None:
+        if kind == "move":
+            self.move_hits += 1
+        elif kind == "click":
+            self.click_hits += 1
+        elif kind == "interact":
+            self.interact_hits += 1
+        self.genre = classify_genre(self.move_hits, self.click_hits, self.interact_hits)
+
+    def note_win_color(self, color: int | None) -> None:
+        if color is None:
+            return
+        self.goal_color = int(color)
+
+
+def pick_hunt_target(comps: list[dict[str, Any]], agent_pos, prefer_color: int | None):
+    """目标设定：优先追上一关赢过的颜色，否则追小而稀有的块。"""
+    ranked = list(comps)
+    ranked.sort(key=lambda c: (0 if prefer_color is not None and c["color"] == prefer_color else 1, c["size"], c["y"], c["x"]))
+    for comp in ranked:
+        if agent_pos is not None and _le(abs(int(comp["x"]) - agent_pos[0]) + abs(int(comp["y"]) - agent_pos[1]), 0):
+            continue
+        if prefer_color is not None and comp["color"] == prefer_color:
+            return int(comp["x"]), int(comp["y"]), int(comp["color"])
+    for comp in ranked:
+        if _le(comp["size"], 24):
+            if agent_pos is not None and _le(abs(int(comp["x"]) - agent_pos[0]) + abs(int(comp["y"]) - agent_pos[1]), 1):
+                continue
+            return int(comp["x"]), int(comp["y"]), int(comp["color"])
+    return None
 
 
 def _find_model_path() -> str | None:
@@ -588,6 +703,11 @@ class MyAgent(Agent):
         random.shuffle(dirs)
         # 每个新画面先 ACTION5：走进目标格立刻走开，交互关会永远点不到。
         self.g.simple_order = [5] + dirs
+        self.skill = SkillSheet()
+        self.blocked: set[tuple[int, int]] = set()
+        self.pending_interact = False
+        self.hunt_color: int | None = None
+        self.last_pos: tuple[int, int] | None = None
         self.level = -1
         self.level_spent = 0
         self.level_resets = 0
@@ -602,7 +722,7 @@ class MyAgent(Agent):
 
     @property
     def name(self) -> str:
-        return f"{super().name}.graph-rhae"
+        return f"{super().name}.skill-hunt"
 
     def _remaining_global(self) -> float:
         deadline = _SUBMISSION_STARTED_AT + self.GLOBAL_TIME_LIMIT_S - self.GLOBAL_RESERVE_S
@@ -701,11 +821,27 @@ class MyAgent(Agent):
         avail = _avail_ids(latest_frame)
         levels = int(getattr(latest_frame, "levels_completed", getattr(latest_frame, "score", 0)) or 0)
 
-        # 过关了：键位记住，地图清空（新迷宫）。
+        # 过关了：把赢过的颜色写进技能纸；地图清空，键位保留。
         if levels != self.level:
             if levels > self.level and self.level >= 0:
-                print("level-up", self.game_id, "to", levels, "spent", self.level_spent, flush=True)
+                self.skill.note_win_color(self.hunt_color)
+                print(
+                    "level-up",
+                    self.game_id,
+                    "to",
+                    levels,
+                    "spent",
+                    self.level_spent,
+                    "genre",
+                    self.skill.genre,
+                    "goal_color",
+                    self.skill.goal_color,
+                    flush=True,
+                )
             self.g.clear_level()
+            self.blocked.clear()
+            self.pending_interact = False
+            self.last_pos = None
             self.level = levels
             self.level_spent = 0
             self.level_resets = 0
@@ -725,6 +861,10 @@ class MyAgent(Agent):
                 sid = int(self.prev_key[1:])
                 if sid in DEFAULT_DIRS:
                     self.g.dir_map[sid] = (dx, dy)
+                if sid in (1, 2, 3, 4):
+                    self.skill.note_effect("move")
+                if sid == 5:
+                    self.skill.note_effect("interact")
 
         painted = self.g.paint(frame, bg)
         self.g.update_flash(self.prev_paint, painted, self.g.agent_color)
@@ -734,8 +874,17 @@ class MyAgent(Agent):
         # 记下上一步：变了连边，没变标死。
         if self.prev_h is not None and now_h == self.prev_h:
             self.no_change += 1
+            if self.prev_key and self.prev_key.startswith("s") and self.last_pos is not None:
+                sid = int(self.prev_key[1:])
+                if sid in self.g.dir_map:
+                    dx, dy = self.g.dir_map[sid]
+                    wall = (self.last_pos[0] + dx, self.last_pos[1] + dy)
+                    if _in_bounds(wall[0], wall[1]):
+                        self.blocked.add(wall)
         else:
             self.no_change = 0
+            if self.prev_key and self.prev_key.startswith("c"):
+                self.skill.note_effect("click")
         self.g.record(self.prev_h, self.prev_key, now_h)
         self.g.ensure(now_h, painted, bg, avail)
         self.g.recent.append(now_h)
@@ -746,15 +895,41 @@ class MyAgent(Agent):
         pos = locate_agent(painted, bg, self.g.agent_color, self.g.agent_size)
         if pos is not None:
             self.g.visit[pos] = self.g.visit.get(pos, 0) + 1
-        if self.level_spent % NAV_REFRESH == 1:
+            self.last_pos = pos
+        comps = components(painted, bg)
+        hunt = pick_hunt_target(comps, pos, self.skill.goal_color if self.skill.goal_color is not None else self.hunt_color)
+        if hunt is not None:
+            self.g.nav_target = (hunt[0], hunt[1])
+            self.hunt_color = hunt[2]
+        elif self.level_spent % NAV_REFRESH == 1:
             self.g.refresh_target(painted, bg)
 
         can_explore = self.g.has_untested()
-        if should_abandon(self.level_spent, can_explore, self._remaining_global()):
+        if should_abandon(self.level_spent, can_explore, self._remaining_global(), self.level):
             self.abandoned = True
-            print("abandon", self.game_id, "spent", self.level_spent, flush=True)
+            print("abandon", self.game_id, "spent", self.level_spent, "level", self.level, flush=True)
             fallback = 1 if 1 in avail else (sorted(avail)[0] if avail else 1)
             return self._emit(fallback, 32, 32, "s1", "rhae-abandon")
+
+        if self.pending_interact and 5 in avail:
+            self.pending_interact = False
+            return self._emit(5, 32, 32, "s5", "hunt-arrive")
+
+        if (
+            pos is not None
+            and self.g.nav_target is not None
+            and self.skill.genre in ("nav", "hybrid", "unknown")
+            and 5 in avail
+        ):
+            tx, ty = self.g.nav_target
+            if pos[0] == tx and pos[1] == ty:
+                return self._emit(5, 32, 32, "s5", "hunt-on-goal")
+            sid = first_step_toward(pos, (tx, ty), self.blocked, self.g.dir_map)
+            if sid is not None and sid in avail:
+                dx, dy = self.g.dir_map.get(sid, (0, 0))
+                if pos[0] + dx == tx and pos[1] + dy == ty:
+                    self.pending_interact = True
+                return self._emit(sid, 32, 32, f"s{sid}", "hunt-astar")
 
         # ABAB 死循环：把正在走的边当已探索，逼它换动作。
         rec = list(self.g.recent)

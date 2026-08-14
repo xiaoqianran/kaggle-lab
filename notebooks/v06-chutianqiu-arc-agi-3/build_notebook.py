@@ -11,24 +11,54 @@ OUT = HERE / "arc-prize-2026-arc-agi-3-starter.ipynb"
 
 MD0 = """# ARC Prize 2026 — ARC-AGI-3
 
-竞赛绑定 **不要改**：`arc-prize-2026-arc-agi-3`。
-提交骨架仍是官方 starter（离线 wheels → 写 MyAgent → rerun 走 gateway → commit 写 dummy parquet）。
+竞赛绑定 **不要改**：`arc-prize-2026-arc-agi-3`。无网。机器：`NvidiaRtxPro6000`。
 
-## 有没有参考别人的公开 notebook？
+## 先看清楚：这个 notebook 有两种跑法
 
-有。上一版只按官方文档推；这一版把公开本搜过再合成。详见仓库里的 `SURVEY.md`。
+| 你点的按钮 | 大概耗时 | 有没有玩游戏 | 榜分 |
+|---|---|---|---|
+| Save and Run All | 十几秒 | **没有**。只装包、写 agent、写一份假 parquet | 不变 |
+| Submit to Competition | 数小时 | **有**。网关把 hidden 游戏一帧帧塞给 MyAgent | 才会变 |
 
-**用了别人反复验证过的：** 抹 HUD 再哈希、先走后点、没变就标死、迷路就关卡 RESET、步数必须有上限（平方分）、认角色后软偏向出口。
+下面四格代码：1 装轮子 → 2 写出智能体 → 3 **只有评分重跑才打游戏** → 4 假提交（让提交按钮出现）。
+Save and Run All 会跳过第 3 格里的 `main.py`，所以十几秒 COMPLETE 不代表得了分。
+"""
 
-**没搬：** duck/TAAF 套件（要额外数据集）；不按 `ls20` 写死；不每步问大模型；不读游戏源码做离线 BFS。
+MD_PLAY = """# 我们的方案：怎么玩游戏（对着官方赛题设计）
 
-## 这一版在干什么
+官方报告考四件事：探索、建模、自己定目标、规划执行。
+至少 6 关。第 1 关是教程。后面关要组合前面学会的机制。
+整局分按关卡号加权；只打完前几关会被封顶（5 关打完 3 关最多 40%）。
 
-1. 画面当图上的点。先在全图试 ACTION1-5，再点小稀有色块
-2. 本关太久不过 → 放弃，别把平方分摊没
-3. 图穷了才问挂上的 Gemma-4-31B
+公开哈希图每关清空地图，等于把教程关白打了。我们不这么干。
 
-机器：`NvidiaRtxPro6000`。无网。
+## 一句话
+
+教程关把「怎么赢」写进技能纸；后面关用技能纸定目标，A* 走近再按。
+
+## 每一步
+
+```mermaid
+flowchart TD
+    A[网关送来一帧] --> B[抹掉分数条]
+    B --> C{技能纸已经知道赢的颜色或角色了吗}
+    C -->|知道| D[A星向目标走一步]
+    D --> E{这一步会踩上目标吗}
+    E -->|会| F[下一步立刻 ACTION5]
+    E -->|还没有| G[先走这一步]
+    C -->|还不知道| H[便宜实验: 先按再走 认键位]
+    H --> I[把会走/会点/会按 写进技能纸]
+    I --> A
+    F --> A
+    G --> A
+```
+
+## 计分决定预算
+
+教程关权重最小：把机制学到手就过。后面关权重大、要组合，多给步数。
+没打完最后几关，前面再快也封顶。所以不要为了省第 1 关的步数而放弃整局。
+
+Gemma-4 只在图穷了才问。官方：模型内部思考不计步。不按游戏名写死。
 """
 
 PIP = """# 【步骤】1/4 无网安装竞赛自带的 arc-agi 轮子（不要 pip 上网）
@@ -94,6 +124,8 @@ if not os.getenv('KAGGLE_IS_COMPETITION_RERUN'):
     except Exception as e:
         print("torch check failed", type(e).__name__, e)
     print("agent file", Path("/tmp/my_agent.py").exists())
+    print("这是 Save and Run All：没有打任何一局游戏。")
+    print("真打 hidden 集请点 Submit to Competition，会跑数小时，才会改榜。")
     submission.head()
 """
 
@@ -133,6 +165,7 @@ nb = {
     },
     "cells": [
         {k: v for k, v in cell("markdown", MD0).items() if k != "outputs" and k != "execution_count"},
+        {k: v for k, v in cell("markdown", MD_PLAY).items() if k != "outputs" and k != "execution_count"},
         cell("code", PIP),
         cell("code", WRITE),
         cell("code", RERUN),
