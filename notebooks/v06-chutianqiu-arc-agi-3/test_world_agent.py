@@ -186,6 +186,48 @@ class ToyPoint:
         return Frame(self.grid(), self.state, self.level)
 
 
+class ToyCompose:
+    """教程关走到颜色 3 再按；第二关同样颜色换位置。检验技能纸有没有跨关记住。"""
+
+    def __init__(self) -> None:
+        self.level = 0
+        self.state = _GameState.PLAYING
+        self.starts = [(8, 8), (8, 12)]
+        self.goals = [(20, 8), (8, 24)]
+        self.x, self.y = self.starts[0]
+
+    def grid(self) -> np.ndarray:
+        g = np.zeros((64, 64), dtype=np.int64)
+        g[0, :] = 5
+        if self.level >= 2:
+            return g
+        gx, gy = self.goals[self.level]
+        if (self.x, self.y) != (gx, gy):
+            g[gy, gx] = 3
+        g[self.y, self.x] = 2
+        return g
+
+    def step(self, action: _Act) -> Frame:
+        aid = int(action.value)
+        if aid == 0:
+            self.level = 0
+            self.x, self.y = self.starts[0]
+            self.state = _GameState.PLAYING
+            return Frame(self.grid(), self.state, self.level)
+        if aid in ma.DEFAULT_DIRS:
+            dx, dy = ma.DEFAULT_DIRS[aid]
+            nx, ny = self.x + dx, self.y + dy
+            if ma._in_bounds(nx, ny):
+                self.x, self.y = nx, ny
+        if ma._lt(self.level, 2) and aid == 5 and (self.x, self.y) == self.goals[self.level]:
+            self.level += 1
+            if self.level >= 2:
+                self.state = _GameState.WIN
+            else:
+                self.x, self.y = self.starts[self.level]
+        return Frame(self.grid(), self.state, self.level)
+
+
 def _play(agent: ma.MyAgent, env, first: Frame, limit: int = 180) -> tuple[int, Frame]:
     frame = first
     for _ in range(limit):
@@ -207,10 +249,30 @@ class RhaeTests(unittest.TestCase):
         self.assertEqual(ma.rhae_level_score(10, 5), 1.15)
 
     def test_governor_thresholds(self) -> None:
-        self.assertTrue(ma.should_abandon(250, False, 10.0))
-        self.assertFalse(ma.should_abandon(250, True, 10.0))
-        self.assertTrue(ma.should_abandon(900, True, 10.0))
-        self.assertTrue(ma.should_abandon(10, True, 0.0))
+        self.assertTrue(ma.should_abandon(160, False, 10.0, 0))
+        self.assertFalse(ma.should_abandon(160, True, 10.0, 0))
+        self.assertFalse(ma.should_abandon(200, False, 10.0, 4))
+        self.assertTrue(ma.should_abandon(700, True, 10.0, 0))
+        self.assertTrue(ma.should_abandon(10, True, 0.0, 0))
+
+    def test_game_score_caps_incomplete(self) -> None:
+        # 5 关只打完前 3 关，封顶 6/15=0.40，再高效也抬不上去。
+        self.assertAlmostEqual(ma.rhae_game_score([1.15, 1.15, 1.15, 0.0, 0.0], 5), 0.4)
+        self.assertAlmostEqual(ma.rhae_game_score([1.0, 1.0, 1.0, 1.0, 1.0], 5), 1.0)
+        self.assertTrue(ma._lt(ma.rhae_game_score([1.0, 0.0, 0.0, 0.0, 0.0], 5), 0.07))
+
+    def test_later_levels_get_more_budget(self) -> None:
+        self.assertTrue(ma._lt(ma.level_action_budget(0), ma.level_action_budget(4)))
+
+    def test_classify_genre(self) -> None:
+        self.assertEqual(ma.classify_genre(3, 0, 1), "nav")
+        self.assertEqual(ma.classify_genre(0, 2, 0), "click")
+        self.assertEqual(ma.classify_genre(2, 2, 0), "hybrid")
+
+    def test_astar_goes_right(self) -> None:
+        blocked = set()
+        sid = ma.first_step_toward((8, 8), (22, 8), blocked, ma.DEFAULT_DIRS)
+        self.assertEqual(sid, 4)
 
 
 class VisionTests(unittest.TestCase):
@@ -306,6 +368,22 @@ class AgentLoopTests(unittest.TestCase):
         steps, end = _play(agent, toy, playing, limit=40)
         self.assertIs(end.state, _GameState.WIN)
         self.assertTrue(ma._le(steps, 20))
+
+    def test_compose_remembers_goal_color(self) -> None:
+        toy = ToyCompose()
+        agent = self._agent("compose")
+        random.seed(0)
+        np.random.seed(0)
+        agent.g.simple_order = [5, 4, 2, 1, 3]
+        start = Frame(toy.grid(), _GameState.NOT_PLAYED, 0)
+        agent.choose_action([], start)
+        agent.action_counter += 1
+        playing = Frame(toy.grid(), _GameState.PLAYING, 0)
+        steps, end = _play(agent, toy, playing, limit=200)
+        self.assertIs(end.state, _GameState.WIN)
+        self.assertEqual(end.levels_completed, 2)
+        self.assertEqual(agent.skill.goal_color, 3)
+        self.assertTrue(ma._le(steps, 80))
 
     def test_parse_llm_click(self) -> None:
         self.assertEqual(ma._parse_llm_line("ACTION6 40 20", {1, 6}), (6, 40, 20))
