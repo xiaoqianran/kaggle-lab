@@ -6,9 +6,11 @@
 - 公开榜头部的 duck/TAAF **不搬**（要额外数据包）
 - Gemma-4 只在图穷了才问
 
-打开 notebook 前两格看 **「我们怎么玩游戏」**（含流程图）。
+打开 notebook 前两格看方案。核心：**教程关收割技能纸，后面关 A* 追赢过的颜色。**
 
-Save and Run All 只有十几秒、**不打游戏**。真打 hidden 集要点 Submit to Competition。
+Save and Run All 不打游戏。真打要点 Submit to Competition。
+
+单测：`python3 -m unittest test_world_agent.py`（含官方封顶公式、跨关记颜色）。
 
 - 竞赛来源不改：`arc-prize-2026-arc-agi-3`
 - 无网；机器：`NvidiaRtxPro6000`
