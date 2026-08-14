@@ -11,24 +11,81 @@ OUT = HERE / "arc-prize-2026-arc-agi-3-starter.ipynb"
 
 MD0 = """# ARC Prize 2026 — ARC-AGI-3
 
-竞赛绑定 **不要改**：`arc-prize-2026-arc-agi-3`。
-提交骨架仍是官方 starter（离线 wheels → 写 MyAgent → rerun 走 gateway → commit 写 dummy parquet）。
+竞赛绑定 **不要改**：`arc-prize-2026-arc-agi-3`。无网。机器：`NvidiaRtxPro6000`。
 
-## 有没有参考别人的公开 notebook？
+## 先看清楚：这个 notebook 有两种跑法
 
-有。上一版只按官方文档推；这一版把公开本搜过再合成。详见仓库里的 `SURVEY.md`。
+| 你点的按钮 | 大概耗时 | 有没有玩游戏 | 榜分 |
+|---|---|---|---|
+| Save and Run All | 十几秒 | **没有**。只装包、写 agent、写一份假 parquet | 不变 |
+| Submit to Competition | 数小时 | **有**。网关把 hidden 游戏一帧帧塞给 MyAgent | 才会变 |
 
-**用了别人反复验证过的：** 抹 HUD 再哈希、先走后点、没变就标死、迷路就关卡 RESET、步数必须有上限（平方分）、认角色后软偏向出口。
+下面四格代码：1 装轮子 → 2 写出智能体 → 3 **只有评分重跑才打游戏** → 4 假提交（让提交按钮出现）。
+Save and Run All 会跳过第 3 格里的 `main.py`，所以十几秒 COMPLETE 不代表得了分。
+"""
 
-**没搬：** duck/TAAF 套件（要额外数据集）；不按 `ls20` 写死；不每步问大模型；不读游戏源码做离线 BFS。
+MD_PLAY = """# 我们的方案：怎么玩游戏
 
-## 这一版在干什么
+比赛不给说明书。网关每次只给你一张 64×64、16 色的画面，你还一个动作：
 
-1. 画面当图上的点。先在全图试 ACTION1-5，再点小稀有色块
-2. 本关太久不过 → 放弃，别把平方分摊没
-3. 图穷了才问挂上的 Gemma-4-31B
+- ACTION1–4：默认上/下/左/右（个别游戏会改键位，我们现场认）
+- ACTION5：交互（踩到旗子上按一下、开门、捡东西）
+- ACTION6：点击某个格子（没有准星提示）
+- ACTION7：撤销
+- RESET：没开局或死了只能这个，否则服务器 400。竞赛模式只允许关卡重置
 
-机器：`NvidiaRtxPro6000`。无网。
+计分是平方效率：`(人类步数 / AI步数)^2`，上限 1.15。人 10 步你 100 步只剩 0.01。
+所以方案的核心不是「能通就行」，而是 **少走冤枉路**。
+
+## 一句话
+
+把每个画面当成地图上的一间房。进门先试「按一下」，再走路，最后才点。
+试过没反应的招作废。迷路了沿原路回去。地图穷了才问 Gemma。
+
+## 每一步怎么选动作
+
+```mermaid
+flowchart TD
+    A[网关送来一帧 64x64] --> B[抹掉顶底长条分数条]
+    B --> C[给画面做指纹 当作一间房]
+    C --> D{这间房还有没试过的按一下或走路吗}
+    D -->| 有| E[先 ACTION5 再朝像出口的方向走]
+    D -->| 没有| F{别的房间还有没走过的路吗}
+    F -->| 有| G[沿已知边走回那间房]
+    F -->| 没有| H{还能点小色块吗}
+    H -->| 有| I[点最小最稀有的色块]
+    H -->| 没有| J[关卡 RESET 或问 Gemma 或放弃]
+    E --> K[把动作交给网关]
+    G --> K
+    I --> K
+    J --> K
+    K --> L{回来的画面如何}
+    L -->| 没变| M[这招在这间房标死]
+    L -->| 变了| N[地图上连一条边]
+    L -->| 过关| O[按平方效率记分]
+    M --> A
+    N --> A
+```
+
+## 两个典型关，我们会怎么玩
+
+**走路关（小人要走到旗子上再按）。**
+1. 走进任何新格子，先 ACTION5：万一已经站在旗子上，立刻就能过，不会「踩到了又走开」。
+2. 看哪个小色块跟着上下左右移动 → 认出角色和键位，跨关记住。
+3. 之后大约七成步数朝「最像按钮/旗子」的小色块走；只走还没踩过的格子，避免撞墙来回抖。
+4. 某方向走了画面完全不变 → 当墙，这间房不再试这个方向。
+
+**点击关（走路没用，要点对某个小色块）。**
+1. ACTION1–5 全是画面不变 → 全部标死。
+2. 剩下才点：小、颜色少的块更像按钮。最像的前 4 个按顺序点，后面打乱（点选顺序写死会把点选关困死）。
+3. 每间房最多留 16 个点击候选，避免把时间耗在地板上。
+
+## 为什么不每步问 Gemma-4
+
+公开榜上纯大模型要么要额外 vLLM 包，要么把 9 小时问光。
+我们挂的是 transformers 4-bit：后台慢慢加载，**图穷了最多问 8 次**。模型挂不上也能交卷。
+
+不按游戏名写死路线。hidden 集不是公开的 ls20/vc33。
 """
 
 PIP = """# 【步骤】1/4 无网安装竞赛自带的 arc-agi 轮子（不要 pip 上网）
@@ -94,6 +151,8 @@ if not os.getenv('KAGGLE_IS_COMPETITION_RERUN'):
     except Exception as e:
         print("torch check failed", type(e).__name__, e)
     print("agent file", Path("/tmp/my_agent.py").exists())
+    print("这是 Save and Run All：没有打任何一局游戏。")
+    print("真打 hidden 集请点 Submit to Competition，会跑数小时，才会改榜。")
     submission.head()
 """
 
@@ -133,6 +192,7 @@ nb = {
     },
     "cells": [
         {k: v for k, v in cell("markdown", MD0).items() if k != "outputs" and k != "execution_count"},
+        {k: v for k, v in cell("markdown", MD_PLAY).items() if k != "outputs" and k != "execution_count"},
         cell("code", PIP),
         cell("code", WRITE),
         cell("code", RERUN),

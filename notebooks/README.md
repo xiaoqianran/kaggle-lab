@@ -41,7 +41,7 @@
 | 文件 | 深入层 | 学什么 |
 |---|---|---|
 | `grok-008-qlora-scale-bench.ipynb` | B 效率工程 | 4bit NF4 QLoRA、peak VRAM、步耗时、3B/7B 边界 |
-| `grok-009-gsm8k-eval-baseline.ipynb` | D 硬评测 | GSM8K 冻结子集 + base EM |
+| `grok-009-gsm8k-eval-baseline.ipynb` | D 硬7评测 | GSM8K 冻结子集 + base EM |
 | `grok-010-gsm8k-qlora-sft.ipynb` | 闭环 | 同尺 QLoRA SFT：base vs sft EM |
 
 后续可写：`011` 单卡 vs 双卡吞吐；`012` GRPO/可验证 reward。
@@ -96,6 +96,6 @@ Interactive HTML gallery of Kaggle img3d-00…03 outputs lives at [`v01-wangran5
 
 | 文件 | 说明 |
 |------|------|
-| [`v06-chutianqiu-arc-agi-3/arc-prize-2026-arc-agi-3-starter.ipynb`](v06-chutianqiu-arc-agi-3/arc-prize-2026-arc-agi-3-starter.ipynb) | 官方骨架 + 公开本共识（哈希图）+ RHAE |
+| [`v06-chutianqiu-arc-agi-3/arc-prize-2026-arc-agi-3-starter.ipynb`](v06-chutianqiu-arc-agi-3/arc-prize-2026-arc-agi-3-starter.ipynb) | 开头两格说明怎么玩游戏；Save and Run All 不打游戏 |
 | Kaggle | https://www.kaggle.com/code/chutianqiu/arc-prize-2026-arc-agi-3-starter |
 | 竞赛 | `arc-prize-2026-arc-agi-3`（不要改 competition_sources） |
