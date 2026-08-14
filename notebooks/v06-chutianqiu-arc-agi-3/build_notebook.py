@@ -78,6 +78,9 @@ if os.getenv('KAGGLE_IS_COMPETITION_RERUN'):
           --retry-max-time 600 http://gateway:8001/api/games
 
     # 官方框架在只读 input 里，拷到 working 才能改。
+    !cp -r /kaggle/input/competitions/arc-prize-2026-arc-agi-3/ARC-AGI-3-Agents \
+           /kaggle/working/ARC-AGI-3-Agents
+
     # 把我们的 MyAgent 塞进模板目录。
     !cp /tmp/my_agent.py \
         /kaggle/working/ARC-AGI-3-Agents/agents/templates/my_agent.py
