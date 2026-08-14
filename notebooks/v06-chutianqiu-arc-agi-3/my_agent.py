@@ -95,14 +95,29 @@ def rhae_level_score(human_actions: float, ai_actions: float) -> float:
     return 1.15 if score > 1.15 else score
 
 
-def should_abandon(level_spent: int, can_still_explore: bool, remaining_s: float, level_index: int = 0) -> bool:
-    """整局放弃才叫放弃：没打完后面关，官方会按加权完成度封顶。"""
+def should_abandon(
+    level_spent: int,
+    can_still_explore: bool,
+    remaining_s: float,
+    level_index: int = 0,
+    has_plan: bool = False,
+) -> bool:
+    """整局放弃才叫放弃：没打完后面关，官方会按加权完成度封顶。
+
+    后面关权重大。有可达猎点时不要在 700 步一刀切，否则组合关刚开门就被掐死。
+    """
     if _le(remaining_s, 0):
         return True
-    budget = level_action_budget(level_index)
-    if level_spent >= 700:
+    idx = 0 if _lt(level_index, 0) else int(level_index)
+    hard = 700 + 80 * (idx if _le(idx, 6) else 6)
+    if hard > 1100:
+        hard = 1100
+    if level_spent >= hard and not has_plan:
         return True
-    if level_spent >= budget and not can_still_explore:
+    if level_spent >= hard + 250:
+        return True
+    budget = level_action_budget(level_index)
+    if level_spent >= budget and not can_still_explore and not has_plan:
         return True
     return False
 
@@ -184,7 +199,10 @@ def first_step_toward(start, goal, blocked, dir_map):
 
 
 class SkillSheet:
-    """跨关技能纸。官方：后面关要组合前面关学到的机制，不是每关当新游戏。"""
+    """跨关技能纸。官方：后面关要组合前面关学到的机制，不是每关当新游戏。
+
+    只记一个 goal_color 不够：后面关常常是「先点开关，再走到出口」。
+    """
 
     def __init__(self) -> None:
         self.genre = "unknown"
@@ -192,6 +210,9 @@ class SkillSheet:
         self.click_hits = 0
         self.interact_hits = 0
         self.goal_color: int | None = None
+        self.goal_colors: list[int] = []
+        self.useful_click_colors: list[int] = []
+        self.win_kinds: list[str] = []
 
     def note_effect(self, kind: str) -> None:
         if kind == "move":
@@ -202,28 +223,129 @@ class SkillSheet:
             self.interact_hits += 1
         self.genre = classify_genre(self.move_hits, self.click_hits, self.interact_hits)
 
+    def _push_color(self, bucket: list[int], color: int, cap: int = 4) -> None:
+        color = int(color)
+        if color in bucket:
+            bucket.remove(color)
+        bucket.insert(0, color)
+        del bucket[cap:]
+
     def note_win_color(self, color: int | None) -> None:
         if color is None:
             return
         self.goal_color = int(color)
+        self._push_color(self.goal_colors, int(color))
+
+    def note_win(self, color: int | None, kind: str | None) -> None:
+        self.note_win_color(color)
+        if not kind:
+            return
+        if kind in self.win_kinds:
+            self.win_kinds.remove(kind)
+        self.win_kinds.insert(0, kind)
+
+    def note_click_color(self, color: int | None) -> None:
+        if color is None:
+            return
+        self._push_color(self.useful_click_colors, int(color))
+
+    def prefer_colors(self) -> list[int]:
+        out: list[int] = []
+        for color in self.goal_colors:
+            if color not in out:
+                out.append(color)
+        if self.goal_color is not None and self.goal_color not in out:
+            out.append(int(self.goal_color))
+        return out
 
 
-def pick_hunt_target(comps: list[dict[str, Any]], agent_pos, prefer_color: int | None):
-    """目标设定：只追小色块。赢过的颜色如果铺成地板，追它等于撞墙。"""
+def pick_hunt_candidates(
+    comps: list[dict[str, Any]],
+    agent_pos,
+    prefer_colors: list[int] | None,
+    limit: int = 6,
+) -> list[tuple[int, int, int]]:
+    """只追小色块。赢过的颜色如果铺成地板，追它等于撞墙。返回多个候选，供 A* 试可达性。"""
+    prefers = list(prefer_colors or [])
     small = [c for c in comps if _le(c["size"], 24)]
-    small.sort(
-        key=lambda c: (
-            0 if prefer_color is not None and c["color"] == prefer_color else 1,
-            c["size"],
-            c["y"],
-            c["x"],
-        )
-    )
+
+    def _rank(comp: dict[str, Any]) -> tuple[int, int, int, int]:
+        pref = 99
+        if comp["color"] in prefers:
+            pref = prefers.index(comp["color"])
+        return (pref, int(comp["size"]), int(comp["y"]), int(comp["x"]))
+
+    small.sort(key=_rank)
+    out: list[tuple[int, int, int]] = []
     for comp in small:
         if agent_pos is not None and _le(abs(int(comp["x"]) - agent_pos[0]) + abs(int(comp["y"]) - agent_pos[1]), 0):
             continue
-        return int(comp["x"]), int(comp["y"]), int(comp["color"])
+        out.append((int(comp["x"]), int(comp["y"]), int(comp["color"])))
+        if len(out) >= limit:
+            break
+    return out
+
+
+def pick_hunt_target(comps: list[dict[str, Any]], agent_pos, prefer_color: int | None):
+    prefers = [int(prefer_color)] if prefer_color is not None else None
+    cands = pick_hunt_candidates(comps, agent_pos, prefers)
+    return cands[0] if cands else None
+
+
+def plan_hunt(pos, candidates, blocked, dir_map):
+    """在已知墙里找第一个走得到的猎点。目标格本身可踩，不要当墙。
+
+    返回 ('on', x, y, color) 或 ('step', sid, x, y, color) 或 None。
+    """
+    if pos is None or not candidates:
+        return None
+    walls = set(blocked)
+    for x, y, color in candidates:
+        walls.discard((x, y))
+        if pos[0] == x and pos[1] == y:
+            return ("on", x, y, color)
+        sid = first_step_toward(pos, (x, y), walls, dir_map)
+        if sid is not None:
+            return ("step", int(sid), x, y, color)
     return None
+
+
+def pick_compose_click(mem, h: str, painted, bg: int, useful_colors, hunt_colors, comps=None):
+    """A* 走不到出口时：点小开关，不要点出口本身，也不要点大墙。"""
+    local = mem.untested(h, "c")
+    if not local:
+        return mem.bfs_step(h, "c")
+    useful = list(useful_colors or [])
+    avoid = set(hunt_colors or [])
+    size_at: dict[tuple[int, int], int] = {}
+    for comp in comps or []:
+        size_at[(int(comp["x"]), int(comp["y"]))] = int(comp["size"])
+    node = mem.nodes.get(h) or {}
+    meta = node.get("meta") or {}
+    scored: list[tuple[int, int, str]] = []
+    for key in local:
+        if key not in meta:
+            continue
+        _sid, x, y = meta[key]
+        if not _in_bounds(x, y):
+            continue
+        color = int(painted[y, x])
+        if color == bg:
+            continue
+        sz = size_at.get((x, y), 32)
+        if sz >= 40:
+            continue
+        if color in avoid:
+            pref = 80
+        elif color in useful:
+            pref = useful.index(color)
+        else:
+            pref = 40
+        scored.append((pref, sz, key))
+    scored.sort()
+    if scored:
+        return scored[0][2]
+    return local[0]
 
 
 def _find_model_path() -> str | None:
@@ -709,6 +831,7 @@ class MyAgent(Agent):
         self.blocked: set[tuple[int, int]] = set()
         self.pending_interact = False
         self.hunt_color: int | None = None
+        self.compose_clicks = 0
         self.last_pos: tuple[int, int] | None = None
         self.level = -1
         self.level_spent = 0
@@ -824,10 +947,26 @@ class MyAgent(Agent):
         avail = _avail_ids(latest_frame)
         levels = int(getattr(latest_frame, "levels_completed", getattr(latest_frame, "score", 0)) or 0)
 
-        # 过关了：把赢过的颜色写进技能纸；地图清空，键位保留。
+        # 过关了：记下「怎么赢的」；地图清空，键位保留。
         if levels != self.level:
             if levels > self.level and self.level >= 0:
-                self.skill.note_win_color(self.hunt_color)
+                kind = "unknown"
+                win_color = self.hunt_color
+                if self.prev_key == "s5":
+                    kind = "interact"
+                    self.skill.note_effect("interact")
+                elif self.prev_key and self.prev_key.startswith("c"):
+                    kind = "click"
+                    if self.prev_paint is not None:
+                        try:
+                            xs, ys = self.prev_key[1:].split("_", 1)
+                            cx, cy = int(xs), int(ys)
+                            if _in_bounds(cx, cy):
+                                win_color = int(self.prev_paint[cy, cx])
+                                self.skill.note_click_color(win_color)
+                        except ValueError:
+                            pass
+                self.skill.note_win(win_color, kind)
                 print(
                     "level-up",
                     self.game_id,
@@ -837,13 +976,18 @@ class MyAgent(Agent):
                     self.level_spent,
                     "genre",
                     self.skill.genre,
+                    "win",
+                    kind,
                     "goal_color",
                     self.skill.goal_color,
+                    "clicks",
+                    self.skill.useful_click_colors,
                     flush=True,
                 )
             self.g.clear_level()
             self.blocked.clear()
             self.pending_interact = False
+            self.compose_clicks = 0
             self.last_pos = None
             self.level = levels
             self.level_spent = 0
@@ -888,6 +1032,18 @@ class MyAgent(Agent):
             self.no_change = 0
             if self.prev_key and self.prev_key.startswith("c"):
                 self.skill.note_effect("click")
+                if self.prev_paint is not None:
+                    try:
+                        xs, ys = self.prev_key[1:].split("_", 1)
+                        cx, cy = int(xs), int(ys)
+                        if _in_bounds(cx, cy):
+                            clicked = int(self.prev_paint[cy, cx])
+                            if clicked != bg:
+                                self.skill.note_click_color(clicked)
+                    except ValueError:
+                        pass
+                # 点开了门：旧撞墙记录作废，否则 A* 仍以为过不去。
+                self.blocked.clear()
         self.g.record(self.prev_h, self.prev_key, now_h)
         self.g.ensure(now_h, painted, bg, avail)
         self.g.recent.append(now_h)
@@ -900,15 +1056,32 @@ class MyAgent(Agent):
             self.g.visit[pos] = self.g.visit.get(pos, 0) + 1
             self.last_pos = pos
         comps = components(painted, bg)
-        hunt = pick_hunt_target(comps, pos, self.skill.goal_color if self.skill.goal_color is not None else self.hunt_color)
-        if hunt is not None:
-            self.g.nav_target = (hunt[0], hunt[1])
-            self.hunt_color = hunt[2]
+        prefers = self.skill.prefer_colors()
+        if self.hunt_color is not None and self.hunt_color not in prefers:
+            prefers = prefers + [self.hunt_color]
+        cands = pick_hunt_candidates(comps, pos, prefers)
+        planned = plan_hunt(pos, cands, self.blocked, self.g.dir_map) if pos is not None else None
+        if planned is not None:
+            if planned[0] == "on":
+                self.g.nav_target = (planned[1], planned[2])
+                self.hunt_color = planned[3]
+            else:
+                self.g.nav_target = (planned[2], planned[3])
+                self.hunt_color = planned[4]
+        elif cands:
+            self.g.nav_target = (cands[0][0], cands[0][1])
+            self.hunt_color = cands[0][2]
         elif self.level_spent % NAV_REFRESH == 1:
             self.g.refresh_target(painted, bg)
 
         can_explore = self.g.has_untested()
-        if should_abandon(self.level_spent, can_explore, self._remaining_global(), self.level):
+        if should_abandon(
+            self.level_spent,
+            can_explore,
+            self._remaining_global(),
+            self.level,
+            has_plan=planned is not None,
+        ):
             self.abandoned = True
             print("abandon", self.game_id, "spent", self.level_spent, "level", self.level, flush=True)
             fallback = 1 if 1 in avail else (sorted(avail)[0] if avail else 1)
@@ -922,22 +1095,38 @@ class MyAgent(Agent):
         if self.g.agent_color is None and "s5" in self.g.untested(now_h, "s") and 5 in avail:
             return self._emit(5, 32, 32, "s5", "new-cell-interact")
 
-        hunt_ok = self.skill.genre != "click"
-        if (
-            hunt_ok
-            and pos is not None
-            and self.g.nav_target is not None
-            and 5 in avail
-        ):
-            tx, ty = self.g.nav_target
-            if pos[0] == tx and pos[1] == ty:
+        # 纯点选且还在教程关：不要 A* 乱走。后面关即使教程是点选，也允许走路组合。
+        click_only = (
+            self.skill.genre == "click"
+            and self.skill.move_hits == 0
+            and _le(self.level, 0)
+        )
+        if planned is not None and 5 in avail and not click_only:
+            if planned[0] == "on":
                 return self._emit(5, 32, 32, "s5", "hunt-on-goal")
-            sid = first_step_toward(pos, (tx, ty), self.blocked, self.g.dir_map)
-            if sid is not None and sid in avail:
+            _kind, sid, tx, ty, _color = planned
+            if sid in avail:
                 dx, dy = self.g.dir_map.get(sid, (0, 0))
-                if pos[0] + dx == tx and pos[1] + dy == ty:
+                if pos is not None and pos[0] + dx == tx and pos[1] + dy == ty:
                     self.pending_interact = True
                 return self._emit(sid, 32, 32, f"s{sid}", "hunt-astar")
+
+        # A* 走不到：后面关先点开关（官方要组合机制），再回头追颜色。
+        if pos is not None and self.level >= 1 and 6 in avail and _lt(self.compose_clicks, 12):
+            click_key = pick_compose_click(
+                self.g,
+                now_h,
+                painted,
+                bg,
+                self.skill.useful_click_colors,
+                prefers,
+                comps,
+            )
+            if click_key is not None:
+                self.compose_clicks += 1
+                action_id, x, y = self._lookup(now_h, click_key)
+                print("compose-click", self.game_id, "xy", x, y, "n", self.compose_clicks, flush=True)
+                return self._emit(action_id, x, y, click_key, "compose-click")
 
         # ABAB 死循环：把正在走的边当已探索，逼它换动作。
         rec = list(self.g.recent)
