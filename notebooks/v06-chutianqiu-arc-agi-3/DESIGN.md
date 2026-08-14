@@ -19,6 +19,12 @@
 
 不按游戏名写死。hidden 集和公开集机制刻意不重叠。
 
+## 线上结果（2026-08-14）
+
+Submit to Competition 提交 `55511330`（kernel v10）公开榜 **0.17**（此前 explorer 0.06）。
+大约 50 分钟 COMPLETE，不像跑满 8 小时。更像教程关能过、后面加权关被封顶。
+换环境先读 [HANDOFF.md](HANDOFF.md)。
+
 ```mermaid
 flowchart TD
     T[第1关教程 故意简单] --> H[写下技能纸: 会走吗 赢的颜色 要点吗]

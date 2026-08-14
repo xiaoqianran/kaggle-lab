@@ -81,7 +81,7 @@ Interactive HTML gallery of Kaggle img3d-00…03 outputs lives at [`v01-wangran5
 | [`v03-zhengyingxionger@-图像分类/`](v03-zhengyingxionger@-图像分类/) | **图像分类** | 研究蓝图 [LEARNING_ROADMAP.md](v03-zhengyingxionger@-图像分类/LEARNING_ROADMAP.md) · `cls-NN` notebooks |
 | [`v04-xiaoshuhuaer@-目标检测/`](v04-xiaoshuhuaer@-目标检测/) | **目标检测** | 研究蓝图 [LEARNING_ROADMAP.md](v04-xiaoshuhuaer@-目标检测/LEARNING_ROADMAP.md) · `det-NN` notebooks · [catalog.json](v04-xiaoshuhuaer@-目标检测/catalog.json) |
 | [`v05-yaoyunqqq-diffusiongemma-t4x2/`](v05-yaoyunqqq-diffusiongemma-t4x2/) | **DiffusionGemma T4×2** | 官方 26B-A4B-it 在 Kaggle 双 T4 上跑通（FP16 切卡 + CPU offload） |
-| [`v06-chutianqiu-arc-agi-3/`](v06-chutianqiu-arc-agi-3/) | **ARC-AGI-3** | 教程关技能纸 + A* 猎目标 + 官方加权封顶（RTX Pro 6000） |
+| [`v06-chutianqiu-arc-agi-3/`](v06-chutianqiu-arc-agi-3/) | **ARC-AGI-3** | 已交卷 0.17。换环境先读 HANDOFF.md |
 
 
 ## DiffusionGemma（Kaggle T4×2）
@@ -94,8 +94,12 @@ Interactive HTML gallery of Kaggle img3d-00…03 outputs lives at [`v01-wangran5
 
 ## ARC Prize 2026 / ARC-AGI-3
 
+**换环境先读** [`v06-chutianqiu-arc-agi-3/HANDOFF.md`](v06-chutianqiu-arc-agi-3/HANDOFF.md)（已交卷 0.17、怎么再提交、禁止事项）。
+
 | 文件 | 说明 |
 |------|------|
+| [`v06-chutianqiu-arc-agi-3/HANDOFF.md`](v06-chutianqiu-arc-agi-3/HANDOFF.md) | 2026-08-14 交接：分数、sidecar、GitHub 写入方式 |
 | [`v06-chutianqiu-arc-agi-3/arc-prize-2026-arc-agi-3-starter.ipynb`](v06-chutianqiu-arc-agi-3/arc-prize-2026-arc-agi-3-starter.ipynb) | 开头两格说明怎么玩游戏；Save and Run All 不打游戏 |
 | Kaggle | https://www.kaggle.com/code/chutianqiu/arc-prize-2026-arc-agi-3-starter |
 | 竞赛 | `arc-prize-2026-arc-agi-3`（不要改 competition_sources） |
+| 公开榜 | **0.17**（提交 55511330，kernel v10，2026-08-14） |

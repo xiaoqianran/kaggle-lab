@@ -81,3 +81,15 @@ python 015-dual-agent-chat/gateway.py
 - 014 publish 必须 `--i-accept`
 
 仓库：https://github.com/xiaoqianran/kaggle-lab
+
+---
+
+## ARC Prize 2026 / ARC-AGI-3
+
+代码在 [`notebooks/v06-chutianqiu-arc-agi-3/`](notebooks/v06-chutianqiu-arc-agi-3/)。
+
+**换环境先读 [`notebooks/v06-chutianqiu-arc-agi-3/HANDOFF.md`](notebooks/v06-chutianqiu-arc-agi-3/HANDOFF.md)。**
+
+- Kaggle 账号 `chutianqiu`；kernel https://www.kaggle.com/code/chutianqiu/arc-prize-2026-arc-agi-3-starter
+- 2026-08-14 已 Submit to Competition：提交 `55511330`，公开榜 **0.17**（此前 0.06）
+- Save and Run All 不等于上榜；`cursor[bot]` 对本仓库 `git push` 为 403，用 GitHub MCP 以 `xiaoqianran` 写入
