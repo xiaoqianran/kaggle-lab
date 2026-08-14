@@ -19,7 +19,7 @@ Kaggle kernel：`chutianqiu/arc-prize-2026-arc-agi-3-starter`
 | ACTION1-4 语义上/下/左/右；ACTION6 不给可点格 | 用小色块平移建导航图；点击只打连通块并记死点 |
 | RHAE `(H/A)^2`，100 步相对 10 步只剩 0.01 | 本关过预算则关卡 RESET 一次按图重打；再超则放弃 |
 | 没打完所有关有游戏分上限 | 优先把能过的关过完，不把整次提交耗在一关上 |
-| Swarm 并行 + 9 小时 | 不要用 18 分钟墙钟揠死全局；用动作预算。Gemma 加锁稀缺调用 |
+| Swarm 并行 + 9 小时 | 不要用 18 分钟墙钟掐死全局；用动作预算。Gemma 加锁稀缺调用 |
 
 改 `my_agent.py` 后运行 `python3 build_notebook.py` 再推 kernel。
 
