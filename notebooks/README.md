@@ -81,6 +81,7 @@ Interactive HTML gallery of Kaggle img3d-00…03 outputs lives at [`v01-wangran5
 | [`v03-zhengyingxionger@-图像分类/`](v03-zhengyingxionger@-图像分类/) | **图像分类** | 研究蓝图 [LEARNING_ROADMAP.md](v03-zhengyingxionger@-图像分类/LEARNING_ROADMAP.md) · `cls-NN` notebooks |
 | [`v04-xiaoshuhuaer@-目标检测/`](v04-xiaoshuhuaer@-目标检测/) | **目标检测** | 研究蓝图 [LEARNING_ROADMAP.md](v04-xiaoshuhuaer@-目标检测/LEARNING_ROADMAP.md) · `det-NN` notebooks · [catalog.json](v04-xiaoshuhuaer@-目标检测/catalog.json) |
 | [`v05-yaoyunqqq-diffusiongemma-t4x2/`](v05-yaoyunqqq-diffusiongemma-t4x2/) | **DiffusionGemma T4×2** | 官方 26B-A4B-it 在 Kaggle 双 T4 上跑通（FP16 切卡 + CPU offload） |
+| [`v06-chutianqiu-arc-agi-3/`](v06-chutianqiu-arc-agi-3/) | **ARC-AGI-3 Starter** | 官方竞赛绑定不动；Scout + Gemma-4-31B（RTX Pro 6000） |
 
 
 ## DiffusionGemma（Kaggle T4×2）
@@ -89,3 +90,12 @@ Interactive HTML gallery of Kaggle img3d-00…03 outputs lives at [`v01-wangran5
 |------|------|
 | [`v05-yaoyunqqq-diffusiongemma-t4x2/diffusiongemma-dual-t4.ipynb`](v05-yaoyunqqq-diffusiongemma-t4x2/diffusiongemma-dual-t4.ipynb) | 加载官方权重、双卡 generate |
 | Kaggle | https://www.kaggle.com/code/yaoyunqqq/diffusiongemma-dual-t4 |
+
+
+## ARC Prize 2026 / ARC-AGI-3
+
+| 文件 | 说明 |
+|------|------|
+| [`v06-chutianqiu-arc-agi-3/arc-prize-2026-arc-agi-3-starter.ipynb`](v06-chutianqiu-arc-agi-3/arc-prize-2026-arc-agi-3-starter.ipynb) | 官方 starter 骨架 + Scout-then-Ask |
+| Kaggle | https://www.kaggle.com/code/chutianqiu/arc-prize-2026-arc-agi-3-starter |
+| 竞赛 | `arc-prize-2026-arc-agi-3`（不要改 competition_sources） |
