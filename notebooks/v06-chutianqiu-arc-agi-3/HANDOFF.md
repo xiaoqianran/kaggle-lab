@@ -16,9 +16,11 @@
   - 提交号 `55511330`
   - kernel 版本 **v10**（`scriptVersionId=342407362`）
   - 公开榜 **0.17**（上一笔 2026-07-24 的 `54953206` 是 **0.06**）
-  - 公开榜大约 **1504 / 2312**；当时第一名 **2.70**（队名 cstl）
+  - 公开榜 **1503 / 2310**（2026-08-14 19:51 UTC 拉榜）；第一名 **2.70**（队名 cstl）
   - 队 id `16593868`
-- 当天额度已用完：`numToday=1`，`numAllowedNow=0`。Kaggle 这赛每天大约 1 次正式提交。
+  - 同一天公开榜上 **63 队卡在整整 0.17**，像同一档「只过教程关」的封顶分，不是随机噪声
+- 当天额度已用完：`numToday=1`，`numAllowedNow=0`。Kaggle 这赛每天大约 1 次正式提交。**不要在 8 月 14 日再交。**
+- **2026-08-14 已 `kernels push` 出 v12**（stall-reset + 规划墙 + 出口走不到先点开关）。Save and Run All COMPLETE，日志有 `MODEL_PATH` 和 `NVIDIA RTX PRO 6000 Blackwell Server Edition`，并写明「没有打任何一局游戏」。**额度刷新后用 `-v 12` Submit**，不要交 v11，也不要交假 parquet。
 - Save and Run All 十几秒 COMPLETE **不是分数**。只有 Submit to Competition 才会打 hidden 集、改榜。
 
 ---
@@ -139,30 +141,32 @@ v10 Save and Run All 日志要点（sidecar 不是这个）：
 
 类：
 
-- `SkillSheet`：跨关技能纸。`genre`（unknown / nav / click / hybrid）、`move_hits` / `click_hits` / `interact_hits`、`goal_color`
+- `SkillSheet`：跨关技能纸。`genre`、`goal_colors`、`useful_click_colors`、`win_kinds`、`wall_colors`
 - `GraphMemory`：抹 HUD 后哈希图；自环标死；未试动作库存；闪烁掩码
 - `MyAgent`：每步决策
 
 每步大致顺序（`choose_action`）：
 
 1. `NOT_PLAYED` / `GAME_OVER` → 只 RESET
-2. `levels_completed` 变了 → 把本关 `hunt_color` 记进技能纸；**地图清空，键位保留**
+2. `levels_completed` 变了 → 记下赢的颜色和动作种类；**地图清空，键位保留**
 3. 若上一步是 ACTION1-4 且画面平移 → 认角色颜色/大小，更新 `dir_map`，记 `move`
-4. 抹 HUD、哈希、上一步没变就标死，走路撞墙就把墙格子放进 `blocked`
-5. 点到了东西 → `note_effect("click")`
-6. `pick_hunt_target`：只追 **面积不超过 24** 的小色块；优先上一关赢过的颜色。大块同色地板不能当目标，否则等于撞墙
-7. 放弃条件：全局时间没了，或本关花到 700，或预算用尽且图上没未试动作
+4. 抹 HUD、哈希、上一步没变就标死，走路撞墙就把墙格子放进 `blocked`，并把该格颜色记进 `wall_colors`
+5. 点到了东西 → `note_effect("click")`；画面变了就清 `blocked`（门开了，旧墙作废）
+6. `pick_hunt_candidates` + `planning_walls` + `plan_hunt`：只追小色块；大色块和已知墙色在规划里当墙；ACTION5 没过关的颜色本关降权
+7. `stall_policy`：这一轮没油时先 **RESET 重打本关**（墙留下），3 次以后才 `abandoned` 退整局。时间到了直接 quit
 8. `pending_interact`：A* 下一步就会踩上目标时，先走再立刻 ACTION5
 9. **还没认出角色**：新画面可以先 ACTION5。认出来之后 **不要每个新格子都按**，否则走路关步数翻倍
-10. genre 不是 `click` 且已有角色位置和目标：A* 走近；已在目标格则 ACTION5
-11. genre 是 `click`：先点后走（`kinds = ("c", "s")`），否则先走后点
-12. ABAB 振荡：把正在走的边当已探索
-13. 图穷：关卡 RESET（最多 3 次） → 一次 undo → Gemma → leftover 随机
+10. `next_skill_move`：出口颜色走得到就走；**出口还在但走不到，先 `compose-click`，不要先去摸旁边的小色块**
+11. 纯点选只在教程关禁止 A*。后面关即使教程是点选，也允许走路组合
+12. genre 是 `click`：先点后走（`kinds = ("c", "s")`），否则先走后点
+13. ABAB 振荡：把正在走的边当已探索
+14. 图穷 / 硬上限：`_replay_level`（最多 3 次，清哈希留墙，重打后问一次 Gemma）→ undo → Gemma → leftover
 
 关键常量（`my_agent.py`）：
 
 - `MAX_ACTIONS = 8000`
 - `REPLAY_RESETS = 3`
+- `BULKY_WALL = 8`
 - `MAX_CLICKS = 16`，`CLICK_KEEP = 4`
 - `NAV_BIAS = 0.7`
 - `LLM_MAX_CALLS = 8`
@@ -171,7 +175,7 @@ v10 Save and Run All 日志要点（sidecar 不是这个）：
 过关判断用 **`levels_completed`**，不用 `score`。
 `GameAction.from_name` **每次新建**，别改枚举上的旧坐标。
 
-单测：`python3 -m unittest test_world_agent.py`（17 个，2026-08-14 全绿）。仓库没装 `arcengine`，测试会先塞假模块。
+单测：`python3 -m unittest test_world_agent.py`（26 个，含通天墙开门、stall 先重打再退、规划墙、失败猎点降权）。仓库没装 `arcengine`，测试会先塞假模块。
 
 ---
 
@@ -186,14 +190,23 @@ v10 Save and Run All 日志要点（sidecar 不是这个）：
 5. 第一名 2.70。要上 1.0 以上，必须在多局里打完后面的加权关，而不能只卷教程关效率。
 6. 没有 sidecar 日志，下一轮不要幻想「再 Save and Run All 一次就能看到 hidden 回放」。要进步只能：改 agent → 本地假网格单测 → 推 kernel → **第二天**再 Submit。
 
+0.17 + 50 分钟早停，更像两件事叠在一起：组合关过不去，以及硬上限直接 `abandoned` 把后面加权关全写成 0。
+
+这一轮已经补上（比 v11 多的）：
+
+1. **`stall_policy`：硬上限先重打本关，3 次以后才退整局。** 旧代码 `should_abandon` 为真就 `abandoned=True`，`is_done` 结束整局。官方完成度封顶：退局 = 后面关全 0。
+2. **`planning_walls`：大色块（`BULKY_WALL=8`）和已知墙色在 A* 里当墙。** 旧代码只有撞过的格子是墙，会在门上空转几十步才 compose-click。
+3. **出口走不到先点开关，不要先去摸旁边的小色块。** `next_skill_move`。
+4. **ACTION5 没过关的颜色本关降权**；撞墙颜色记进技能纸，点开门后还能当规划墙。
+5. 图穷 / 重打后清哈希留墙，并问一次 Gemma。
+
 下一轮主攻（按优先级）：
 
-1. **让后面关真的开打并打完。** 查 `should_abandon` / 单关 700 上限 / 技能纸是否把地板色当成 `goal_color`。已经用「面积不超过 24」过滤，但仍可能追错颜色。
-2. **组合机制。** 现在技能纸几乎只记 genre + 一个 `goal_color`。官方明确后面关要组合。可能需要记：会走、要点哪些颜色、ACTION5 在哪种块上会赢、是否要先点再走。
-3. **点选关 vs 走路关。** `classify_genre` 很粗。点选关误判成 nav 会 A* 乱走；走路关误判成 click 会把步数点光。
-4. **不要为了省第 1 关步数而放弃整局。** 封顶比平方效率更狠。
-5. Gemma 继续当顾问，不要每步问。不要挂 vLLM / 第三方 dataset 去追 Murad 0.86 那种路线，交不了或超时。
-6. 不要把 `MAX_ACTIONS` 改回 1500 或改成无限。
+1. **额度刷新后 Submit `-v 12`。** 8 月 14 日额度已用完。不要交 v11。
+2. 组合关如果还是过不去：开关可能要按顺序点多个，或点完还要再认新墙。看新版 sidecar 有没有更多 `compose-click` / `stall-reset` / `level-up`。
+3. Gemma 继续当顾问，不要每步问。不要挂 vLLM / 第三方 dataset。
+4. 不要把 `MAX_ACTIONS` 改回 1500 或改成无限。
+5. 不要为了省第 1 关步数而放弃整局。封顶比平方效率更狠。
 
 ---
 
@@ -275,7 +288,7 @@ kaggle competitions submit arc-prize-2026-arc-agi-3 \
 
 - `my_agent.py` — 智能体
 - `build_notebook.py` — 重建 notebook
-- `test_world_agent.py` — 17 个单测
+- `test_world_agent.py` — 26 个单测
 - `kernel-metadata.json`
 - `arc-prize-2026-arc-agi-3-starter.ipynb` — 生成物
 
@@ -317,6 +330,6 @@ GitHub：`xiaoqianran/kaggle-lab`。本竞赛代码不在 colab-lab。云端 wor
 写交接的人当时还在想、但没做成的事：
 
 - 没有 hidden 回放，不知道具体哪几局、打到第几关
-- 技能纸太薄，组合关大概率过不去，这是 0.17 最可疑的原因
-- 50 分钟跑完像早停，值得在下一版加更清楚的 `print`（level-up / abandon / stranded-reset），即使看不到 sidecar 日志，万一以后能拉 output 也有用
+- 组合关如果要按顺序点多个开关，现在每次只点一个小块，可能不够
+- `print` 已有 `level-up` / `abandon` / `stall-reset` / `stranded-reset` / `compose-click`；sidecar 仍然看不到
 - 不要为了「看起来更 LLM」去每步问 Gemma-4-31B
