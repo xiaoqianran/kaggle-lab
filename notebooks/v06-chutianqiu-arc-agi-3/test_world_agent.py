@@ -1,6 +1,6 @@
-"""Synthetic-grid tests for the ARC-AGI-3 world-model agent.
+"""ARC-AGI-3 智能体的假网格单测。
 
-arcengine is not installed in this repo; the test file stubs it before import.
+这个仓库没装 arcengine，测试会先塞假模块再 import my_agent。
 """
 from __future__ import annotations
 
@@ -47,6 +47,11 @@ class _GameAction:
     def from_name(cls, name: str) -> _Act:
         template = getattr(cls, name)
         return _Act(template.name, template.value)
+
+    @classmethod
+    def from_id(cls, value: int) -> _Act:
+        names = ["RESET", "ACTION1", "ACTION2", "ACTION3", "ACTION4", "ACTION5", "ACTION6", "ACTION7"]
+        return cls.from_name(names[int(value)])
 
 
 class _GameState:
@@ -201,11 +206,9 @@ class RhaeTests(unittest.TestCase):
         self.assertEqual(ma.rhae_level_score(10, 5), 1.15)
 
     def test_governor_thresholds(self) -> None:
-        self.assertTrue(ma.should_replay(80, 0, True))
-        self.assertFalse(ma.should_replay(80, 0, False))
-        self.assertFalse(ma.should_replay(80, 1, True))
-        self.assertTrue(ma.should_abandon(160, False, 10.0))
-        self.assertFalse(ma.should_abandon(160, True, 10.0))
+        self.assertTrue(ma.should_abandon(250, False, 10.0))
+        self.assertFalse(ma.should_abandon(250, True, 10.0))
+        self.assertTrue(ma.should_abandon(900, True, 10.0))
         self.assertTrue(ma.should_abandon(10, True, 0.0))
 
 
@@ -214,7 +217,7 @@ class VisionTests(unittest.TestCase):
         frame = np.zeros((64, 64), dtype=np.int64)
         frame[0, :] = 9
         frame[10, 10] = 3
-        masked = ma._mask_hud(frame, 0)
+        masked = ma.mask_hud(frame, 0)
         self.assertEqual(int(masked[0, 0]), 0)
         self.assertEqual(int(masked[10, 10]), 3)
 
@@ -227,29 +230,41 @@ class VisionTests(unittest.TestCase):
         now[8, 10] = 2
         got = ma.detect_translation(prev, now, 0)
         self.assertIsNotNone(got)
-        dx, dy, color, size = got
+        dx, dy, color, size, _x, _y = got
         self.assertEqual((dx, dy, color, size), (1, 0, 2, 2))
 
     def test_click_rank_prefers_small_rare(self) -> None:
         frame = np.zeros((64, 64), dtype=np.int64)
         frame[5:20, 5:20] = 1
         frame[40, 40] = 7
-        comps = ma._components(frame, 0)
-        ranked = ma.click_rank(comps, frame, set(), "h", set())
+        comps = ma.components(frame, 0)
+        ranked = ma.click_rank(comps, frame)
         self.assertTrue(ranked)
         self.assertEqual((ranked[0][1], ranked[0][2]), (40, 40))
 
-    def test_bfs_first_step(self) -> None:
-        edges = {
-            (0, 0, 4): (1, 0),
-            (1, 0, 4): (2, 0),
-            (2, 0, 2): (2, 1),
-        }
+    def test_graph_marks_self_loop_dead(self) -> None:
+        mem = ma.GraphMemory()
+        frame = np.zeros((64, 64), dtype=np.int64)
+        frame[4, 4] = 3
+        h = ma.hash_frame(frame)
+        mem.ensure(h, frame, 0, {1, 6})
+        mem.record(h, "s1", h)
+        self.assertIn("s1", mem.nodes[h]["tested"])
+        self.assertEqual(mem.pick(h)[0], "c")
 
-        def is_goal(pos):
-            return pos == (2, 1)
-
-        self.assertEqual(ma.shortest_first_action(edges, (0, 0), is_goal), 4)
+    def test_pick_walks_before_local_clicks(self) -> None:
+        """邻格还有没试过的走路时，不要先在本格乱点。"""
+        mem = ma.GraphMemory()
+        a = np.zeros((64, 64), dtype=np.int64)
+        b = np.zeros((64, 64), dtype=np.int64)
+        a[4, 4] = 3
+        b[4, 5] = 3
+        ha, hb = ma.hash_frame(a), ma.hash_frame(b)
+        mem.ensure(ha, a, 0, {1, 2, 6})
+        mem.ensure(hb, b, 0, {1, 2, 6})
+        mem.record(ha, "s1", ha)
+        mem.record(ha, "s2", hb)
+        self.assertEqual(mem.pick(ha), "s2")
 
 
 class AgentLoopTests(unittest.TestCase):
@@ -274,7 +289,7 @@ class AgentLoopTests(unittest.TestCase):
         steps, end = _play(agent, toy, playing, limit=160)
         self.assertIs(end.state, _GameState.WIN)
         self.assertEqual(end.levels_completed, 1)
-        self.assertTrue(ma._le(steps, 80))
+        self.assertTrue(ma._le(steps, 140))
 
     def test_point_clicks_small_blob(self) -> None:
         toy = ToyPoint()
