@@ -228,6 +228,64 @@ class ToyCompose:
         return Frame(self.grid(), self.state, self.level)
 
 
+class ToyComposeClick:
+    """教程关走到颜色 3 再按。第二关墙挡住出口，必须先点颜色 7 开门。"""
+
+    def __init__(self) -> None:
+        self.level = 0
+        self.state = _GameState.PLAYING
+        self.x, self.y = 8, 8
+        self.goal = (20, 8)
+        self.switch = (40, 20)
+        self.door_open = False
+
+    def _door(self) -> set[tuple[int, int]]:
+        if self.door_open or self.level == 0:
+            return set()
+        return {(14, y) for y in range(0, 64)}
+
+    def grid(self) -> np.ndarray:
+        g = np.zeros((64, 64), dtype=np.int64)
+        g[0, :] = 5
+        for dx, dy in self._door():
+            g[dy, dx] = 1
+        gx, gy = self.goal
+        if (self.x, self.y) != (gx, gy):
+            g[gy, gx] = 3
+        if self.level >= 1:
+            sx, sy = self.switch
+            g[sy, sx] = 7
+        g[self.y, self.x] = 2
+        return g
+
+    def step(self, action: _Act) -> Frame:
+        aid = int(action.value)
+        if aid == 0:
+            self.level = 0
+            self.x, self.y = 8, 8
+            self.door_open = False
+            self.state = _GameState.PLAYING
+            return Frame(self.grid(), self.state, self.level)
+        if aid in ma.DEFAULT_DIRS:
+            dx, dy = ma.DEFAULT_DIRS[aid]
+            nx, ny = self.x + dx, self.y + dy
+            if (nx, ny) not in self._door() and ma._in_bounds(nx, ny):
+                self.x, self.y = nx, ny
+        if aid == 6 and self.level >= 1:
+            data = getattr(action, "data", {}) or {}
+            x, y = int(data.get("x", -1)), int(data.get("y", -1))
+            if (x, y) == self.switch:
+                self.door_open = True
+        if aid == 5 and (self.x, self.y) == self.goal:
+            self.level += 1
+            if self.level >= 2:
+                self.state = _GameState.WIN
+            else:
+                self.x, self.y = 8, 8
+                self.door_open = False
+        return Frame(self.grid(), self.state, self.level)
+
+
 def _play(agent: ma.MyAgent, env, first: Frame, limit: int = 180) -> tuple[int, Frame]:
     frame = first
     for _ in range(limit):
@@ -254,6 +312,50 @@ class RhaeTests(unittest.TestCase):
         self.assertFalse(ma.should_abandon(200, False, 10.0, 4))
         self.assertTrue(ma.should_abandon(700, True, 10.0, 0))
         self.assertTrue(ma.should_abandon(10, True, 0.0, 0))
+        self.assertFalse(ma.should_abandon(700, True, 10.0, 4, has_plan=True))
+        self.assertTrue(ma.should_abandon(1400, True, 10.0, 4, has_plan=True))
+
+    def test_stall_policy_resets_before_quit(self) -> None:
+        self.assertEqual(ma.stall_policy(160, False, 10.0, 0, False, 0), "reset")
+        self.assertEqual(ma.stall_policy(160, False, 10.0, 0, False, 3), "quit")
+        self.assertEqual(ma.stall_policy(160, True, 10.0, 0, False, 0), "continue")
+        self.assertEqual(ma.stall_policy(10, True, 0.0, 0, False, 0), "quit")
+        self.assertEqual(ma.stall_policy(700, True, 10.0, 4, True, 0), "continue")
+        self.assertEqual(ma.stall_policy(1400, True, 10.0, 4, True, 0), "reset")
+        self.assertEqual(ma.stall_policy(1400, True, 10.0, 4, True, 3), "quit")
+
+    def test_next_skill_move_clicks_when_exit_blocked(self) -> None:
+        other = ("step", 4, 40, 20, 7)
+        self.assertEqual(ma.next_skill_move(("on", 20, 8, 3), other, 1, True, True), "hunt-pref")
+        self.assertEqual(ma.next_skill_move(None, other, 1, True, True), "compose")
+        self.assertEqual(ma.next_skill_move(None, other, 0, True, True), "hunt-other")
+        self.assertEqual(ma.next_skill_move(None, None, 1, False, True), "graph")
+
+    def test_planning_walls_block_bulky_door(self) -> None:
+        frame = np.zeros((64, 64), dtype=np.int64)
+        frame[:, 14] = 1
+        frame[8, 8] = 2
+        frame[8, 20] = 3
+        comps = ma.components(frame, 0)
+        walls = ma.planning_walls(comps, set(), hunt_colors=[3], agent_xy=(8, 8), wall_colors=[])
+        self.assertIn((14, 8), walls)
+        self.assertIsNone(ma.first_step_toward((8, 8), (20, 8), walls, ma.DEFAULT_DIRS))
+
+    def test_failed_hunt_color_skipped(self) -> None:
+        comps = [
+            {"color": 3, "size": 2, "x": 40, "y": 20, "ssc": 1.0},
+            {"color": 7, "size": 4, "x": 8, "y": 8, "ssc": 0.8},
+        ]
+        got = ma.pick_hunt_candidates(comps, (0, 0), [3], skip_colors={3})
+        self.assertTrue(got)
+        self.assertEqual(got[0][2], 7)
+
+    def test_wall_color_persists(self) -> None:
+        sheet = ma.SkillSheet()
+        sheet.note_wall_color(1)
+        sheet.note_wall_color(1)
+        sheet.note_wall_color(4)
+        self.assertEqual(sheet.wall_colors, [1, 4])
 
     def test_game_score_caps_incomplete(self) -> None:
         # 5 关只打完前 3 关，封顶 6/15=0.40，再高效也抬不上去。
@@ -287,6 +389,22 @@ class RhaeTests(unittest.TestCase):
         blocked = set()
         sid = ma.first_step_toward((8, 8), (22, 8), blocked, ma.DEFAULT_DIRS)
         self.assertEqual(sid, 4)
+
+    def test_plan_hunt_skips_unreachable(self) -> None:
+        blocked = {(14, y) for y in range(0, 64)}
+        cands = [(20, 8, 3), (6, 8, 7)]
+        got = ma.plan_hunt((8, 8), cands, blocked, ma.DEFAULT_DIRS)
+        self.assertIsNotNone(got)
+        self.assertEqual(got[0], "step")
+        self.assertEqual(got[4], 7)
+
+    def test_skill_keeps_click_and_goal(self) -> None:
+        sheet = ma.SkillSheet()
+        sheet.note_win(3, "interact")
+        sheet.note_click_color(7)
+        self.assertEqual(sheet.goal_color, 3)
+        self.assertEqual(sheet.prefer_colors()[0], 3)
+        self.assertIn(7, sheet.useful_click_colors)
 
 
 class VisionTests(unittest.TestCase):
@@ -402,6 +520,40 @@ class AgentLoopTests(unittest.TestCase):
     def test_parse_llm_click(self) -> None:
         self.assertEqual(ma._parse_llm_line("ACTION6 40 20", {1, 6}), (6, 40, 20))
         self.assertEqual(ma._parse_llm_line("ACTION3", {1, 2, 3}), (3, 32, 32))
+
+    def test_compose_click_opens_door(self) -> None:
+        toy = ToyComposeClick()
+        agent = self._agent("compose-click")
+        random.seed(0)
+        np.random.seed(0)
+        agent.g.simple_order = [5, 4, 2, 1, 3]
+        start = Frame(toy.grid(), _GameState.NOT_PLAYED, 0)
+        agent.choose_action([], start)
+        agent.action_counter += 1
+        playing = Frame(toy.grid(), _GameState.PLAYING, 0)
+        steps, end = _play(agent, toy, playing, limit=280)
+        self.assertIs(end.state, _GameState.WIN)
+        self.assertEqual(end.levels_completed, 2)
+        self.assertEqual(agent.skill.goal_color, 3)
+        self.assertTrue(ma._le(steps, 240))
+
+    def test_hard_cap_resets_instead_of_quit(self) -> None:
+        zeros = np.zeros((64, 64), dtype=np.int64)
+        zeros[10, 10] = 2
+        agent = self._agent("stall")
+        agent.choose_action([], Frame(zeros, _GameState.NOT_PLAYED, 0))
+        agent.choose_action([], Frame(zeros, _GameState.PLAYING, 2))
+        agent.level_spent = 900
+        agent.level_resets = 0
+        agent.abandoned = False
+        act = agent.choose_action([], Frame(zeros, _GameState.PLAYING, 2))
+        self.assertEqual(act.name, "RESET")
+        self.assertFalse(agent.abandoned)
+        self.assertEqual(agent.level_resets, 1)
+        agent.level_spent = 900
+        agent.level_resets = 3
+        agent.choose_action([], Frame(zeros, _GameState.PLAYING, 2))
+        self.assertTrue(agent.abandoned)
 
 
 if __name__ == "__main__":
