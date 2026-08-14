@@ -1,0 +1,25 @@
+[project]
+name = "kaggle-lab"
+version = "0.2.0"
+description = "Kaggle 实验台：Agent labs + 学习 tracks"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = ["openai"]
+
+[project.optional-dependencies]
+camel = ["camel-ai==0.2.90", "mcp==1.9.4"]
+
+[project.scripts]
+kaggle-lab = "kaggle_lab.cli:main"
+klab = "kaggle_lab.cli:main"
+
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["kaggle_lab*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

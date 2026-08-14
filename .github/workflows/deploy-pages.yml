@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
     paths:
-      - "015-dual-agent-chat/web/**"
+      - "labs/015-dual-agent-chat/web/**"
       - ".github/workflows/deploy-pages.yml"
   workflow_dispatch:
 
@@ -27,10 +27,10 @@ jobs:
         with:
           node-version: "22"
           cache: npm
-          cache-dependency-path: 015-dual-agent-chat/web/package.json
+          cache-dependency-path: labs/015-dual-agent-chat/web/package.json
 
       - name: Install & build
-        working-directory: 015-dual-agent-chat/web
+        working-directory: labs/015-dual-agent-chat/web
         env:
           VITE_BASE: ./
         run: |
@@ -42,7 +42,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: 015-dual-agent-chat/web/dist
+          path: labs/015-dual-agent-chat/web/dist
 
   deploy:
     needs: build
