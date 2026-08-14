@@ -140,5 +140,5 @@ nb = {
     ],
 }
 
-OUT.write_text(json.dumps(nb, indent=1, ensure_ascii=False) + "\n")
+OUT.write_text(json.dumps(nb, ensure_ascii=False, separators=(",", ":")) + "\n")
 print("wrote", OUT, "bytes", OUT.stat().st_size)
