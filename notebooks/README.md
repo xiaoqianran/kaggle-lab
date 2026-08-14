@@ -80,3 +80,12 @@ Interactive HTML gallery of Kaggle img3d-00…03 outputs lives at [`v01-wangran5
 | [`v02-shuhuaqaq@-深度估计/`](v02-shuhuaqaq@-深度估计/) | **深度估计** | 竞赛/数据/模型调研 + 后续 de-NN notebook |
 | [`v03-zhengyingxionger@-图像分类/`](v03-zhengyingxionger@-图像分类/) | **图像分类** | 研究蓝图 [LEARNING_ROADMAP.md](v03-zhengyingxionger@-图像分类/LEARNING_ROADMAP.md) · `cls-NN` notebooks |
 | [`v04-xiaoshuhuaer@-目标检测/`](v04-xiaoshuhuaer@-目标检测/) | **目标检测** | 研究蓝图 [LEARNING_ROADMAP.md](v04-xiaoshuhuaer@-目标检测/LEARNING_ROADMAP.md) · `det-NN` notebooks · [catalog.json](v04-xiaoshuhuaer@-目标检测/catalog.json) |
+| [`v05-yaoyunqqq-diffusiongemma-t4x2/`](v05-yaoyunqqq-diffusiongemma-t4x2/) | **DiffusionGemma T4×2** | 官方 26B-A4B-it 在 Kaggle 双 T4 上跑通（FP16 切卡 + CPU offload） |
+
+
+## DiffusionGemma（Kaggle T4×2）
+
+| 文件 | 说明 |
+|------|------|
+| [`v05-yaoyunqqq-diffusiongemma-t4x2/diffusiongemma-dual-t4.ipynb`](v05-yaoyunqqq-diffusiongemma-t4x2/diffusiongemma-dual-t4.ipynb) | 加载官方权重、双卡 generate |
+| Kaggle | https://www.kaggle.com/code/yaoyunqqq/diffusiongemma-dual-t4 |
