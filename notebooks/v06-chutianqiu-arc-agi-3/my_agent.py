@@ -417,7 +417,7 @@ class GraphMemory:
         self.nav_target = None
 
     def update_flash(self, prev: np.ndarray | None, now: np.ndarray, agent_color: int | None) -> None:
-        """同一格反复闪、又不是角色，才从哈希里掠掉。面积太大就放弃，免得把真墙抹掉。"""
+        """同一格反复闪、又不是角色，才从哈希里抠掉。面积太大就放弃，免得把真墙抹掉。"""
         if prev is None or prev.shape != now.shape:
             return
         self.flash_steps += 1
