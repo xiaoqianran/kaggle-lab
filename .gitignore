@@ -1,7 +1,10 @@
 .venv/
 __pycache__/
 *.pyc
-data/
+.pytest_cache/
+# local datasets (labs/tracks); committed model table lives in /data/
+labs/**/data/
+tracks/**/data/
 logs/
 .env
 .env.*
@@ -19,4 +22,4 @@ vendor/
 *.task.json
 
 **/node_modules/
-015-dual-agent-chat/web/dist/
+**/web/dist/

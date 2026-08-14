@@ -37,8 +37,8 @@ submit    →  一次交齐，Kaggle 判分、公开 profile
 
 | 目录 | 角色 | 本仓库是否建议运行 |
 |------|------|-------------------|
-| `004-sae/` | 正式客户端（register / start / submit） | **默认禁止** start/submit/register |
-| `009-sae-better/` | 增强答题器 | **只建议** `dry-run`（mock 卷） |
+| `labs/004-sae/` | 正式客户端（register / start / submit） | **默认禁止** start/submit/register |
+| `labs/009-sae-better/` | 增强答题器 | **只建议** `dry-run`（mock 卷） |
 | `docs/sae-standardized-agent-exam.md` | 协议细节 | 可读 |
 | `docs/skills/kaggle-standardized-agent-exam/` | 官方 skill 镜像 | 可读 |
 
@@ -84,6 +84,6 @@ python main.py 009 show
 ## 相关文档
 
 - 协议：`docs/sae-standardized-agent-exam.md`
-- 客户端：`004-sae/README.md`
+- 客户端：`labs/004-sae/README.md`
 - 增强答题：`009-sae-better/README.md`
 - 总览：根目录 `README.md` 中的「SAE 禁考」小节
