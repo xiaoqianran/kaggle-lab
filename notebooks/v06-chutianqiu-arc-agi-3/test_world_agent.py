@@ -264,6 +264,20 @@ class RhaeTests(unittest.TestCase):
     def test_later_levels_get_more_budget(self) -> None:
         self.assertTrue(ma._lt(ma.level_action_budget(0), ma.level_action_budget(4)))
 
+    def test_max_actions_covers_later_levels(self) -> None:
+        """6 关以后权重大。整局上限必须盖住各关预算之和，否则第 5、6 关玩不到。"""
+        need = sum(ma.level_action_budget(i) for i in range(8))
+        self.assertTrue(ma._lt(need, ma.MyAgent.MAX_ACTIONS))
+
+    def test_hunt_skips_large_goal_color(self) -> None:
+        comps = [
+            {"color": 3, "size": 200, "x": 10, "y": 10, "ssc": 0.2},
+            {"color": 3, "size": 2, "x": 40, "y": 20, "ssc": 1.0},
+            {"color": 7, "size": 4, "x": 8, "y": 8, "ssc": 0.8},
+        ]
+        got = ma.pick_hunt_target(comps, (0, 0), 3)
+        self.assertEqual(got, (40, 20, 3))
+
     def test_classify_genre(self) -> None:
         self.assertEqual(ma.classify_genre(3, 0, 1), "nav")
         self.assertEqual(ma.classify_genre(0, 2, 0), "click")
