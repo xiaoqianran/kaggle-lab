@@ -1,4 +1,4 @@
-# Mini-Instruct T4 学习路线（001–07）
+# Mini-Instruct T4 学习路线（001–007）
 
 按顺序读 notebook 顶部的「学习向」说明，再跑代码。
 
@@ -19,7 +19,7 @@
 
 ## 本目录
 
-存放 Mini-Instruct-T4 系列 **学习向** notebook（001–07），含简体中文关键步骤注释。
+存放 Mini-Instruct-T4 系列 **学习向** notebook（001–007），含简体中文关键步骤注释。
 
 | 文件 | Kaggle（在线） |
 |---|---|
@@ -41,7 +41,7 @@
 | 文件 | 深入层 | 学什么 |
 |---|---|---|
 | `grok-008-qlora-scale-bench.ipynb` | B 效率工程 | 4bit NF4 QLoRA、peak VRAM、步耗时、3B/7B 边界 |
-| `grok-009-gsm8k-eval-baseline.ipynb` | D 硬6评测 | GSM8K 冻结子集 + base EM |
+| `grok-009-gsm8k-eval-baseline.ipynb` | D 硬评测 | GSM8K 冻结子集 + base EM |
 | `grok-010-gsm8k-qlora-sft.ipynb` | 闭环 | 同尺 QLoRA SFT：base vs sft EM |
 
 后续可写：`011` 单卡 vs 双卡吞吐；`012` GRPO/可验证 reward。
