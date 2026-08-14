@@ -20,7 +20,7 @@
   - 队 id `16593868`
   - 同一天公开榜上 **63 队卡在整整 0.17**，像同一档「只过教程关」的封顶分，不是随机噪声
 - 当天额度已用完：`numToday=1`，`numAllowedNow=0`。Kaggle 这赛每天大约 1 次正式提交。**不要在 8 月 14 日再交。**
-- **2026-08-14 已 `kernels push` 出 v11**（compose-click）。本轮又改了 stall-reset / 规划墙 / 出口走不到先点开关。**先再 `kernels push` 出一个新版本，明天 Submit 那个新 `-v`，不要交 v11，也不要交假 parquet。**
+- **2026-08-14 已 `kernels push` 出 v12**（stall-reset + 规划墙 + 出口走不到先点开关）。Save and Run All COMPLETE，日志有 `MODEL_PATH` 和 `NVIDIA RTX PRO 6000 Blackwell Server Edition`，并写明「没有打任何一局游戏」。**额度刷新后用 `-v 12` Submit**，不要交 v11，也不要交假 parquet。
 - Save and Run All 十几秒 COMPLETE **不是分数**。只有 Submit to Competition 才会打 hidden 集、改榜。
 
 ---
@@ -202,7 +202,7 @@ v10 Save and Run All 日志要点（sidecar 不是这个）：
 
 下一轮主攻（按优先级）：
 
-1. **先 `kernels push` 出比 v11 新的版本，额度刷新后再 Submit 那个 `-v`，不要交 v11。** 8 月 14 日额度已用完。
+1. **额度刷新后 Submit `-v 12`。** 8 月 14 日额度已用完。不要交 v11。
 2. 组合关如果还是过不去：开关可能要按顺序点多个，或点完还要再认新墙。看新版 sidecar 有没有更多 `compose-click` / `stall-reset` / `level-up`。
 3. Gemma 继续当顾问，不要每步问。不要挂 vLLM / 第三方 dataset。
 4. 不要把 `MAX_ACTIONS` 改回 1500 或改成无限。
