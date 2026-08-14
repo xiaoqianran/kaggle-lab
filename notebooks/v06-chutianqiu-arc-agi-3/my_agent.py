@@ -1,10 +1,14 @@
-"""RHAE-budgeted world-model agent for ARC Prize 2026 / ARC-AGI-3.
+"""ARC-AGI-3 智能体：画面哈希图 + 先走后点 + RHAE 预算。
 
-Design: notebooks/v06-chutianqiu-arc-agi-3/DESIGN.md
-Official scoring is (human_actions / ai_actions)^2 per level. This file
-builds an online map from ACTION1-4 translations and ACTION6 clicks, then
-spends a hard action budget. Gemma-4 is a rare advisor, not the policy.
-No game_id special cases: the Kaggle set is hidden.
+公开本共识（Just Explore / pscamillo / Ash）：
+把「抹掉 HUD 后的画面」当成图上的点；每个点记下没试过的动作；
+画面不变就把该动作标死；当前没得试就沿已知路走回去；再不行就关卡 RESET。
+
+关键差别（别人踩过的坑）：
+- 先在全图找没试过的 ACTION1-5，再点。当前格点完再走，导航关会玩死。
+- 计分是 (人步/AI步)^2，步数必须有上限。Goose 写成无限步，跟规则对着干。
+- 点击顺序全固定会把点选关困死；最像按钮的几个固定，后面打乱。
+- Gemma 只在图穷了才问。不按游戏名写死，不绑 duck 额外数据包。
 """
 from __future__ import annotations
 
@@ -44,14 +48,9 @@ MODEL_CANDIDATES = [
     "/kaggle/input/google/gemma-4/transformers/gemma-4-e2b-it/1",
 ]
 
-# Official WASD mapping: 1=up, 2=down, 3=left, 4=right. (x, y), y grows down.
-DEFAULT_DIRS: dict[int, tuple[int, int]] = {
-    1: (0, -1),
-    2: (0, 1),
-    3: (-1, 0),
-    4: (1, 0),
-}
-CARDINAL = (1, 2, 3, 4)
+# 官方默认：1上 2下 3左 4右。坐标 (x,y)，y 向下变大。
+DEFAULT_DIRS = {1: (0, -1), 2: (0, 1), 3: (-1, 0), 4: (1, 0)}
+SIMPLE_IDS = (1, 2, 3, 4, 5)
 ID_TO_NAME = {
     0: "RESET",
     1: "ACTION1",
@@ -63,47 +62,50 @@ ID_TO_NAME = {
     7: "ACTION7",
 }
 
-EST_HUMAN_ACTIONS = 40
-REPLAY_AFTER = 80
-ABANDON_AFTER = 160
-MAX_LEVEL_RESETS = 1
+# 人步数未知，只用先验做停手，不进提交分。
+REPLAY_RESETS = 3
+ABANDON_AFTER = 250
+HARD_LEVEL_CAP = 900
+MAX_CLICKS = 16
+CLICK_KEEP = 4
+NAV_BIAS = 0.7
+DYN_WARMUP = 24
+DYN_RATE = 0.45
+DYN_MAX_FRAC = 0.08
+NAV_REFRESH = 12
 
 
-def _le(left: float, right: float) -> bool:
-    return not (left > right)
+def _le(a, b) -> bool:
+    return not (a > b)
 
 
-def _lt(left: float, right: float) -> bool:
-    return not (left >= right)
+def _lt(a, b) -> bool:
+    return not (a >= b)
 
 
-def _clamp63(value: int) -> int:
-    return int(max(0, min(63, value)))
+def _clamp63(v: int) -> int:
+    return int(max(0, min(63, v)))
+
+
+def _in_bounds(x: int, y: int) -> bool:
+    return x >= 0 and _le(x, 63) and y >= 0 and _le(y, 63)
 
 
 def rhae_level_score(human_actions: float, ai_actions: float) -> float:
+    """官方关卡分：平方效率，上限 1.15。"""
     if _le(ai_actions, 0):
         return 0.0
     score = (human_actions / ai_actions) ** 2
     return 1.15 if score > 1.15 else score
 
 
-def should_replay(level_spent: int, level_resets: int, has_map: bool) -> bool:
-    return (
-        level_spent >= REPLAY_AFTER
-        and _lt(level_resets, MAX_LEVEL_RESETS)
-        and has_map
-    )
-
-
-def should_abandon(
-    level_spent: int,
-    has_short_path: bool,
-    remaining_s: float,
-) -> bool:
+def should_abandon(level_spent: int, can_still_explore: bool, remaining_s: float) -> bool:
+    """本关该停了：时间没了、图穷了还磨、或步数已经多到平方分≈0。"""
     if _le(remaining_s, 0):
         return True
-    if level_spent >= ABANDON_AFTER and not has_short_path:
+    if level_spent >= HARD_LEVEL_CAP:
+        return True
+    if level_spent >= ABANDON_AFTER and not can_still_explore:
         return True
     return False
 
@@ -123,8 +125,7 @@ def _start_llm_background() -> None:
         if _LLM_STATE["started"] or _LLM_STATE["failed"]:
             return
         _LLM_STATE["started"] = True
-    thread = threading.Thread(target=_load_llm, name="gemma4-load", daemon=True)
-    thread.start()
+    threading.Thread(target=_load_llm, name="gemma4-load", daemon=True).start()
 
 
 def _load_llm() -> None:
@@ -193,36 +194,52 @@ def _bg_color(frame: np.ndarray) -> int:
     return int(np.bincount(frame.ravel(), minlength=16).argmax())
 
 
-def _mask_hud(frame: np.ndarray, bg: int) -> np.ndarray:
-    masked = frame.copy()
-    height, width = masked.shape
-    wide = max(24, width // 2)
-
-    def widest_run(row: int) -> int:
-        best = run = 0
-        for col in range(width):
-            if masked[row, col] != bg:
-                run += 1
-                best = max(best, run)
-            else:
-                run = 0
-        return best
-
-    for row in list(range(0, 6)) + list(range(height - 6, height)):
-        if widest_run(row) >= wide:
-            masked[row, :] = bg
-    return masked
+def _widest_run(row: np.ndarray, bg: int) -> int:
+    best = run = 0
+    for col in range(row.size):
+        if row[col] != bg:
+            run += 1
+            best = max(best, run)
+        else:
+            run = 0
+    return best
 
 
-def _hash_frame(arr: np.ndarray) -> str:
+def mask_hud(frame: np.ndarray, bg: int) -> np.ndarray:
+    """抹掉顶/底很长的分数条，短标记留下。不抹的话计步条每步都制造假新状态。"""
+    out = frame.copy()
+    height, width = out.shape
+    wide = max(8, width // 2)
+    active = np.sum(out != bg, axis=1)
+
+    sep = None
+    for row in range(0, min(16, height)):
+        if active[row] == 0:
+            sep = row
+            break
+    if sep is not None:
+        for row in range(0, sep):
+            if _widest_run(out[row], bg) >= wide:
+                out[row, :] = bg
+
+    sep = None
+    for row in range(height - 1, max(height - 17, 0), -1):
+        if active[row] == 0:
+            sep = row
+            break
+    if sep is not None:
+        for row in range(sep + 1, height):
+            if _widest_run(out[row], bg) >= wide:
+                out[row, :] = bg
+    return out
+
+
+def hash_frame(arr: np.ndarray) -> str:
     return hashlib.md5(arr.tobytes()).hexdigest()[:16]
 
 
-def _in_bounds(x: int, y: int) -> bool:
-    return x >= 0 and _le(x, 63) and y >= 0 and _le(y, 63)
-
-
-def _components(frame: np.ndarray, bg: int) -> list[dict[str, Any]]:
+def components(frame: np.ndarray, bg: int) -> list[dict[str, Any]]:
+    """四连通同色块。代表点一定在色块里面，给 ACTION6 点。"""
     height, width = frame.shape
     seen = np.zeros((height, width), dtype=bool)
     comps: list[dict[str, Any]] = []
@@ -252,35 +269,55 @@ def _components(frame: np.ndarray, bg: int) -> list[dict[str, Any]]:
             ys = np.array([p[0] for p in pixels])
             xs = np.array([p[1] for p in pixels])
             k = int(np.argmin(np.abs(ys - ys.mean()) + np.abs(xs - xs.mean())))
+            size = len(pixels)
+            rarity_size = 1.0 if _le(size, 4) else 0.8 if _le(size, 16) else 0.5 if _le(size, 64) else 0.2
             comps.append(
                 {
                     "color": color,
-                    "size": len(pixels),
+                    "size": size,
                     "x": int(xs[k]),
                     "y": int(ys[k]),
-                    "pixels": pixels,
+                    "ssc": rarity_size,
                 }
             )
     return comps
 
 
-def _static_view(frame: np.ndarray, bg: int, mover_pixels: list[tuple[int, int]] | None) -> np.ndarray:
-    static = frame.copy()
-    if mover_pixels:
-        for py, px in mover_pixels:
-            static[py, px] = bg
-    return static
+def click_rank(comps: list[dict[str, Any]], frame: np.ndarray) -> list[tuple[float, int, int]]:
+    """小、颜色少的块更像按钮，先点。太大的色块多半是墙/地板，跳过。"""
+    counts = np.bincount(frame.ravel(), minlength=16)
+    total = max(int(frame.size), 1)
+    ranked: list[tuple[float, int, int]] = []
+    for comp in comps:
+        if comp["size"] >= 81:
+            continue
+        rarity = 1.0 - counts[comp["color"]] / total
+        score = 0.5 * rarity + 0.5 * float(comp["ssc"])
+        ranked.append((-score, int(comp["x"]), int(comp["y"])))
+    ranked.sort()
+    return ranked
 
 
-def detect_translation(
-    prev: np.ndarray, now: np.ndarray, bg: int
-) -> tuple[int, int, int, int] | None:
-    """Match small blobs between two frames. Overlap-safe (walking onto paint)."""
-    prev_c = [c for c in _components(prev, bg) if _le(c["size"], 24)]
-    now_c = [c for c in _components(now, bg) if _le(c["size"], 24)]
-    if not prev_c or not now_c:
+def locate_agent(frame: np.ndarray, bg: int, color: int | None, size: int | None):
+    """已经认出角色颜色后，在当前帧里找它。"""
+    if color is None:
         return None
-    best: tuple[int, int, int, int] | None = None
+    comps = [c for c in components(frame, bg) if c["color"] == color]
+    if size is not None:
+        close = [c for c in comps if _le(abs(int(c["size"]) - int(size)), 4)]
+        if close:
+            comps = close
+    if not comps:
+        return None
+    comps.sort(key=lambda c: (c["size"], c["y"], c["x"]))
+    return int(comps[0]["x"]), int(comps[0]["y"])
+
+
+def detect_translation(prev: np.ndarray, now: np.ndarray, bg: int):
+    """两帧之间哪个小色块平移了。用来认角色、认方向。"""
+    prev_c = [c for c in components(prev, bg) if _le(c["size"], 24)]
+    now_c = [c for c in components(now, bg) if _le(c["size"], 24)]
+    best = None
     best_key = None
     for p in prev_c:
         for n in now_c:
@@ -293,12 +330,8 @@ def detect_translation(
             dist = abs(dx) + abs(dy)
             if dist == 0 or dist > 4:
                 continue
-            # Prefer unique-color, then shorter steps, then smaller sprites.
-            key = (
-                0 if sum(1 for c in prev_c if c["color"] == p["color"]) == 1 else 1,
-                dist,
-                int(n["size"]),
-            )
+            unique = 0 if sum(1 for c in prev_c if c["color"] == p["color"]) == 1 else 1
+            key = (unique, dist, int(n["size"]))
             better = best_key is None
             if not better:
                 for ka, kb in zip(key, best_key):
@@ -307,96 +340,8 @@ def detect_translation(
                         break
             if better:
                 best_key = key
-                best = (dx, dy, int(n["color"]), int(n["size"]))
+                best = (dx, dy, int(n["color"]), int(n["size"]), int(n["x"]), int(n["y"]))
     return best
-
-
-def locate_mover(
-    frame: np.ndarray,
-    bg: int,
-    color: int | None,
-    prev_xy: tuple[int, int] | None,
-    expected_size: int | None,
-) -> tuple[tuple[int, int], list[tuple[int, int]]] | None:
-    if color is None:
-        return None
-    matches = []
-    for comp in _components(frame, bg):
-        if comp["color"] != color:
-            continue
-        if expected_size is not None and abs(comp["size"] - expected_size) > max(4, expected_size):
-            continue
-        if comp["size"] > 24:
-            continue
-        matches.append(comp)
-    if not matches:
-        return None
-    if prev_xy is not None:
-        matches.sort(
-            key=lambda c: abs(c["x"] - prev_xy[0]) + abs(c["y"] - prev_xy[1])
-        )
-    else:
-        matches.sort(key=lambda c: c["size"])
-    best = matches[0]
-    return (int(best["x"]), int(best["y"])), list(best["pixels"])
-
-
-def click_rank(
-    comps: list[dict[str, Any]],
-    frame: np.ndarray,
-    dead: set[tuple[int, int, str]],
-    static_hash: str,
-    boost: set[tuple[int, int]],
-) -> list[tuple[float, int, int]]:
-    counts = np.bincount(frame.ravel(), minlength=16)
-    total = max(int(frame.size), 1)
-    ranked: list[tuple[float, int, int]] = []
-    for comp in comps:
-        size = int(comp["size"])
-        if _le(size, 0) or size >= 81:
-            continue
-        x, y = int(comp["x"]), int(comp["y"])
-        if (x, y, static_hash) in dead:
-            continue
-        rarity = 1.0 - counts[int(comp["color"])] / total
-        score = 0.55 * rarity + 0.45 * (1.0 / (1.0 + size))
-        if (x, y) in boost:
-            score += 0.35
-        ranked.append((-score, x, y))
-    ranked.sort()
-    return ranked
-
-
-def shortest_first_action(
-    edges: dict[tuple[int, int, int], tuple[int, int]],
-    start: tuple[int, int],
-    is_goal,
-) -> int | None:
-    if is_goal(start):
-        return None
-    queue = deque([start])
-    parent: dict[tuple[int, int], tuple[tuple[int, int], int] | None] = {start: None}
-    found: tuple[int, int] | None = None
-    while queue:
-        pos = queue.popleft()
-        if pos != start and is_goal(pos):
-            found = pos
-            break
-        for action_id in CARDINAL:
-            nxt = edges.get((pos[0], pos[1], action_id))
-            if nxt is None or nxt in parent:
-                continue
-            parent[nxt] = (pos, action_id)
-            queue.append(nxt)
-    if found is None:
-        return None
-    cur = found
-    first = None
-    while parent[cur] is not None:
-        prev, action_id = parent[cur]
-        first = action_id
-        cur = prev
-    return first
 
 
 def _downsample(frame: np.ndarray, size: int = 16) -> str:
@@ -412,9 +357,12 @@ def _downsample(frame: np.ndarray, size: int = 16) -> str:
 
 
 def _action_from_id(action_id: int, x: int = 32, y: int = 32) -> GameAction:
+    # 每次 from_name 拿新对象。公开本踩过坑：改枚举上的旧 ACTION6 坐标会串台。
     name = ID_TO_NAME.get(int(action_id), "ACTION1")
     if hasattr(GameAction, "from_name"):
         action = GameAction.from_name(name)
+    elif hasattr(GameAction, "from_id"):
+        action = GameAction.from_id(int(action_id))
     else:
         action = getattr(GameAction, name)
     if name == "ACTION6" and hasattr(action, "set_data"):
@@ -440,348 +388,194 @@ def _parse_llm_line(text: str, avail: set[int]) -> tuple[int, int, int] | None:
     return None
 
 
-class WorldModel:
-    """Online map: mover, walls, clicks, and a cheap mode label."""
+class GraphMemory:
+    """一张图：画面哈希 -> 还没试的动作；试过没变就标死。"""
 
     def __init__(self) -> None:
-        self.mode = "probe"
+        self.nodes: dict[str, dict[str, Any]] = {}
+        self.succ: dict[str, dict[str, str]] = {}
         self.dir_map = dict(DEFAULT_DIRS)
-        self.dir_votes: dict[int, list[tuple[int, int]]] = {}
-        self.mover_color: int | None = None
-        self.mover_size: int | None = None
-        self.mover_pos: tuple[int, int] | None = None
-        self.mover_pixels: list[tuple[int, int]] | None = None
-        self.edges: dict[tuple[int, int, int], tuple[int, int]] = {}
-        self.tried: set[tuple[int, int, int]] = set()
-        self.walls: set[tuple[int, int]] = set()
-        self.dead_clicks: set[tuple[int, int, str]] = set()
-        self.useful_clicks: list[tuple[int, int]] = []
+        self.simple_order = list(SIMPLE_IDS)
+        self.agent_color: int | None = None
+        self.agent_size: int | None = None
+        self.nav_target: tuple[int, int] | None = None
         self.visit: dict[tuple[int, int], int] = {}
-        self.win_cells: list[tuple[int, int]] = []
-        self.win_clicks: list[tuple[int, int]] = []
-        self.boost: set[tuple[int, int]] = set()
-        self.prev_grid: np.ndarray | None = None
-        self.prev_static_hash: str | None = None
-        self.prev_pos: tuple[int, int] | None = None
-        self.pending: tuple[int, int, int, str] | None = None
-        self.level = -1
-        self.level_spent = 0
-        self.level_resets = 0
-        self.move_hits = 0
-        self.click_hits = 0
-        self.interact_hits = 0
-        self.probe_n = 0
-        self.no_change = 0
-        self.seen_hashes: set[str] = set()
-        self.replay_target: tuple[int, int] | None = None
-        self.last_win_pending: tuple[int, int, int, str] | None = None
-        self.want_interact = False
+        self.flash: dict[tuple[int, int], int] = {}
+        self.flash_steps = 0
+        self.flash_mask: np.ndarray | None = None
+        self.recent = deque(maxlen=12)
 
-    def clear_layout(self, keep_skills: bool) -> None:
-        self.edges.clear()
-        self.tried.clear()
-        self.walls.clear()
-        self.dead_clicks.clear()
-        self.useful_clicks.clear()
+    def clear_level(self) -> None:
+        # 键位和角色颜色跨关保留；地图每关清空。
+        self.nodes.clear()
+        self.succ.clear()
+        self.flash.clear()
+        self.flash_steps = 0
+        self.flash_mask = None
+        self.recent.clear()
         self.visit.clear()
-        self.boost.clear()
-        self.prev_grid = None
-        self.prev_static_hash = None
-        self.prev_pos = None
-        self.pending = None
-        self.level_spent = 0
-        self.probe_n = 0
-        self.no_change = 0
-        self.seen_hashes.clear()
-        self.replay_target = None
-        self.mover_pos = None
-        self.mover_pixels = None
-        self.want_interact = False
-        self.win_cells.clear()
-        self.win_clicks.clear()
-        if not keep_skills:
-            self.mode = "probe"
-            self.dir_map = dict(DEFAULT_DIRS)
-            self.dir_votes.clear()
-            self.mover_color = None
-            self.mover_size = None
-            self.move_hits = 0
-            self.click_hits = 0
-            self.interact_hits = 0
-            self.level_resets = 0
+        self.nav_target = None
 
-    def classify(self) -> str:
-        nav = self.move_hits >= 2
-        point = self.click_hits >= 1
-        if nav and point:
-            self.mode = "hybrid"
-        elif nav:
-            self.mode = "nav"
-        elif point:
-            self.mode = "point"
-        elif self.probe_n >= 8:
-            self.mode = "unknown"
-        else:
-            self.mode = "probe"
-        return self.mode
-
-    def _lock_dir(self, action_id: int, dx: int, dy: int) -> None:
-        votes = self.dir_votes.setdefault(action_id, [])
-        votes.append((dx, dy))
-        tally: dict[tuple[int, int], int] = {}
-        for item in votes:
-            tally[item] = tally.get(item, 0) + 1
-        self.dir_map[action_id] = max(tally.items(), key=lambda kv: kv[1])[0]
-
-    def observe(self, grid: np.ndarray, bg: int, levels: int) -> None:
-        if self.prev_grid is None or self.pending is None:
+    def update_flash(self, prev: np.ndarray | None, now: np.ndarray, agent_color: int | None) -> None:
+        """同一格反复闪、又不是角色，才从哈希里掠掉。面积太大就放弃，免得把真墙抹掉。"""
+        if prev is None or prev.shape != now.shape:
             return
-        action_id, px, py, _key = self.pending
-        if levels > self.level and self.level >= 0:
-            self.last_win_pending = self.pending
-            if action_id == 6:
-                self.win_clicks.append((px, py))
-            elif self.prev_pos is not None:
-                self.win_cells.append(self.prev_pos)
-            elif self.mover_pos is not None:
-                self.win_cells.append(self.mover_pos)
-            self.classify()
+        self.flash_steps += 1
+        changed = np.argwhere(prev != now)
+        for y, x in changed:
+            self.flash[(int(x), int(y))] = self.flash.get((int(x), int(y)), 0) + 1
+        if self.flash_steps >= DYN_WARMUP and self.flash_steps % 8 == 0:
+            need = max(3, int(self.flash_steps * DYN_RATE))
+            mask = np.zeros_like(now, dtype=bool)
+            for (x, y), n in self.flash.items():
+                if n >= need and _in_bounds(x, y):
+                    if agent_color is None or now[y, x] != agent_color:
+                        mask[y, x] = True
+            if mask.any() and _lt(float(mask.mean()), DYN_MAX_FRAC):
+                self.flash_mask = mask
+            else:
+                self.flash_mask = None
+
+    def paint(self, frame: np.ndarray, bg: int) -> np.ndarray:
+        masked = mask_hud(frame, bg)
+        if self.flash_mask is not None:
+            masked = masked.copy()
+            masked[self.flash_mask] = bg
+        return masked
+
+    def refresh_target(self, frame: np.ndarray, bg: int) -> None:
+        """找一个最像按钮、又不是自己的小色块，当软导航目标。"""
+        ranked = click_rank(components(frame, bg), frame)
+        pos = locate_agent(frame, bg, self.agent_color, self.agent_size)
+        for _score, x, y in ranked:
+            if pos is not None and _le(abs(x - pos[0]) + abs(y - pos[1]), 1):
+                continue
+            self.nav_target = (x, y)
             return
-        trans = detect_translation(self.prev_grid, grid, bg)
-        located = locate_mover(grid, bg, self.mover_color, self.prev_pos, self.mover_size)
-        if located:
-            self.mover_pos, self.mover_pixels = located
-        static = _static_view(grid, bg, self.mover_pixels)
-        static_hash = _hash_frame(static)
-        changed_static = static_hash != self.prev_static_hash
-        frame_hash = _hash_frame(grid)
-        if frame_hash in self.seen_hashes and not trans and not changed_static:
-            self.no_change += 1
-        else:
-            self.no_change = 0
-        self.seen_hashes.add(frame_hash)
+        self.nav_target = None
 
-        if action_id in CARDINAL and trans is not None:
-            dx, dy, color, size = trans
-            self.move_hits += 1
-            self.mover_color = color
-            self.mover_size = size
-            self._lock_dir(action_id, dx, dy)
-            now_pos = (self.prev_pos[0] + dx, self.prev_pos[1] + dy) if self.prev_pos else None
-            if located:
-                now_pos = located[0]
-            if self.prev_pos is not None and now_pos is not None:
-                self.edges[(self.prev_pos[0], self.prev_pos[1], action_id)] = now_pos
-                self.tried.add((self.prev_pos[0], self.prev_pos[1], action_id))
-            if now_pos is not None:
-                self.mover_pos = now_pos
-                self.visit[now_pos] = self.visit.get(now_pos, 0) + 1
-            if changed_static:
-                self.want_interact = True
-        elif action_id in CARDINAL and located and self.prev_pos is not None and located[0] != self.prev_pos:
-            now_pos = located[0]
-            dx = now_pos[0] - self.prev_pos[0]
-            dy = now_pos[1] - self.prev_pos[1]
-            self.move_hits += 1
-            self._lock_dir(action_id, dx, dy)
-            self.edges[(self.prev_pos[0], self.prev_pos[1], action_id)] = now_pos
-            self.tried.add((self.prev_pos[0], self.prev_pos[1], action_id))
-            self.mover_pos = now_pos
-            self.visit[now_pos] = self.visit.get(now_pos, 0) + 1
-            if changed_static:
-                self.want_interact = True
-        elif action_id in CARDINAL and self.prev_pos is not None:
-            dx, dy = self.dir_map[action_id]
-            wall = (self.prev_pos[0] + dx, self.prev_pos[1] + dy)
-            if _in_bounds(wall[0], wall[1]):
-                self.walls.add(wall)
-            self.tried.add((self.prev_pos[0], self.prev_pos[1], action_id))
+    def ensure(self, h: str, frame: np.ndarray, bg: int, avail: set[int]) -> None:
+        if h in self.nodes:
+            return
+        order: list[str] = []
+        meta: dict[str, tuple[int, int, int]] = {}
+        # 先方向和交互。一上来乱点会把走路关玩死。
+        for sid in self.simple_order:
+            if sid in avail:
+                key = f"s{sid}"
+                order.append(key)
+                meta[key] = (sid, 32, 32)
+        if 6 in avail:
+            ranked = click_rank(components(frame, bg), frame)[:MAX_CLICKS]
+            keep = ranked[:CLICK_KEEP]
+            rest = ranked[CLICK_KEEP:]
+            random.shuffle(rest)
+            for _score, x, y in keep + rest:
+                key = f"c{x}_{y}"
+                if key in meta:
+                    continue
+                order.append(key)
+                meta[key] = (6, x, y)
+        self.nodes[h] = {"order": order, "tested": set(), "meta": meta}
+        self.succ.setdefault(h, {})
 
-        if action_id == 6:
-            if changed_static:
-                self.click_hits += 1
-                self.useful_clicks.append((px, py))
-                self.boost.add((px, py))
-            elif self.prev_static_hash is not None:
-                self.dead_clicks.add((px, py, self.prev_static_hash))
+    def record(self, prev_h: str | None, key: str | None, now_h: str) -> None:
+        if prev_h is None or key is None:
+            return
+        node = self.nodes.get(prev_h)
+        if not node or key not in node["meta"]:
+            return
+        node["tested"].add(key)
+        if now_h != prev_h:
+            self.succ.setdefault(prev_h, {})[key] = now_h
 
-        if action_id == 5 and changed_static:
-            self.interact_hits += 1
-            if self.prev_pos is not None:
-                self.useful_clicks.append(self.prev_pos)
+    def untested(self, h: str, kind: str | None = None) -> list[str]:
+        node = self.nodes.get(h)
+        if not node:
+            return []
+        keys = [k for k in node["order"] if k not in node["tested"]]
+        if kind == "s":
+            keys = [k for k in keys if k.startswith("s")]
+        elif kind == "c":
+            keys = [k for k in keys if k.startswith("c")]
+        return keys
 
-        self.classify()
+    def has_untested(self) -> bool:
+        return any(self.untested(h) for h in self.nodes)
 
-    def sync(self, grid: np.ndarray, bg: int) -> str:
-        located = locate_mover(grid, bg, self.mover_color, self.mover_pos, self.mover_size)
-        if located:
-            self.mover_pos, self.mover_pixels = located
-        static = _static_view(grid, bg, self.mover_pixels)
-        self.prev_static_hash = _hash_frame(static)
-        self.prev_grid = grid
-        self.prev_pos = self.mover_pos
-        return self.prev_static_hash
-
-    def has_map(self) -> bool:
-        return bool(self.edges) or bool(self.useful_clicks) or bool(self.win_cells) or bool(self.win_clicks)
-
-    def has_short_path(self) -> bool:
-        if self.mover_pos is None:
-            return bool(self.win_clicks) or bool(self.useful_clicks)
-        goals = self.win_cells[-1:] + self.useful_clicks[-3:]
-        if not goals:
-            return False
-        goal_set = set(goals)
-
-        def is_goal(pos: tuple[int, int]) -> bool:
-            return pos in goal_set
-
-        return shortest_first_action(self.edges, self.mover_pos, is_goal) is not None
-
-    def interesting_target(self, comps: list[dict[str, Any]]) -> tuple[int, int] | None:
-        if self.replay_target is not None:
-            return self.replay_target
-        if self.win_cells:
-            return self.win_cells[-1]
-        small = [
-            c
-            for c in comps
-            if _lt(c["size"], 25)
-            and (self.mover_color is None or c["color"] != self.mover_color)
-        ]
-        if not small:
+    def nav_pick(self, local: list[str], painted: np.ndarray | None, bg: int) -> str | None:
+        """软偏向目标：只在没踩过的格子上走，全贪心会撞墙来回抖。"""
+        if painted is None or self.agent_color is None or self.nav_target is None:
             return None
-        if self.mover_pos is None:
-            small.sort(key=lambda c: c["size"])
-            return int(small[0]["x"]), int(small[0]["y"])
-        small.sort(
-            key=lambda c: abs(c["x"] - self.mover_pos[0]) + abs(c["y"] - self.mover_pos[1])
-        )
-        return int(small[0]["x"]), int(small[0]["y"])
-
-    def untried_cardinals(self, pos: tuple[int, int], avail: set[int]) -> list[int]:
-        out = []
-        for action_id in CARDINAL:
-            if action_id not in avail:
-                continue
-            if (pos[0], pos[1], action_id) in self.tried:
-                continue
-            dx, dy = self.dir_map[action_id]
-            wall = (pos[0] + dx, pos[1] + dy)
-            if wall in self.walls:
-                continue
-            out.append(action_id)
-        return out
-
-    def pick_nav(self, comps: list[dict[str, Any]], avail: set[int]) -> tuple[int, int, int, str] | None:
-        pos = self.mover_pos
+        if random.random() >= NAV_BIAS:
+            return None
+        pos = locate_agent(painted, bg, self.agent_color, self.agent_size)
         if pos is None:
             return None
-        if self.want_interact and 5 in avail:
-            self.want_interact = False
-            self.tried.add((pos[0], pos[1], 5))
-            return 5, pos[0], pos[1], "step-interact"
-        target = self.interesting_target(comps)
-        if target is not None and pos == target and 5 in avail and (pos[0], pos[1], 5) not in self.tried:
-            self.tried.add((pos[0], pos[1], 5))
-            return 5, pos[0], pos[1], "at-target"
-        untried = self.untried_cardinals(pos, avail)
-        if untried:
-            if target is not None:
-                untried.sort(
-                    key=lambda a: abs(pos[0] + self.dir_map[a][0] - target[0])
-                    + abs(pos[1] + self.dir_map[a][1] - target[1])
-                )
-            action_id = untried[0]
-            return action_id, pos[0], pos[1], f"nav{action_id}"
+        tx, ty = self.nav_target
+        px, py = pos
+        best = None
+        best_d = 10**9
+        for key in local:
+            if not key.startswith("s"):
+                continue
+            sid = int(key[1:])
+            if sid not in self.dir_map:
+                continue
+            dx, dy = self.dir_map[sid]
+            nx, ny = px + dx, py + dy
+            if self.visit.get((nx, ny), 0) > 0:
+                continue
+            dist = abs(nx - tx) + abs(ny - ty)
+            if _lt(dist, best_d):
+                best_d = dist
+                best = key
+        return best
 
-        def node_open(node: tuple[int, int]) -> bool:
-            return bool(self.untried_cardinals(node, avail)) or (target is not None and node == target)
-
-        step = shortest_first_action(self.edges, pos, node_open)
-        if step is not None and step in avail:
-            return step, pos[0], pos[1], f"bfs{step}"
-
-        if 5 in avail and (pos[0], pos[1], 5) not in self.tried:
-            self.tried.add((pos[0], pos[1], 5))
-            return 5, pos[0], pos[1], "interact"
-
-        return None
-
-    def pick_point(
-        self, comps: list[dict[str, Any]], frame: np.ndarray, static_hash: str, avail: set[int]
-    ) -> tuple[int, int, int, str] | None:
-        if 6 not in avail:
-            return None
-        ranked = click_rank(comps, frame, self.dead_clicks, static_hash, self.boost)
-        for _score, x, y in ranked:
-            return 6, x, y, f"click{x}_{y}"
-        if self.win_clicks:
-            x, y = self.win_clicks[-1]
-            if (x, y, static_hash) not in self.dead_clicks:
-                return 6, x, y, "winclick"
-        for y in range(8, 56, 8):
-            for x in range(8, 56, 8):
-                if (x, y, static_hash) in self.dead_clicks:
+    def bfs_step(self, start: str, kind: str) -> str | None:
+        """沿已知边走一步，朝最近「还有 kind 类没试动作」的点。"""
+        prev: dict[str, tuple[str | None, str | None]] = {start: (None, None)}
+        queue = deque([start])
+        while queue:
+            cur = queue.popleft()
+            for key, nxt in self.succ.get(cur, {}).items():
+                if nxt in prev:
                     continue
-                return 6, x, y, f"lat{x}_{y}"
+                prev[nxt] = (cur, key)
+                if self.untested(nxt, kind):
+                    node = nxt
+                    while prev[node][0] is not None and prev[node][0] != start:
+                        node = prev[node][0]
+                    return prev[node][1]
+                queue.append(nxt)
         return None
 
-    def pick_probe(self, comps: list[dict[str, Any]], avail: set[int]) -> tuple[int, int, int, str] | None:
-        if _lt(self.probe_n, 4):
-            action_id = CARDINAL[self.probe_n]
-            if action_id in avail:
-                self.probe_n += 1
-                return action_id, 32, 32, f"probe{action_id}"
-            self.probe_n += 1
-        if self.probe_n == 4:
-            self.probe_n += 1
-            if 5 in avail:
-                return 5, 32, 32, "probe5"
-        if 6 in avail:
-            small = [c for c in comps if _lt(c["size"], 81)]
-            small.sort(key=lambda c: c["size"])
-            if small and _lt(self.probe_n, 9):
-                self.probe_n += 1
-                c = small[(self.probe_n - 6) % len(small)]
-                return 6, int(c["x"]), int(c["y"]), "probe6"
-        self.probe_n += 1
-        return None
-
-    def policy(
-        self, grid: np.ndarray, bg: int, avail: set[int]
-    ) -> tuple[int, int, int, str] | None:
-        comps = _components(grid, bg)
-        static_hash = self.prev_static_hash or _hash_frame(grid)
-        need_probe = self.mode == "probe" or (
-            _lt(self.probe_n, 6) and (self.mode == "unknown" or self.mover_pos is None)
-        )
-        if need_probe:
-            probed = self.pick_probe(comps, avail)
-            if probed is not None:
-                return probed
-        if self.mode in ("nav", "hybrid", "probe", "unknown"):
-            nav = self.pick_nav(comps, avail)
-            if nav is not None:
-                return nav
-        if self.mode in ("point", "hybrid", "probe", "unknown"):
-            point = self.pick_point(comps, grid, static_hash, avail)
-            if point is not None:
-                return point
-        if 7 in avail and self.no_change >= 6:
-            return 7, 32, 32, "undo"
+    def pick(self, start: str, painted: np.ndarray | None = None, bg: int = 0) -> str | None:
+        """先全图走路，再全图点击。这是公开探索器比「本格点完再走」强的关键。"""
+        for kind in ("s", "c"):
+            local = self.untested(start, kind)
+            if local:
+                if kind == "s":
+                    if "s5" in local:
+                        return "s5"
+                    nav = self.nav_pick(local, painted, bg)
+                    if nav is not None:
+                        return nav
+                return local[0]
+            step = self.bfs_step(start, kind)
+            if step is not None:
+                return step
         return None
 
 
 class MyAgent(Agent):
-    """World model plus RHAE action budget; Gemma-4 only when stuck."""
+    """哈希图探索；步数预算按官方平方分来砍；Gemma 只当顾问。"""
 
-    MAX_ACTIONS = 720
+    MAX_ACTIONS = 1500
     GLOBAL_TIME_LIMIT_S = 8 * 60 * 60
     GLOBAL_RESERVE_S = 20 * 60
     LLM_MAX_CALLS = 8
     LLM_MAX_NEW_TOKENS = 48
-    STUCK_BEFORE_LLM = 10
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
@@ -789,15 +583,26 @@ class MyAgent(Agent):
         random.seed(seed)
         np.random.seed(seed % (2**32 - 1))
         self.started_at = time.monotonic()
-        self.world = WorldModel()
+        self.g = GraphMemory()
+        dirs = [1, 2, 3, 4]
+        random.shuffle(dirs)
+        # 每个新画面先 ACTION5：走进目标格立刻走开，交互关会永远点不到。
+        self.g.simple_order = [5] + dirs
+        self.level = -1
+        self.level_spent = 0
+        self.level_resets = 0
+        self.prev_h: str | None = None
+        self.prev_key: str | None = None
+        self.prev_paint: np.ndarray | None = None
         self.abandoned = False
         self.llm_calls = 0
-        self.consec_resets = 0
+        self.no_change = 0
+        self.tried_undo = False
         _start_llm_background()
 
     @property
     def name(self) -> str:
-        return f"{super().name}.rhae-world"
+        return f"{super().name}.graph-rhae"
 
     def _remaining_global(self) -> float:
         deadline = _SUBMISSION_STARTED_AT + self.GLOBAL_TIME_LIMIT_S - self.GLOBAL_RESERVE_S
@@ -812,24 +617,19 @@ class MyAgent(Agent):
             return False
         return _le(self._remaining_global(), 0)
 
-    def _ask_llm(
-        self, frame: np.ndarray, avail: set[int], latest_frame: FrameData
-    ) -> tuple[int, int, int] | None:
+    def _ask_llm(self, frame: np.ndarray, avail: set[int], latest_frame: FrameData):
         if not _LLM_STATE["ready"] or self.llm_calls >= self.LLM_MAX_CALLS:
             return None
         if _le(self._remaining_global(), 30):
             return None
-        comps = _components(frame, _bg_color(frame))
-        comps = sorted(comps, key=lambda c: c["size"])[:8]
+        comps = sorted(components(frame, _bg_color(frame)), key=lambda c: c["size"])[:8]
         obj_txt = "; ".join(
             f"c{c['color']} n={c['size']} xy={c['x']},{c['y']}" for c in comps
         ) or "none"
-        levels = getattr(latest_frame, "levels_completed", getattr(latest_frame, "score", "?"))
+        levels = getattr(latest_frame, "levels_completed", "?")
         prompt = (
             "Unknown ARC-AGI-3 game. Reply ONE line: ACTION1-5, ACTION6 x y, ACTION7, RESET.\n"
-            f"mode={self.world.mode} pos={self.world.mover_pos} "
-            f"available={sorted(avail)} levels={levels} "
-            f"spent={self.world.level_spent} nochg={self.world.no_change}\n"
+            f"available={sorted(avail)} levels={levels} spent={self.level_spent} nochg={self.no_change}\n"
             f"objects={obj_txt}\n"
             f"grid16=\n{_downsample(frame)}\n"
         )
@@ -841,10 +641,7 @@ class MyAgent(Agent):
                 {"role": "user", "content": prompt},
             ]
             text = processor.apply_chat_template(
-                messages,
-                tokenize=False,
-                add_generation_prompt=True,
-                enable_thinking=False,
+                messages, tokenize=False, add_generation_prompt=True, enable_thinking=False
             )
             inputs = processor(text=text, return_tensors="pt")
             first_param = next(model.parameters())
@@ -852,124 +649,144 @@ class MyAgent(Agent):
             input_len = inputs["input_ids"].shape[-1]
             t0 = time.perf_counter()
             with _LLM_LOCK:
-                output = model.generate(
-                    **inputs,
-                    max_new_tokens=self.LLM_MAX_NEW_TOKENS,
-                    do_sample=False,
-                )
-            elapsed = time.perf_counter() - t0
+                output = model.generate(**inputs, max_new_tokens=self.LLM_MAX_NEW_TOKENS, do_sample=False)
             raw = processor.decode(output[0][input_len:], skip_special_tokens=True)
             self.llm_calls += 1
             parsed = _parse_llm_line(raw, avail)
-            print("LLM", self.game_id, "s", round(elapsed, 2), "->", raw[:80], parsed, flush=True)
+            print("LLM", self.game_id, "s", round(time.perf_counter() - t0, 2), parsed, flush=True)
             return parsed
         except Exception as exc:
             print("LLM generate failed:", type(exc).__name__, exc, flush=True)
             return None
 
-    def _emit(self, action_id: int, x: int, y: int, reason: str) -> GameAction:
+    def _emit(self, action_id: int, x: int, y: int, key: str, reason: str) -> GameAction:
         if action_id == 0:
             action = GameAction.RESET
+            self.prev_h = None
+            self.prev_key = None
+            self.prev_paint = None
         else:
             action = _action_from_id(action_id, x, y)
+            self.prev_key = key
         action.reasoning = reason
-        if action_id == 0:
-            self.world.pending = None
-            self.world.prev_grid = None
-        else:
-            self.world.pending = (action_id, x, y, reason)
         return action
 
+    def _lookup(self, now_h: str, key: str) -> tuple[int, int, int]:
+        node = self.g.nodes.get(now_h)
+        if node and key in node["meta"]:
+            return node["meta"][key]
+        for other in self.g.nodes.values():
+            if key in other["meta"]:
+                return other["meta"][key]
+        if key.startswith("s") and key[1:].isdigit():
+            return int(key[1:]), 32, 32
+        if key.startswith("c") and "_" in key:
+            try:
+                xs, ys = key[1:].split("_", 1)
+                return 6, int(xs), int(ys)
+            except ValueError:
+                pass
+        return 1, 32, 32
+
     def choose_action(self, frames: list[FrameData], latest_frame: FrameData) -> GameAction:
+        # 没开局或死了：只能 RESET，否则服务器 400。
         if latest_frame.state in (GameState.NOT_PLAYED, GameState.GAME_OVER):
-            self.consec_resets += 1
-            self.world.pending = None
-            self.world.prev_grid = None
-            return self._emit(0, 0, 0, "reset after not-played/game-over")
+            self.prev_h = None
+            self.prev_key = None
+            self.prev_paint = None
+            return self._emit(0, 0, 0, "reset", "reset after not-played/game-over")
 
         frame = _grid(latest_frame)
         bg = _bg_color(frame)
-        masked = _mask_hud(frame, bg)
         avail = _avail_ids(latest_frame)
         levels = int(getattr(latest_frame, "levels_completed", getattr(latest_frame, "score", 0)) or 0)
 
-        if self.world.prev_grid is not None and self.world.pending is not None:
-            self.world.observe(masked, bg, levels)
+        # 过关了：键位记住，地图清空（新迷宫）。
+        if levels != self.level:
+            if levels > self.level and self.level >= 0:
+                print("level-up", self.game_id, "to", levels, "spent", self.level_spent, flush=True)
+            self.g.clear_level()
+            self.level = levels
+            self.level_spent = 0
+            self.level_resets = 0
+            self.prev_h = None
+            self.prev_key = None
+            self.prev_paint = None
+            self.no_change = 0
+            self.tried_undo = False
 
-        if levels != self.world.level:
-            keep = self.world.level >= 0 and levels > self.world.level
-            if keep:
-                print(
-                    "level-up",
-                    self.game_id,
-                    "to",
-                    levels,
-                    "mode",
-                    self.world.mode,
-                    "spent",
-                    self.world.level_spent,
-                    flush=True,
-                )
-            self.world.clear_layout(keep_skills=keep)
-            self.world.level = levels
-            self.world.level_resets = 0
-            self.consec_resets = 0
+        # 认角色：哪个小色块跟着 ACTION1-4 平移。
+        if self.prev_paint is not None and self.prev_key and self.prev_key.startswith("s"):
+            trans = detect_translation(self.prev_paint, mask_hud(frame, bg), bg)
+            if trans is not None:
+                dx, dy, color, size, _x, _y = trans
+                self.g.agent_color = color
+                self.g.agent_size = size
+                sid = int(self.prev_key[1:])
+                if sid in DEFAULT_DIRS:
+                    self.g.dir_map[sid] = (dx, dy)
 
-        static_hash = self.world.sync(masked, bg)
-        self.world.level_spent += 1
-        _ = static_hash
+        painted = self.g.paint(frame, bg)
+        self.g.update_flash(self.prev_paint, painted, self.g.agent_color)
+        painted = self.g.paint(frame, bg)
+        now_h = hash_frame(painted)
 
-        if should_abandon(self.world.level_spent, self.world.has_short_path(), self._remaining_global()):
+        # 记下上一步：变了连边，没变标死。
+        if self.prev_h is not None and now_h == self.prev_h:
+            self.no_change += 1
+        else:
+            self.no_change = 0
+        self.g.record(self.prev_h, self.prev_key, now_h)
+        self.g.ensure(now_h, painted, bg, avail)
+        self.g.recent.append(now_h)
+        self.prev_h = now_h
+        self.prev_paint = painted
+        self.level_spent += 1
+
+        pos = locate_agent(painted, bg, self.g.agent_color, self.g.agent_size)
+        if pos is not None:
+            self.g.visit[pos] = self.g.visit.get(pos, 0) + 1
+        if self.level_spent % NAV_REFRESH == 1:
+            self.g.refresh_target(painted, bg)
+
+        can_explore = self.g.has_untested()
+        if should_abandon(self.level_spent, can_explore, self._remaining_global()):
             self.abandoned = True
-            print(
-                "abandon",
-                self.game_id,
-                "mode",
-                self.world.mode,
-                "spent",
-                self.world.level_spent,
-                flush=True,
-            )
+            print("abandon", self.game_id, "spent", self.level_spent, flush=True)
             fallback = 1 if 1 in avail else (sorted(avail)[0] if avail else 1)
-            return self._emit(fallback, 32, 32, "rhae-abandon")
+            return self._emit(fallback, 32, 32, "s1", "rhae-abandon")
 
-        if should_replay(self.world.level_spent, self.world.level_resets, self.world.has_map()):
-            self.world.level_resets += 1
-            self.world.level_spent = 0
-            self.world.replay_target = self.world.interesting_target(_components(masked, bg))
-            self.world.pending = None
-            self.world.prev_grid = None
-            self.world.probe_n = 6
-            print("replay-reset", self.game_id, "target", self.world.replay_target, flush=True)
-            return self._emit(0, 0, 0, "rhae-replay")
+        # ABAB 死循环：把正在走的边当已探索，逼它换动作。
+        rec = list(self.g.recent)
+        if len(rec) >= 6 and rec[-1] == rec[-3] == rec[-5] and rec[-2] == rec[-4] == rec[-6]:
+            node = self.g.nodes.get(now_h)
+            if node and self.prev_key:
+                node["tested"].add(self.prev_key)
 
-        picked = self.world.policy(masked, bg, avail)
-        if picked is None and self.world.no_change >= self.STUCK_BEFORE_LLM:
-            asked = self._ask_llm(masked, avail, latest_frame)
+        key = self.g.pick(now_h, painted, bg)
+        if key is None:
+            # 图穷了：关卡重打，用已标死的知识换条路。
+            if _lt(self.level_resets, REPLAY_RESETS):
+                self.level_resets += 1
+                self.level_spent = 0
+                print("stranded-reset", self.game_id, "n", self.level_resets, flush=True)
+                return self._emit(0, 0, 0, "reset", "stranded-reset")
+            if 7 in avail and not self.tried_undo:
+                self.tried_undo = True
+                return self._emit(7, 32, 32, "s7", "undo-stranded")
+            asked = self._ask_llm(painted, avail, latest_frame)
             if asked is not None:
                 action_id, x, y = asked
-                return self._emit(action_id, x, y, "llm")
-
-        if picked is None:
+                k = f"s{action_id}" if action_id != 6 else f"c{x}_{y}"
+                return self._emit(action_id, x, y, k, "llm")
             leftover = [a for a in sorted(avail) if a != 0]
             action_id = leftover[0] if leftover else 1
             x = y = 32
             if action_id == 6:
                 x, y = random.randint(8, 55), random.randint(8, 55)
-            picked = (action_id, x, y, "leftover")
+            return self._emit(action_id, x, y, "leftover", "leftover")
 
-        if self.world.level_spent % 40 == 1:
-            print(
-                "tick",
-                self.game_id,
-                "mode",
-                self.world.mode,
-                "pos",
-                self.world.mover_pos,
-                "spent",
-                self.world.level_spent,
-                "pick",
-                picked[3],
-                flush=True,
-            )
-        return self._emit(picked[0], picked[1], picked[2], picked[3])
+        action_id, x, y = self._lookup(now_h, key)
+        if self.level_spent % 40 == 1:
+            print("tick", self.game_id, "spent", self.level_spent, "nodes", len(self.g.nodes), "key", key, flush=True)
+        return self._emit(action_id, x, y, key, f"graph {key}")
