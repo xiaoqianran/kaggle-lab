@@ -29,7 +29,7 @@ def load_env(path: Path | None = None) -> None:
     if not path.exists():
         raise SystemExit(
             f"缺少 {path}。请先运行:\n"
-            f"  python -m kaggle_lab auth\n"
+            f"  python labs/001-model-proxy/run.py auth\n"
             f"  # 或: kaggle b auth -y --env-file {path}"
         )
     for line in path.read_text().splitlines():

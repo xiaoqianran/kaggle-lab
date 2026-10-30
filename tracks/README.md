@@ -1,11 +1,8 @@
 # tracks — 学习 / 研究轨
 
-按 **主题** 命名，不再用 Kaggle 用户名当目录名。账号信息留在各轨 README 和目录册里。
+按 **主题** 命名，不再用 Kaggle 用户名当目录名。账号信息留在各轨 README 里。
 
-```bash
-python -m kaggle_lab track              # 一览
-python -m kaggle_lab track arc-agi-3    # 先读哪篇、cd 到哪
-```
+用法：看下表选一条轨，cd 进去先读「先读」那篇，再跑脚本 / notebook。
 
 | id | 主题 | 先读 | 曾用名 / Kaggle |
 |----|------|------|-----------------|
@@ -21,5 +18,4 @@ python -m kaggle_lab track arc-agi-3    # 先读哪篇、cd 到哪
 ## 加一条轨
 
 1. `tracks/<topic-slug>/`，ASCII 目录名，主题写进 README。
-2. 在 [`kaggle_lab/catalog.py`](../kaggle_lab/catalog.py) 加一条 `Track`（`start_here`、`kaggle_users`）。
-3. 未登记的文件夹会出现在 `kaggle-lab list` 底部。
+2. 在上表加一行（主题、先读、曾用名）。

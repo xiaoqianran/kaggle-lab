@@ -16,7 +16,7 @@
 ## 推荐模型（便宜好用）
 
 ```bash
-python main.py 015 models
+python run.py models
 ```
 
 | 标签 | slug | 说明 |
@@ -34,22 +34,22 @@ source .venv/bin/activate
 export KAGGLE_API_TOKEN="$(cat ~/.kaggle/access_token)"
 
 # 凭证（约 1h）
-python main.py 015 auth
-# 或: python main.py 001 auth
+python run.py auth
+# 或: python labs/001-model-proxy/run.py auth
 
 # 冒烟 1 轮
-python main.py 015 smoke
+python run.py smoke
 
 # 默认：激辩预设 × 4 轮
-python main.py 015 run
+python run.py run
 
 # 预设 + 轮数 + 模型
-python main.py 015 run --preset socratic --rounds 3
-python main.py 015 run -m google/gemini-3.1-flash-lite-preview --rounds 2
-python main.py 015 run --preset comedy -m openai/gpt-5.4-nano-2026-03-17
+python run.py run --preset socratic --rounds 3
+python run.py run -m google/gemini-3.1-flash-lite-preview --rounds 2
+python run.py run --preset comedy -m openai/gpt-5.4-nano-2026-03-17
 
 # 自定义话题/人设
-python main.py 015 run --topic "开源模型会不会吃掉闭源？" \
+python run.py run --topic "开源模型会不会吃掉闭源？" \
   --a-name 开源信徒 --b-name 闭源猎手 --rounds 3
 ```
 
@@ -61,7 +61,7 @@ python main.py 015 run --topic "开源模型会不会吃掉闭源？" \
 ## 预设
 
 ```bash
-python main.py 015 presets
+python run.py presets
 ```
 
 - `debate` 激辩 · 远程办公与创造力  
@@ -73,7 +73,7 @@ python main.py 015 presets
 
 - 根目录 `.venv` + `kaggle` CLI + `openai`
 - `KAGGLE_API_TOKEN` / `~/.kaggle/access_token`
-- Model Proxy：`python main.py 001 auth` → `.env.model-proxy`
+- Model Proxy：`python labs/001-model-proxy/run.py auth` → `.env.model-proxy`
 
 ## Web UI（GitHub Pages + 本地网关）
 

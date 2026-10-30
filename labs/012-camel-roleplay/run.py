@@ -4,10 +4,10 @@
 默认任务：为 Kaggle 玩家写一份「本周可动手的 Agent/LLM 竞赛简报」。
 
 Usage:
-  python main.py 012 run
-  python main.py 012 run --rounds 4
-  python main.py 012 run --task "设计一个用 Model Proxy 评测 tool-calling 的最小 benchmark"
-  python main.py 012 run -m google/gemini-3-flash-preview --no-task-specify
+  python run.py run
+  python run.py run --rounds 4
+  python run.py run --task "设计一个用 Model Proxy 评测 tool-calling 的最小 benchmark"
+  python run.py run -m google/gemini-3-flash-preview --no-task-specify
 """
 
 from __future__ import annotations
@@ -23,8 +23,8 @@ if str(ROOT) not in sys.path:
 if str(ROOT / "src") not in sys.path:
     sys.path.insert(0, str(ROOT / "src"))
 
-from common.camel_proxy import DEFAULT_CAMEL_MODEL, extract_text, make_camel_model  # noqa: E402
-from common.usage import log_usage  # noqa: E402
+from kaggle_lab.camel_proxy import DEFAULT_CAMEL_MODEL, extract_text, make_camel_model  # noqa: E402
+from kaggle_lab.usage import log_usage  # noqa: E402
 
 ART = Path(__file__).resolve().parent / "artifacts"
 EXP = "012-camel-roleplay"

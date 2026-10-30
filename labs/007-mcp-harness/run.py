@@ -2,14 +2,14 @@
 """007-mcp-harness — 调用 Kaggle 官方 MCP（~70 tools）的薄客户端。
 
 Usage:
-  python main.py 007 tools                     # tools/list
-  python main.py 007 tools --grep competition
-  python main.py 007 call get_user_profile --json '{"request":{"userName":"qixiaer"}}'
-  python main.py 007 call get_accelerator_quota
-  python main.py 007 call search_competitions --json '{"request":{"search":"llm","pageSize":5}}'
-  python main.py 007 profile
-  python main.py 007 competitions --q "llm" --n 5
-  python main.py 007 datasets --q "titanic" --n 3
+  python run.py tools                     # tools/list
+  python run.py tools --grep competition
+  python run.py call get_user_profile --json '{"request":{"userName":"qixiaer"}}'
+  python run.py call get_accelerator_quota
+  python run.py call search_competitions --json '{"request":{"search":"llm","pageSize":5}}'
+  python run.py profile
+  python run.py competitions --q "llm" --n 5
+  python run.py datasets --q "titanic" --n 3
 """
 
 from __future__ import annotations
@@ -31,7 +31,7 @@ if str(ROOT) not in sys.path:
 if str(ROOT / "src") not in sys.path:
     sys.path.insert(0, str(ROOT / "src"))
 
-from common.proxy import ensure_kaggle_token  # noqa: E402
+from kaggle_lab.proxy import ensure_kaggle_token  # noqa: E402
 
 MCP_URL = "https://www.kaggle.com/mcp"
 ART = Path(__file__).resolve().parent / "artifacts"

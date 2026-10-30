@@ -2,11 +2,11 @@
 """010-quota-dashboard — GPU/TPU 额度 + 本地 AI Models 用量账本。
 
 Usage:
-  python main.py 010 show
-  python main.py 010 gpu
-  python main.py 010 usage
-  python main.py 010 usage --json
-  python main.py 010 all
+  python run.py show
+  python run.py gpu
+  python run.py usage
+  python run.py usage --json
+  python run.py all
 """
 
 from __future__ import annotations
@@ -24,8 +24,8 @@ if str(ROOT) not in sys.path:
 if str(ROOT / "src") not in sys.path:
     sys.path.insert(0, str(ROOT / "src"))
 
-from common.proxy import ensure_kaggle_token  # noqa: E402
-from common.usage import USAGE_LOG, load_usage_rows, summarize_usage  # noqa: E402
+from kaggle_lab.proxy import ensure_kaggle_token  # noqa: E402
+from kaggle_lab.usage import USAGE_LOG, load_usage_rows, summarize_usage  # noqa: E402
 
 ART = Path(__file__).resolve().parent / "artifacts"
 DAILY_BUDGET = 10.0

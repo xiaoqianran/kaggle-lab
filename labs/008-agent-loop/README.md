@@ -11,10 +11,10 @@
 ## 用法
 
 ```bash
-python main.py 008 run "东京天气？再算 17*3"
-python main.py 008 run --refresh "现在 UTC 几点？"
-python main.py 008 run --with-mcp "搜一个进行中的 LLM 竞赛并简述"
-python main.py 008 run -m openai/gpt-5.4-nano-2026-03-17 "2+2 和上海天气"
+python run.py run "东京天气？再算 17*3"
+python run.py run --refresh "现在 UTC 几点？"
+python run.py run --with-mcp "搜一个进行中的 LLM 竞赛并简述"
+python run.py run -m openai/gpt-5.4-nano-2026-03-17 "2+2 和上海天气"
 ```
 
 产物：`artifacts/last-run.json`（含 tool transcript）。

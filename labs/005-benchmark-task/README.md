@@ -8,18 +8,18 @@ Kaggle **Benchmarks** 最小闭环：写 task → 本地校验 → push → run 
 
 ```bash
 # 分步（推荐）
-python main.py 005 auth
-python main.py 005 validate              # 本地 python task.py
-python main.py 005 push                  # 上传 kaggle-lab-smoke-math
-python main.py 005 run -m gemini-3.5-flash
-python main.py 005 status
-python main.py 005 download
+python run.py auth
+python run.py validate              # 本地 python task.py
+python run.py push                  # 上传 kaggle-lab-smoke-math
+python run.py run -m gemini-3.5-flash
+python run.py status
+python run.py download
 
 # 或一条龙（需显式确认，会烧额度）
-python main.py 005 pipeline --i-accept -m gemini-3.5-flash
+python run.py pipeline --i-accept -m gemini-3.5-flash
 
-python main.py 005 list
-python main.py 005 models
+python run.py list
+python run.py models
 ```
 
 ## 文件

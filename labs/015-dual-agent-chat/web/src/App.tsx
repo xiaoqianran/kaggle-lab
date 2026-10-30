@@ -511,7 +511,7 @@ export default function App() {
 
       <p className="footer-note">
         实验目录 <code>labs/015-dual-agent-chat</code> · CLI:{" "}
-        <code>python -m kaggle_lab debate</code> ·{" "}
+        <code>python labs/015-dual-agent-chat/run.py run</code> ·{" "}
         <a href="https://github.com/xiaoqianran/kaggle-lab/tree/main/labs/015-dual-agent-chat">源码</a>
       </p>
     </div>

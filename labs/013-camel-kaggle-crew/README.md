@@ -17,11 +17,11 @@ CAMEL **带工具的智能体** + 真实 Kaggle 信号（MCP 搜竞赛/数据集
 
 ```bash
 # 默认有意义任务：竞赛侦察 + 配额 + 行动简报
-python main.py 013 scout
-python main.py 013 scout --q "agent llm" --n 5
+python run.py scout
+python run.py scout --q "agent llm" --n 5
 
 # 自由问
-python main.py 013 ask "我只想用 Model Proxy 做 multi-agent，不要 GPU，给 3 天计划"
+python run.py ask "我只想用 Model Proxy 做 multi-agent，不要 GPU，给 3 天计划"
 ```
 
 产物：`artifacts/last-ask.md`

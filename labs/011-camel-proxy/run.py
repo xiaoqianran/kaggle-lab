@@ -2,10 +2,10 @@
 """011-camel-proxy — CAMEL ChatAgent + Kaggle Model Proxy 桥接冒烟。
 
 Usage:
-  python main.py 011 smoke
-  python main.py 011 chat "用三句话说明 multi-agent 是什么"
-  python main.py 011 chat -m google/gemini-3.5-flash "..."
-  python main.py 011 tools "算 19*3，再查一下现在 UTC 大概描述"
+  python run.py smoke
+  python run.py chat "用三句话说明 multi-agent 是什么"
+  python run.py chat -m google/gemini-3.5-flash "..."
+  python run.py tools "算 19*3，再查一下现在 UTC 大概描述"
 """
 
 from __future__ import annotations
@@ -23,13 +23,13 @@ if str(ROOT) not in sys.path:
 if str(ROOT / "src") not in sys.path:
     sys.path.insert(0, str(ROOT / "src"))
 
-from common.camel_proxy import (  # noqa: E402
+from kaggle_lab.camel_proxy import (  # noqa: E402
     DEFAULT_CAMEL_MODEL,
     extract_text,
     make_chat_agent,
 )
-from common.proxy import refresh_token  # noqa: E402
-from common.usage import log_usage  # noqa: E402
+from kaggle_lab.proxy import refresh_token  # noqa: E402
+from kaggle_lab.usage import log_usage  # noqa: E402
 
 ART = Path(__file__).resolve().parent / "artifacts"
 EXP = "011-camel-proxy"

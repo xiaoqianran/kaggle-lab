@@ -10,11 +10,11 @@
 ## 用法
 
 ```bash
-python main.py 010 show
-python main.py 010 gpu
-python main.py 010 usage
-python main.py 010 usage --tail 20
-python main.py 010 usage --json
+python run.py show
+python run.py gpu
+python run.py usage
+python run.py usage --tail 20
+python run.py usage --json
 ```
 
 ## 相关

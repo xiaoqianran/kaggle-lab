@@ -8,10 +8,10 @@ Kaggle **Model Proxy** 最小冒烟：拿临时 key + OpenAI 兼容 `chat/comple
 
 ```bash
 # 从仓库根目录
-python main.py 001 auth
-python main.py 001 chat "用一句话介绍 Kaggle"
-python main.py 001 chat -m openai/gpt-5.4-nano-2026-03-17 "1+1=?"
-python main.py 001 chat --refresh -m google/gemini-3-flash-preview "写一句问候"
+python run.py auth
+python run.py chat "用一句话介绍 Kaggle"
+python run.py chat -m openai/gpt-5.4-nano-2026-03-17 "1+1=?"
+python run.py chat --refresh -m google/gemini-3-flash-preview "写一句问候"
 
 # 或进入目录
 cd 001-model-proxy && python run.py chat "hello"

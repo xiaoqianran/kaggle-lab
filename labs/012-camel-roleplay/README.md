@@ -12,10 +12,10 @@ CAMEL **RolePlaying** 双智能体协作，走 Kaggle Model Proxy。
 ## 用法
 
 ```bash
-python main.py 012 run
-python main.py 012 run --rounds 4
-python main.py 012 run --no-task-specify   # 更省额度
-python main.py 012 run --task "对比 flash vs nano 在 tool-calling 上的稳定性，给出评测协议"
+python run.py run
+python run.py run --rounds 4
+python run.py run --no-task-specify   # 更省额度
+python run.py run --task "对比 flash vs nano 在 tool-calling 上的稳定性，给出评测协议"
 ```
 
 产物：

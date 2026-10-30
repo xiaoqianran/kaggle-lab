@@ -31,24 +31,24 @@
 
 ```bash
 # 推荐：全流程到本地 validate（会烧 AI $，约十余次 LLM 调用）
-python main.py 014 run
-python main.py 014 run --theme "JSON instruction following" --query "llm" --debate-rounds 2
+python run.py run
+python run.py run --theme "JSON instruction following" --query "llm" --debate-rounds 2
 
 # 分步
-python main.py 014 scout
-python main.py 014 debate
-python main.py 014 author
-python main.py 014 assemble
-python main.py 014 validate-local
+python run.py scout
+python run.py debate
+python run.py author
+python run.py assemble
+python run.py validate-local
 
 # 发布到 Kaggle Benchmarks（确认后）
-python main.py 014 publish --push --i-accept
-python main.py 014 publish --push --run-remote --run-model gemini-3.5-flash --i-accept
+python run.py publish --push --i-accept
+python run.py publish --push --run-remote --run-model gemini-3.5-flash --i-accept
 
 # 原生 Workforce 探针
-python main.py 014 workforce-probe
+python run.py workforce-probe
 
-python main.py 014 show
+python run.py show
 ```
 
 ## 额度粗估（flash 级）

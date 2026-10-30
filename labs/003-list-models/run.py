@@ -4,8 +4,6 @@
 Usage:
   python run.py list
   python run.py dump
-  python main.py 003 list
-  python main.py 003 dump
 """
 
 from __future__ import annotations
@@ -25,7 +23,7 @@ if str(ROOT) not in sys.path:
 if str(ROOT / "src") not in sys.path:
     sys.path.insert(0, str(ROOT / "src"))
 
-from common.proxy import ensure_kaggle_token  # noqa: E402
+from kaggle_lab.proxy import ensure_kaggle_token  # noqa: E402
 
 OUT_DIR = Path(__file__).resolve().parent
 
@@ -148,16 +146,9 @@ def cmd_dump(_: argparse.Namespace) -> int:
         lines.append(m["cli_slug"])
     txt_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
-    # 同步一份到 data/，根目录不再堆模型表
-    data_dir = ROOT / "data"
-    data_dir.mkdir(parents=True, exist_ok=True)
-    for p in (json_path, csv_path, txt_path):
-        (data_dir / p.name).write_text(p.read_text(encoding="utf-8"), encoding="utf-8")
-
     print(f"已写入 {json_path}")
     print(f"已写入 {csv_path}")
     print(f"已写入 {txt_path}")
-    print(f"并同步到 {data_dir}")
     return 0
 
 

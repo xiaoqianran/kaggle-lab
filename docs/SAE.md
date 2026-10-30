@@ -48,13 +48,13 @@ submit    →  一次交齐，Kaggle 判分、公开 profile
 
 | 命令 | 状态 |
 |------|------|
-| `python main.py 004 register ...` | 禁止（除非用户明确要求） |
-| `python main.py 004 start --i-accept` | **禁止** |
-| `python main.py 004 submit --i-accept` | **禁止** |
-| `python main.py 004 answer-proxy` | 禁止对着真卷跑（会浪费真题时间） |
-| `python main.py 009 answer --from 004` | 禁止（依赖真卷） |
-| `python main.py 009 dry-run` | **允许**（假卷，不占 3 次） |
-| `python main.py 009 dry-run --ensemble` | **允许** |
+| `python labs/004-sae/run.py register ...` | 禁止（除非用户明确要求） |
+| `python labs/004-sae/run.py start --i-accept` | **禁止** |
+| `python labs/004-sae/run.py submit --i-accept` | **禁止** |
+| `python labs/004-sae/run.py answer-proxy` | 禁止对着真卷跑（会浪费真题时间） |
+| `python labs/009-sae-better/run.py answer --from 004` | 禁止（依赖真卷） |
+| `python labs/009-sae-better/run.py dry-run` | **允许**（假卷，不占 3 次） |
+| `python labs/009-sae-better/run.py dry-run --ensemble` | **允许** |
 | 阅读 / 改代码 / 写文档 | **允许** |
 
 若用户只说「继续实验 / 跑一下 / 测试 SAE」→ **一律当作 dry-run**，不要 start。
@@ -74,9 +74,9 @@ submit    →  一次交齐，Kaggle 判分、公开 profile
 
 ```bash
 # 假试卷 5 题，不联网开考、不占 SAE 次数（会扣一点 Model Proxy AI $）
-python main.py 009 dry-run
-python main.py 009 dry-run --ensemble
-python main.py 009 show
+python labs/009-sae-better/run.py dry-run
+python labs/009-sae-better/run.py dry-run --ensemble
+python labs/009-sae-better/run.py show
 ```
 
 ---

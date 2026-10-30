@@ -13,17 +13,17 @@ uv pip install 'camel-ai==0.2.90'
 uv pip install 'mcp==1.9.4'
 ```
 
-共享封装：`kaggle_lab.camel_proxy`（`common.camel_proxy` 仍可用）  
+共享封装：`kaggle_lab.camel_proxy`（`kaggle_lab.camel_proxy` 仍可用）  
 → `ModelPlatformType.OPENAI_COMPATIBLE_MODEL` + `{MODEL_PROXY_URL}/openapi`
 
 ## 用法
 
 ```bash
-python main.py 011 auth
-python main.py 011 smoke
-python main.py 011 chat "用三句话说明 multi-agent"
-python main.py 011 tools "UTC 时间 + 算 19*3"
-python main.py 011 chat -m google/gemini-3.5-flash --lang Chinese "..."
+python run.py auth
+python run.py smoke
+python run.py chat "用三句话说明 multi-agent"
+python run.py tools "UTC 时间 + 算 19*3"
+python run.py chat -m google/gemini-3.5-flash --lang Chinese "..."
 ```
 
 ## 与 001/008 的区别

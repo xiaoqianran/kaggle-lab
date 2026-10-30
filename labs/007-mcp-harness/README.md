@@ -8,13 +8,13 @@ Kaggle 官方 MCP（`https://www.kaggle.com/mcp`）薄客户端。
 ## 用法
 
 ```bash
-python main.py 007 tools
-python main.py 007 tools --grep notebook
-python main.py 007 profile
-python main.py 007 competitions --q "llm" --n 5
-python main.py 007 datasets --q "titanic" --n 3
-python main.py 007 call get_accelerator_quota
-python main.py 007 call search_competitions --json '{"request":{"search":"arc","pageSize":3}}'
+python run.py tools
+python run.py tools --grep notebook
+python run.py profile
+python run.py competitions --q "llm" --n 5
+python run.py datasets --q "titanic" --n 3
+python run.py call get_accelerator_quota
+python run.py call search_competitions --json '{"request":{"search":"arc","pageSize":3}}'
 ```
 
 产物：`artifacts/tools.json`、`call-*.json` 等。

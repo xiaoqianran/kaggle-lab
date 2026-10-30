@@ -2,17 +2,17 @@
 """005-benchmark-task — Kaggle Benchmarks 最小闭环。
 
 分步命令（推荐按顺序）:
-  python main.py 005 auth
-  python main.py 005 validate          # 本地 python task.py
-  python main.py 005 push              # 上传任务
-  python main.py 005 run -m gemini-3.5-flash
-  python main.py 005 status
-  python main.py 005 download
-  python main.py 005 list
-  python main.py 005 models
+  python run.py auth
+  python run.py validate          # 本地 python task.py
+  python run.py push              # 上传任务
+  python run.py run -m gemini-3.5-flash
+  python run.py status
+  python run.py download
+  python run.py list
+  python run.py models
 
 默认不自动串联 push→run（避免意外烧额度）；显式:
-  python main.py 005 pipeline --i-accept -m gemini-3.5-flash
+  python run.py pipeline --i-accept -m gemini-3.5-flash
 """
 
 from __future__ import annotations
@@ -30,7 +30,7 @@ if str(ROOT) not in sys.path:
 if str(ROOT / "src") not in sys.path:
     sys.path.insert(0, str(ROOT / "src"))
 
-from common.proxy import ENV_FILE, ensure_kaggle_token, refresh_token  # noqa: E402
+from kaggle_lab.proxy import ENV_FILE, ensure_kaggle_token, refresh_token  # noqa: E402
 
 HERE = Path(__file__).resolve().parent
 TASK_FILE = HERE / "task.py"
@@ -164,7 +164,7 @@ def cmd_pipeline(args: argparse.Namespace) -> int:
         raise SystemExit(
             "pipeline 会 auth → validate → push --wait → run --wait → download，\n"
             "消耗 AI Models 额度。确认后:\n"
-            "  python main.py 005 pipeline --i-accept -m gemini-3.5-flash"
+            "  python labs/005-benchmark-task/run.py pipeline --i-accept -m gemini-3.5-flash"
         )
     cmd_auth(args)
     cmd_validate(args)

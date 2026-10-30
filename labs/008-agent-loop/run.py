@@ -2,9 +2,9 @@
 """008-agent-loop — 多轮 ReAct：Model Proxy + 本地 tools + 可选 MCP。
 
 Usage:
-  python main.py 008 run "东京天气和 2+3 是多少？"
-  python main.py 008 run --with-mcp "找一个热门 LLM 竞赛" --refresh
-  python main.py 008 run -m openai/gpt-5.4-nano-2026-03-17 --max-rounds 4 "..."
+  python run.py run "东京天气和 2+3 是多少？"
+  python run.py run --with-mcp "找一个热门 LLM 竞赛" --refresh
+  python run.py run -m openai/gpt-5.4-nano-2026-03-17 --max-rounds 4 "..."
 """
 
 from __future__ import annotations
@@ -25,7 +25,7 @@ if str(ROOT) not in sys.path:
 if str(ROOT / "src") not in sys.path:
     sys.path.insert(0, str(ROOT / "src"))
 
-from common.proxy import DEFAULT_MODEL, make_client, print_usage  # noqa: E402
+from kaggle_lab.proxy import DEFAULT_MODEL, make_client, print_usage  # noqa: E402
 
 ART = Path(__file__).resolve().parent / "artifacts"
 EXP = "008-agent-loop"

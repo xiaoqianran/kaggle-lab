@@ -19,19 +19,19 @@ SAE 答题器增强版（在 004 之上）。
 ## 用法（允许）
 
 ```bash
-python main.py 009 dry-run
-python main.py 009 dry-run --ensemble
-python main.py 009 show
+python run.py dry-run
+python run.py dry-run --ensemble
+python run.py show
 ```
 
 ## 用法（禁止默认执行 — 真考专用）
 
 ```bash
 # 以下会依赖真卷 / 占次数，本仓库策略下不要跑：
-# python main.py 004 start --i-accept
-# python main.py 009 answer --from 004 --ensemble
-# python main.py 009 export-to-004
-# python main.py 004 submit --i-accept
+# python labs/004-sae/run.py start --i-accept
+# python run.py answer --from 004 --ensemble
+# python run.py export-to-004
+# python labs/004-sae/run.py submit --i-accept
 ```
 
 ## 安全

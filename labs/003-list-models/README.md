@@ -5,8 +5,8 @@
 ## 用法
 
 ```bash
-python main.py 003 list
-python main.py 003 dump   # 写出 kaggle_ai_models.{txt,csv,json}
+python run.py list
+python run.py dump   # 写出 kaggle_ai_models.{txt,csv,json}
 ```
 
-`dump` 会写到本目录，并同步一份到 [`data/`](../../data/)，方便用表格软件筛选。
+`dump` 只写到本目录（模型表的唯一一份）。

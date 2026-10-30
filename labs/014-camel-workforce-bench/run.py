@@ -5,24 +5,24 @@ Workforce-style multi-agent pipeline on Kaggle Model Proxy.
 
 Usage:
   # 全流程到本地 validate（推荐）
-  python main.py 014 run
-  python main.py 014 run --theme "instruction following" --query "llm"
+  python run.py run
+  python run.py run --theme "instruction following" --query "llm"
 
   # 分步
-  python main.py 014 scout
-  python main.py 014 debate
-  python main.py 014 author
-  python main.py 014 assemble
-  python main.py 014 validate-local
+  python run.py scout
+  python run.py debate
+  python run.py author
+  python run.py assemble
+  python run.py validate-local
 
   # 上传到 Kaggle Benchmarks（需确认）
-  python main.py 014 publish --push --i-accept
-  python main.py 014 publish --push --run-remote --i-accept
+  python run.py publish --push --i-accept
+  python run.py publish --push --run-remote --i-accept
 
   # 实验性：原生 CAMEL Workforce PIPELINE 探针
-  python main.py 014 workforce-probe
+  python run.py workforce-probe
 
-  python main.py 014 show
+  python run.py show
 """
 
 from __future__ import annotations
@@ -41,8 +41,8 @@ if str(ROOT / "src") not in sys.path:
 if str(HERE) not in sys.path:
     sys.path.insert(0, str(HERE))
 
-from common.camel_proxy import DEFAULT_CAMEL_MODEL  # noqa: E402
-from common.proxy import refresh_token  # noqa: E402
+from kaggle_lab.camel_proxy import DEFAULT_CAMEL_MODEL  # noqa: E402
+from kaggle_lab.proxy import refresh_token  # noqa: E402
 
 import pipeline as P  # noqa: E402
 

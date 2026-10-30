@@ -5,13 +5,13 @@
 默认模型走「便宜好用」三选一（flash-lite / 3.1-lite / gpt-nano）。
 
 Usage:
-  python main.py 015 models
-  python main.py 015 presets
-  python main.py 015 run
-  python main.py 015 run --preset debate --rounds 3
-  python main.py 015 run -m google/gemini-3.1-flash-lite-preview --rounds 2
-  python main.py 015 run --topic "AI 会不会取代程序员？" --a-name 乐观派 --b-name 悲观派
-  python main.py 015 smoke
+  python run.py models
+  python run.py presets
+  python run.py run
+  python run.py run --preset debate --rounds 3
+  python run.py run -m google/gemini-3.1-flash-lite-preview --rounds 2
+  python run.py run --topic "AI 会不会取代程序员？" --a-name 乐观派 --b-name 悲观派
+  python run.py smoke
 """
 
 from __future__ import annotations
@@ -30,7 +30,7 @@ if str(ROOT / "src") not in sys.path:
 if str(EXP_DIR) not in sys.path:
     sys.path.insert(0, str(EXP_DIR))
 
-from common.proxy import refresh_token  # noqa: E402
+from kaggle_lab.proxy import refresh_token  # noqa: E402
 
 from dual_chat import (  # noqa: E402
     Agent,

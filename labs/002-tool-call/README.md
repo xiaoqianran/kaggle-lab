@@ -7,9 +7,9 @@
 ## 用法
 
 ```bash
-python main.py 002 run
-python main.py 002 run -m google/gemini-3-flash-preview
-python main.py 002 run --prompt "上海天气？" --refresh
+python run.py run
+python run.py run -m google/gemini-3-flash-preview
+python run.py run --prompt "上海天气？" --refresh
 ```
 
 ## 说明

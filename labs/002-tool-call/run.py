@@ -4,7 +4,6 @@
 Usage:
   python run.py run
   python run.py run -m openai/gpt-5.4-nano-2026-03-17
-  python main.py 002 run
 """
 
 from __future__ import annotations
@@ -20,7 +19,7 @@ if str(ROOT) not in sys.path:
 if str(ROOT / "src") not in sys.path:
     sys.path.insert(0, str(ROOT / "src"))
 
-from common.proxy import DEFAULT_MODEL, make_client, print_usage  # noqa: E402
+from kaggle_lab.proxy import DEFAULT_MODEL, make_client, print_usage  # noqa: E402
 
 EXP = "002-tool-call"
 

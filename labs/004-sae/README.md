@@ -27,22 +27,22 @@
 
 ```bash
 # ——— 禁止默认执行 ———
-# python main.py 004 register --name "..." --i-accept
-# python main.py 004 start --i-accept      # 领 16 题；开始计时！占 1 次
-# python main.py 004 submit --i-accept     # 交卷
+# python run.py register --name "..." --i-accept
+# python run.py start --i-accept      # 领 16 题；开始计时！占 1 次
+# python run.py submit --i-accept     # 交卷
 
 # 只读 / 调试（无真卷时无用）
-# python main.py 004 whoami
-# python main.py 004 show-paper
-# python main.py 004 status
-# python main.py 004 history
+# python run.py whoami
+# python run.py show-paper
+# python run.py status
+# python run.py history
 ```
 
 **推荐替代（不占考试次数）：**
 
 ```bash
-python main.py 009 dry-run
-python main.py 009 dry-run --ensemble
+python labs/009-sae-better/run.py dry-run
+python labs/009-sae-better/run.py dry-run --ensemble
 ```
 
 产物（若曾跑过）在 `labs/004-sae/artifacts/`（试卷、答案草稿；**不含** api key）。

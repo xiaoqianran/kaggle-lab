@@ -6,7 +6,7 @@ import re
 from dataclasses import dataclass, field
 from typing import Any, Callable, Literal
 
-from common.proxy import chat_messages
+from kaggle_lab.proxy import chat_messages
 
 AgentId = Literal["a", "b"]
 

@@ -2,10 +2,10 @@
 """006-judge-llm — 多模型作答 + 规则/Judge LLM 打分对照。
 
 Usage:
-  python main.py 006 run
-  python main.py 006 run -m google/gemini-3-flash-preview -m openai/gpt-5.4-nano-2026-03-17
-  python main.py 006 run --judge-model google/gemini-3.5-flash --refresh
-  python main.py 006 show
+  python run.py run
+  python run.py run -m google/gemini-3-flash-preview -m openai/gpt-5.4-nano-2026-03-17
+  python run.py run --judge-model google/gemini-3.5-flash --refresh
+  python run.py show
 """
 
 from __future__ import annotations
@@ -24,7 +24,7 @@ if str(ROOT) not in sys.path:
 if str(ROOT / "src") not in sys.path:
     sys.path.insert(0, str(ROOT / "src"))
 
-from common.proxy import make_client, print_usage  # noqa: E402
+from kaggle_lab.proxy import make_client, print_usage  # noqa: E402
 
 HERE = Path(__file__).resolve().parent
 BANK = HERE / "bank.json"
@@ -265,7 +265,7 @@ def cmd_run(args: argparse.Namespace) -> int:
 def cmd_show(_: argparse.Namespace) -> int:
     path = ART / "last-run.json"
     if not path.is_file():
-        raise SystemExit("无结果。先: python main.py 006 run")
+        raise SystemExit("无结果。先: python labs/006-judge-llm/run.py run")
     data = json.loads(path.read_text(encoding="utf-8"))
     print(json.dumps(data.get("leaderboard"), ensure_ascii=False, indent=2))
     print(f"\nfull: {path}")

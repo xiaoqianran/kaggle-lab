@@ -4,9 +4,9 @@
 有意义默认任务：搜 LLM 相关竞赛 → 结合本机 GPU 配额 → 输出「本周可做」简报。
 
 Usage:
-  python main.py 013 scout
-  python main.py 013 scout --q "llm agent" --n 5
-  python main.py 013 ask "根据我的 GPU 余量和热门 LLM 竞赛，推荐一个周末 project"
+  python run.py scout
+  python run.py scout --q "llm agent" --n 5
+  python run.py ask "根据我的 GPU 余量和热门 LLM 竞赛，推荐一个周末 project"
 """
 
 from __future__ import annotations
@@ -25,30 +25,30 @@ if str(ROOT) not in sys.path:
 if str(ROOT / "src") not in sys.path:
     sys.path.insert(0, str(ROOT / "src"))
 
-from common.camel_proxy import (  # noqa: E402
+from kaggle_lab.camel_proxy import (  # noqa: E402
     DEFAULT_CAMEL_MODEL,
     extract_text,
     make_chat_agent,
 )
-from common.proxy import ensure_kaggle_token  # noqa: E402
-from common.usage import log_usage  # noqa: E402
+from kaggle_lab.proxy import ensure_kaggle_token  # noqa: E402
+from kaggle_lab.usage import log_usage  # noqa: E402
 
 ART = Path(__file__).resolve().parent / "artifacts"
 EXP = "013-camel-kaggle-crew"
 
 REAL_CMDS = """
 本仓库真实命令（只能推荐这些，禁止编造不存在的脚本名）:
-- python main.py 001 auth|chat
-- python main.py 003 list|dump
-- python main.py 005 auth|validate|push|run|download
-- python main.py 006 run|show
-- python main.py 007 tools|competitions|datasets|profile
-- python main.py 008 run [--with-mcp]
-- python main.py 010 show|gpu|usage
-- python main.py 011 smoke|chat|tools
-- python main.py 012 run [--rounds N]
-- python main.py 013 scout|ask
-禁止: SAE 开考 (004 start/submit)。notebook 训练在 notebooks/ 目录，另算 GPU 小时。
+- python labs/001-model-proxy/run.py auth|chat
+- python labs/003-list-models/run.py list|dump
+- python labs/005-benchmark-task/run.py auth|validate|push|run|download
+- python labs/006-judge-llm/run.py run|show
+- python labs/007-mcp-harness/run.py tools|competitions|datasets|profile
+- python labs/008-agent-loop/run.py run [--with-mcp]
+- python labs/010-quota-dashboard/run.py show|gpu|usage
+- python labs/011-camel-proxy/run.py smoke|chat|tools
+- python labs/012-camel-roleplay/run.py run [--rounds N]
+- python labs/013-camel-kaggle-crew/run.py scout|ask
+禁止: SAE 开考 (004 start/submit)。notebook 训练在 tracks/ 目录，另算 GPU 小时。
 """
 
 SYSTEM = (
@@ -200,7 +200,7 @@ def cmd_scout(args: argparse.Namespace) -> int:
         "输出一份「本周 Agent 向 Kaggle 行动简报」，包含：\n"
         "1. 最值得关注的 1–2 个竞赛/方向及理由\n"
         "2. 是否该用 GPU 小时还是只用 Model Proxy $\n"
-        "3. 用本仓库 011/012/005/006/008 如何落地（必须写真实 python main.py … 命令）\n"
+        "3. 用本仓库 011/012/005/006/008 如何落地（必须写真实 labs/…/run.py 命令）\n"
         "4. 预估会烧掉的 AI $ 量级（粗估即可）"
     )
     args.prompt = prompt

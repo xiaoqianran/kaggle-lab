@@ -8,10 +8,10 @@
 ## 用法
 
 ```bash
-python main.py 006 run
-python main.py 006 run -m google/gemini-3-flash-preview -m openai/gpt-5.4-nano-2026-03-17
-python main.py 006 run --judge-model google/gemini-3.5-flash --refresh
-python main.py 006 show
+python run.py run
+python run.py run -m google/gemini-3-flash-preview -m openai/gpt-5.4-nano-2026-03-17
+python run.py run --judge-model google/gemini-3.5-flash --refresh
+python run.py show
 ```
 
 ## 文件

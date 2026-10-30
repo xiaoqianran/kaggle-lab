@@ -39,13 +39,13 @@ if str(ROOT) not in sys.path:
 if str(ROOT / "src") not in sys.path:
     sys.path.insert(0, str(ROOT / "src"))
 
-from common.camel_proxy import (  # noqa: E402
+from kaggle_lab.camel_proxy import (  # noqa: E402
     extract_text,
     make_camel_model,
     make_chat_agent,
 )
-from common.proxy import ENV_FILE, ensure_kaggle_token, refresh_token  # noqa: E402
-from common.usage import log_usage  # noqa: E402
+from kaggle_lab.proxy import ENV_FILE, ensure_kaggle_token, refresh_token  # noqa: E402
+from kaggle_lab.usage import log_usage  # noqa: E402
 
 EXP = "014-camel-workforce-bench"
 
@@ -645,8 +645,8 @@ def run_pipeline(
         if not i_accept:
             raise SystemExit(
                 "publish 需要显式确认:\n"
-                "  python main.py 014 run --push --i-accept\n"
-                "  python main.py 014 run --push --run-remote --i-accept"
+                "  python labs/014-camel-workforce-bench/run.py run --push --i-accept\n"
+                "  python labs/014-camel-workforce-bench/run.py run --push --run-remote --i-accept"
             )
         pub = publish(
             slug=spec.slug,

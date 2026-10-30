@@ -9,10 +9,6 @@ dependencies = ["openai"]
 [project.optional-dependencies]
 camel = ["camel-ai==0.2.90", "mcp==1.9.4"]
 
-[project.scripts]
-kaggle-lab = "kaggle_lab.cli:main"
-klab = "kaggle_lab.cli:main"
-
 [build-system]
 requires = ["setuptools>=69"]
 build-backend = "setuptools.build_meta"

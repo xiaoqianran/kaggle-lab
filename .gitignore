@@ -2,7 +2,7 @@
 __pycache__/
 *.pyc
 .pytest_cache/
-# local datasets (labs/tracks); committed model table lives in /data/
+# local datasets (labs/tracks); committed model table lives in labs/003-list-models/
 labs/**/data/
 tracks/**/data/
 logs/

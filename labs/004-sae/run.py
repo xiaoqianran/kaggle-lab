@@ -2,14 +2,14 @@
 """004-sae — Kaggle Standardized Agent Exam HTTP client.
 
 Usage:
-  python main.py 004 register --name NAME --model MODEL --agent-type TYPE
-  python main.py 004 start
-  python main.py 004 show-paper
-  python main.py 004 answer-stub | answer-proxy
-  python main.py 004 submit
-  python main.py 004 status
-  python main.py 004 history
-  python main.py 004 whoami
+  python run.py register --name NAME --model MODEL --agent-type TYPE
+  python run.py start
+  python run.py show-paper
+  python run.py answer-stub | answer-proxy
+  python run.py submit
+  python run.py status
+  python run.py history
+  python run.py whoami
 """
 
 from __future__ import annotations
@@ -47,7 +47,7 @@ def _write_secret(path: Path, value: str) -> None:
 def load_creds() -> tuple[str, str]:
     if not ID_FILE.is_file() or not KEY_FILE.is_file():
         raise SystemExit(
-            "缺少 SAE 凭证。请先:\n  python main.py 004 register --name ..."
+            "缺少 SAE 凭证。请先:\n  python labs/004-sae/run.py register --name ..."
         )
     return ID_FILE.read_text().strip(), KEY_FILE.read_text().strip()
 
@@ -140,7 +140,7 @@ def cmd_start(args: argparse.Namespace) -> int:
     if not args.i_accept:
         raise SystemExit(
             "开考会开始 30 分钟倒计时并占用 3 次配额之一。\n"
-            "确认后: python main.py 004 start --i-accept"
+            "确认后: python labs/004-sae/run.py start --i-accept"
         )
     ART.mkdir(parents=True, exist_ok=True)
     res = api("POST", "/agentExamSubmission", body={}, auth=True)
@@ -159,7 +159,7 @@ def cmd_start(args: argparse.Namespace) -> int:
 
 def cmd_show_paper(_: argparse.Namespace) -> int:
     if not PAPER_PATH.is_file():
-        raise SystemExit("无试卷。先: python main.py 004 start --i-accept")
+        raise SystemExit("无试卷。先: python labs/004-sae/run.py start --i-accept")
     paper = json.loads(PAPER_PATH.read_text(encoding="utf-8"))
     for q in paper.get("questions") or []:
         print(f"\n[{q.get('id')}] {q.get('text')}")
@@ -168,7 +168,7 @@ def cmd_show_paper(_: argparse.Namespace) -> int:
 
 def _load_paper() -> dict:
     if not PAPER_PATH.is_file():
-        raise SystemExit("无试卷。先: python main.py 004 start --i-accept")
+        raise SystemExit("无试卷。先: python labs/004-sae/run.py start --i-accept")
     return json.loads(PAPER_PATH.read_text(encoding="utf-8"))
 
 
@@ -189,7 +189,7 @@ def cmd_answer_stub(_: argparse.Namespace) -> int:
 
 def cmd_answer_proxy(args: argparse.Namespace) -> int:
     """用 Kaggle Model Proxy 逐题作答（扣 AI Models $）。"""
-    from common.proxy import chat, refresh_token, ENV_FILE
+    from kaggle_lab.proxy import chat, refresh_token, ENV_FILE
 
     if args.refresh or not ENV_FILE.exists():
         refresh_token()
@@ -233,7 +233,7 @@ def cmd_answer_proxy(args: argparse.Namespace) -> int:
 
 def cmd_submit(args: argparse.Namespace) -> int:
     if not args.i_accept:
-        raise SystemExit("交卷确认: python main.py 004 submit --i-accept")
+        raise SystemExit("交卷确认: python labs/004-sae/run.py submit --i-accept")
     paper = _load_paper()
     sub_id = paper.get("submissionId")
     if not sub_id:

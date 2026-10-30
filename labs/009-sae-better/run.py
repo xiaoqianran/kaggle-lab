@@ -4,18 +4,18 @@
 不自动开考。默认在 mock 卷或 004 已有 paper 上作答。
 
 Usage:
-  python main.py 009 dry-run                         # mock 卷 + 单模型
-  python main.py 009 dry-run --ensemble              # 多模型投票
-  python main.py 009 answer --from 004               # 用 004 artifacts/paper.json
-  python main.py 009 answer --paper path.json -m ...
-  python main.py 009 show
-  python main.py 009 export-to-004                   # 把 answers 写回 004 路径
+  python run.py dry-run                         # mock 卷 + 单模型
+  python run.py dry-run --ensemble              # 多模型投票
+  python run.py answer --from 004               # 用 004 artifacts/paper.json
+  python run.py answer --paper path.json -m ...
+  python run.py show
+  python run.py export-to-004                   # 把 answers 写回 004 路径
 
 真开考 / 交卷仍走 004（有 --i-accept 保护）:
-  python main.py 004 start --i-accept
-  python main.py 009 answer --from 004 --ensemble
-  python main.py 009 export-to-004
-  python main.py 004 submit --i-accept
+  python labs/004-sae/run.py start --i-accept
+  python run.py answer --from 004 --ensemble
+  python run.py export-to-004
+  python labs/004-sae/run.py submit --i-accept
 """
 
 from __future__ import annotations
@@ -35,7 +35,7 @@ if str(ROOT) not in sys.path:
 if str(ROOT / "src") not in sys.path:
     sys.path.insert(0, str(ROOT / "src"))
 
-from common.proxy import make_client, print_usage  # noqa: E402
+from kaggle_lab.proxy import make_client, print_usage  # noqa: E402
 
 HERE = Path(__file__).resolve().parent
 ART = HERE / "artifacts"
@@ -297,7 +297,7 @@ def cmd_export_to_004(_: argparse.Namespace) -> int:
     if PAPER_PATH.is_file() and not SAE004_PAPER.is_file():
         SAE004_PAPER.write_text(PAPER_PATH.read_text(encoding="utf-8"), encoding="utf-8")
     print(f"exported answers → {SAE004_ANSWERS}")
-    print("next: python main.py 004 submit --i-accept   # 仅当真卷且你确认交卷")
+    print("next: python labs/004-sae/run.py submit --i-accept   # 仅当真卷且你确认交卷")
     return 0
 
 
